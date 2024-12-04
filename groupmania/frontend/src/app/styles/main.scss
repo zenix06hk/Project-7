@@ -1,0 +1,24 @@
+@import "../styles/default";
+@import "../styles//mixin";
+@import "../styles/normalize";
+
+@import "../../../src/app/styles/default";
+@import "../../../src/app/styles/mixin";
+@import "../../../src/app/styles/normalize";
+//login
+@import "../../../src/components/Login/login";
+@import "../../../src/components/AuthSideImg/authSideImg";
+@import "../../../src/components/Register/register";
+
+@import "../../../src/components/Header/header";
+@import "../../../src/components/Sidebar/sidebar";
+
+@import "../../../src/components/PostContent/postContent";
+@import "../../../src/components/Header/header";
+@import "../../../src/components/MembersShare/membersShare";
+
+@import "../../../src/components/UserUpdateInfo/userupdateinfo";
+@import "../../../src/components/UserSaved//userSave";
+@import "../../../src/components/Settings/settings";
+@import "../../../src/components/FriendsList/friendsList";
+@import "../../../src/components/Events/events";

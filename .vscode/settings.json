@@ -1,0 +1,16 @@
+{
+  "git.ignoreLimitWarning": true,
+  "git.countBadge": "off",
+  "sqltools.connections": [
+    {
+      "previewLimit": 50,
+      "server": "localhost",
+      "port": 5432,
+      "driver": "PostgreSQL",
+      "name": "local",
+      "database": "groupmania_database",
+      "username": "zenix06hk",
+      "password": "Zenix@2023"
+    }
+  ]
+}

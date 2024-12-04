@@ -1,0 +1,23 @@
+@import "~@fortawesome/fontawesome-svg-core/styles.css";
+
+.sidebar {
+  &-full-container {
+    border: 3px solid pink;
+    flex: none;
+    overflow-y: auto;
+  }
+  &-m-container {
+    border: 1px solid blue;
+    display: flex;
+    padding: 20px 40px;
+    align-items: center;
+    & > p {
+      border: 1px solid red;
+      margin: 0 20px;
+    }
+    &-tab {
+      border: 3px solid orange;
+      display: flex;
+    }
+  }
+}

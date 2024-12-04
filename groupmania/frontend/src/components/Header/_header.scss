@@ -1,0 +1,31 @@
+// @import "~@fortawesome/fontawesome-svg-core/styles.css";
+
+.header {
+  &-full-container {
+    border: 2px solid purple;
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 50px;
+    align-items: center;
+    height: 20%;
+  }
+  &-m-container {
+    border: 2px solid red;
+    display: flex;
+    &-tab {
+      border: 1px solid orange;
+      align-items: center;
+      padding: 0 60px;
+    }
+  }
+  &-userImg {
+    padding: 10px;
+  }
+  &-profileImg {
+    // border: 1px solid black;
+    object-fit: cover;
+    width: 70px; /* Set width */
+    height: 70px; /* Set height */
+    border-radius: 50px;
+  }
+}
