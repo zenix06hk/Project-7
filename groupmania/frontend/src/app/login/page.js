@@ -1,9 +1,9 @@
-import Login from "../../../src/components/Login/Login";
+import Login from "../../components/Login";
+import "../styles/authlayout.scss";
 
 export default function LoginPage() {
   return (
-    <div className="full-container login">
-      login
+    <div className="loginContainer">
       <Login />
     </div>
   );
