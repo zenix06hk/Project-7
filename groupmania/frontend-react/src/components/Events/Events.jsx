@@ -1,5 +1,3 @@
-import "../main.scss";
-
 function Events() {
   return (
     <div className="event-container">

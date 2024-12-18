@@ -1,6 +1,5 @@
 import React from "react";
 
-import "../app/styles/main.scss";
 import UserShare from "../UserShare/UserShare";
 import MembersShare from "../MembersShare/MembersShare";
 

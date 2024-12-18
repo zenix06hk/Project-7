@@ -1,5 +1,4 @@
-import "../app/styles/main.scss";
-import "../app/styles/friendsList.scss";
+import "./friendsList.scss";
 
 import profileImg from "../../assets/profile_image.jpg";
 const profile_Img = profileImg;

@@ -1,8 +1,7 @@
 import React from "react";
 import Link from "next/link";
 
-import "../app/styles/main.scss";
-import "../app/styles/header.scss";
+import "./header.scss";
 
 import Logo from "../../../public/assets/icon.png";
 import profileImg from "../../../public/assets/profile_image.jpg";

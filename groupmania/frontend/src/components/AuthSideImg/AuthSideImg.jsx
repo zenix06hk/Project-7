@@ -1,6 +1,5 @@
-import HandsTogether from "../../public/assets/hands_together.webp";
-import "../app/styles/main.scss";
-import "../app/styles/authSideImg.scss";
+// import HandsTogether from "../../public/assets/hands_together.webp";
+import "./authSideImg.scss";
 import Image from "next/image";
 
 function AuthSideImg() {

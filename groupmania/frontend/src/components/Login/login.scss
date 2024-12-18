@@ -1,7 +1,3 @@
-body {
-  background-color: #ffffff;
-}
-
 .loginPage {
   height: 100%;
   &-content {
@@ -13,7 +9,6 @@ body {
       display: block;
       width: auto;
       align-items: center;
-      width: 80%;
       padding: 180px 10px 50px;
     }
     &-btns {

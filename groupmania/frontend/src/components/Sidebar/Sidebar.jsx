@@ -1,8 +1,7 @@
 import React from "react";
 // import Link from "next/link"
 
-import "../app/styles/main.scss";
-import "../app/styles/sidebar.scss";
+import "./sidebar.scss";
 
 import { config } from "@fortawesome/fontawesome-svg-core";
 import "@fortawesome/fontawesome-svg-core/styles.css";

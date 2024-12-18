@@ -1,7 +1,5 @@
-import Image from "next/image";
-
-import AuthSideImg from "../components/AuthSideImg";
-import "../app/styles/authlayout.scss";
+import AuthSideImg from "../../components/AuthSideImg/AuthSideImg.jsx";
+import "./authlayout.scss";
 
 function AuthLayout({ children }) {
   return (

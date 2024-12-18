@@ -1,5 +1,3 @@
-import "../../components/main.scss";
-
 import profileImg from "../../assets/profile_image.jpg";
 const profile_Img = profileImg;
 

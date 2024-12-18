@@ -3,7 +3,7 @@ import Form from "next/form";
 import Link from "next/link";
 import Image from "next/image";
 
-import "../app/styles/login.scss";
+import "./login.scss";
 
 //Submit the Login clicking
 const handleSubmit = async (values, { setSubmitting }) => {

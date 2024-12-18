@@ -1,7 +1,6 @@
-import "../styles/main.scss";
 // import "../styles/authlayout.scss";
 
-import AuthLayout from "../../components/AuthLayout.jsx";
+import AuthLayout from "../../layout/AuthLayout/AuthLayout.jsx";
 
 export default function Layout({ children }) {
   return (

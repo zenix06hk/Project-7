@@ -1,7 +1,6 @@
 import React from "react";
 
-import "../app/styles/main.scss";
-import "../app/styles/userShare.scss";
+import "./userShare.scss";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPhotoFilm, faArrowUp } from "@fortawesome/free-solid-svg-icons";

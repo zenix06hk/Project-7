@@ -1,5 +1,4 @@
 import HandsTogether from "../../assets/hands_together.webp";
-import "../../components/main.scss";
 
 const image_hands = HandsTogether;
 

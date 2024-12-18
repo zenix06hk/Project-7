@@ -1,5 +1,5 @@
-import Register from "../../components/Register";
-import "../styles/authlayout.scss";
+import Register from "../../components/Register/Register.jsx";
+import "../../layout/AuthLayout/authlayout.scss";
 
 export default function LoginPage() {
   return (

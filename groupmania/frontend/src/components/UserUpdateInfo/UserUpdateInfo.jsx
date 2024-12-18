@@ -1,8 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-import "../app/styles/main.scss";
-import "../app/styles/userUpdateInfo.scss";
+import "./userUpdateInfo.scss";
 
 import profileImg from "../../../public/assets/hands_together";
 

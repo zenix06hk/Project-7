@@ -5,8 +5,7 @@ import { faThumbsUp, faThumbsDown } from "@fortawesome/free-solid-svg-icons";
 
 import profileImg from "../../assets/profile_image.jpg";
 
-import "../app/styles/main.scss";
-import "../app/styles/memberShare.scss";
+import "./memberShare.scss";
 
 const profile_Img = profileImg;
 

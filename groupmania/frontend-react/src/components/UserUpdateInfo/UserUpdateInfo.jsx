@@ -1,6 +1,5 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import "../../components/main.scss";
 
 import profileImg from "../../assets/profile_image.jpg";
 

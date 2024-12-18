@@ -1,17 +1,13 @@
+import Link from "next/link";
+import Image from "next/image";
+
+import "./register.scss";
+import "../../layout/AuthLayout/authlayout.scss";
+
+import { useFormik } from "formik";
+import { Formik, Field, ErrorMessage } from "formik";
 import React from "react";
-import { Link } from "react-router-dom";
-import Logo from "../../assets/icon_and_name.png";
-
-import {
-  Formik,
-  Field,
-  ErrorMessage,
-  FormikValues,
-  FormikHelpers,
-} from "formik";
 import * as Yup from "yup";
-
-const logo_image = Logo;
 
 const validationSchema = Yup.object().shape({
   name: Yup.string()
@@ -34,7 +30,6 @@ const Register = () => {
     password: "",
     confirmPassword: "",
   };
-
   const handleSubmit = async (values, { setSubmitting }) => {
     console.log(values);
     //async call
@@ -46,23 +41,23 @@ const Register = () => {
     if (response.status === 201) {
     } else {
     }
-
-    // setTimeout(() => {
-    //  console.log(values);
-    //  setSubmitting(false);
-    // }, 500);
+    setTimeout(() => {
+      console.log(values);
+      setSubmitting(false);
+    }, 500);
   };
-
   return (
     <>
       <div className="loginPage">
         <div className="loginPage-content">
-          <img
-            src={logo_image}
-            alt="Groupmania"
+          <Image
+            src="/assets/icon_and_name.png"
+            alt="icon"
+            width={500}
+            height={80}
             className="loginPage-content-companyLogo"
-          ></img>
-          <Formik
+          />
+          {/* <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
             onSubmit={handleSubmit}
@@ -176,7 +171,7 @@ const Register = () => {
                 </Link>
               </form>
             )}
-          </Formik>
+          </Formik> */}
         </div>
       </div>
     </>

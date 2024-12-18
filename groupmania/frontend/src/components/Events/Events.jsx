@@ -1,5 +1,4 @@
-import "../app/styles/main.scss";
-import "../app/styles/events.scss";
+import "./events.scss";
 
 function Events() {
   return (

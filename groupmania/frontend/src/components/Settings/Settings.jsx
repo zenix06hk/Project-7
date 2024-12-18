@@ -1,8 +1,7 @@
 import React from "react";
 import Link from "next/link";
 
-import "../app/styles/main.scss";
-import "../app/styles/settings.scss";
+import "./settings.scss";
 
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";

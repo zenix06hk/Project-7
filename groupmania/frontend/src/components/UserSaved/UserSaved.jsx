@@ -2,8 +2,7 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPhotoFilm, faArrowUp } from "@fortawesome/free-solid-svg-icons";
 
-import "../app/styles/main.scss";
-import "../app/styles/userSaved.scss";
+import "./userSaved.scss";
 
 import profileImg from "../../assets/profile_image.jpg";
 
