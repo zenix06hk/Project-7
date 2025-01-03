@@ -4,34 +4,40 @@ import Image from "next/image";
 import * as React from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import { red } from "@mui/material/colors";
 
 import "./friendsList.scss";
 
 {
   /*use map function friends list*/
 }
+
+const color = red[500];
+
 function FriendsList() {
   return (
     <>
       <h1>Friends</h1>
       <div className="friendsList_container">
-        <Link href="/">
-          <div className="friendsList_itemBox">
+        <div className="friendsList_itemBox">
+          <Link href="/">
             <Image
               src="/assets/profile_image.jpg"
               alt="icon"
               width={80}
               height={80}
-              className="friends_profileImg"
+              className="friendsList_profileImg"
             />
+          </Link>
+          <Link href="/">
             <p>Thomas Philip</p>
-          </div>
-        </Link>
+          </Link>
+        </div>
         <div className="friendsList_status">
-          <Button variant="contained" size="small">
+          <Button variant="contained" size="small" color="salmon">
             Add
           </Button>
-          <Button variant="outlined" size="small">
+          <Button variant="outlined" size="small" color="red">
             Unfriend
           </Button>
         </div>

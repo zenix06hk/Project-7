@@ -40,7 +40,7 @@ function Header() {
           {navList.map((item, index) => (
             <div key={index} className="header_tablist_icon">
               <Link href={item.url}>
-                <FontAwesomeIcon icon={item.name} size="lg" />
+                <FontAwesomeIcon icon={item.name} size="xl" />
               </Link>
             </div>
           ))}

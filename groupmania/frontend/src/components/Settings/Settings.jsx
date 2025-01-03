@@ -25,7 +25,7 @@ function Setting() {
 
   return (
     <div className="setting-content">
-      <h1>Setting</h1>
+      <h1>Settings</h1>
       <Link href="/userupdateinfo">
         <h3>Update Profile</h3>
       </Link>

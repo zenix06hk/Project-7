@@ -1,16 +1,27 @@
 .friendsList {
   &_container {
+    border: 5px solid orange;
     display: flex;
   }
   &_itemBox {
     display: flex;
-    border: 5px solid orange;
     width: 100vh;
     height: auto;
     padding: 30px 10px;
     margin: 20px 20px;
   }
+  &_profileImg {
+    border: 2px solid blue;
+    object-fit: cover;
+    width: 75px; /* Set width */
+    height: 75px; /* Set height */
+    border-radius: 50px;
+  }
   &_status {
-    justify-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    color: red;
   }
 }
