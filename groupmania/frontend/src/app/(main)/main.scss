@@ -1,0 +1,15 @@
+.mainLayout {
+  &_body {
+    display: flex;
+  }
+}
+
+.home_container {
+  border: 1px solid red;
+  width: 100%;
+  height: auto;
+}
+
+.mainLayout_sidebar {
+  margin-top: 50px;
+}

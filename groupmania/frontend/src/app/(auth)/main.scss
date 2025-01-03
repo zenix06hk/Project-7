@@ -1,0 +1,47 @@
+.authLayout {
+  &_container {
+    display: flex;
+    align-items: center;
+  }
+  &_sideImage {
+    position: relative;
+    border: 1px solid red;
+    width: 60%;
+    height: 100vh;
+
+    img {
+      object-fit: cover;
+    }
+  }
+  &_content {
+    padding: 20px;
+    // border: 5px solid green;
+    width: 40%;
+  }
+} // .loginLayout {
+//   display: flex;
+// }
+
+// .loginContainer {
+//   width: 50%;
+// }
+
+// .auth-layout {
+//   display: flex;
+
+//   &__side {
+//     width: 70%;
+//     border: 1px solid blue;
+//   }
+
+//   &__content {
+//     width: 30%;
+//     border: 1px solid green;
+//   }
+
+//   &__img {
+//     position: relative;
+//     width: 100%;
+//     height: 100%;
+//   }
+// }

@@ -41,7 +41,7 @@ function Login() {
             alt="Groupmania"
             className="loginPage-content-companyLogo"
           ></img> */}
-          <h3>Sign in with your Groupmania ID</h3>
+          <h3>Sign in with your Groupomania ID</h3>
           <Form>
             <label htmlFor="fname">Email:</label>
             <br></br>
@@ -52,14 +52,14 @@ function Login() {
             <input type="text" id="fname" name="fname" size="50"></input>
             <br></br>
             <div className="loginPage-content-btns">
-              <Link href="/home">
-                <div className="loginPage-content btns-signIn">Sign In</div>
-              </Link>
-              <Link href="/register">
-                <div className="loginPage-content btns-register">Register</div>
-              </Link>
+              <div className="loginPage-content btns signIn">
+                <Link href="/home">Log In</Link>
+              </div>
+              <div className="loginPage-content btns register">
+                <Link href="/register">Sign up</Link>
+              </div>
+              <a href=".">Forget password?</a>
             </div>
-            <a href=".">Forget password?</a>
           </Form>
         </div>
       </div>

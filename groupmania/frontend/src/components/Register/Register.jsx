@@ -1,8 +1,9 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 
 import "./register.scss";
-import "../../layout/AuthLayout/authlayout.scss";
 
 import { useFormik } from "formik";
 import { Formik, Field, ErrorMessage } from "formik";
@@ -48,16 +49,16 @@ const Register = () => {
   };
   return (
     <>
-      <div className="loginPage">
-        <div className="loginPage-content">
+      <div className="registerPage">
+        <div className="registerPage-content">
           <Image
             src="/assets/icon_and_name.png"
             alt="icon"
             width={500}
             height={80}
-            className="loginPage-content-companyLogo"
+            className="registerPage-content-companyLogo"
           />
-          {/* <Formik
+          <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
             onSubmit={handleSubmit}
@@ -160,18 +161,16 @@ const Register = () => {
                   />
                 </label>
                 <br></br>
-                <Link to="/">
-                  <button
-                    type="submit"
-                    className="btn btn-signUp"
-                    disabled={isSubmitting}
-                  >
-                    Sign Up
-                  </button>
-                </Link>
+                <div
+                  type="submit"
+                  className="btn btn-signUp"
+                  disabled={isSubmitting}
+                >
+                  <Link href="/home">Sign Up</Link>
+                </div>
               </form>
             )}
-          </Formik> */}
+          </Formik>
         </div>
       </div>
     </>

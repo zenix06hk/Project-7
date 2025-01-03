@@ -1,27 +1,42 @@
-import "./friendsList.scss";
+import Link from "next/link";
+import Image from "next/image";
 
-import profileImg from "../../assets/profile_image.jpg";
-const profile_Img = profileImg;
+import * as React from "react";
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+
+import "./friendsList.scss";
 
 {
   /*use map function friends list*/
 }
 function FriendsList() {
   return (
-    <div className="friendsList-container">
+    <>
       <h1>Friends</h1>
-      <div className="friendsList-card-container">
-        <div className="friendsList-card">
-          <img
-            src={profile_Img}
-            alt="Groupmania"
-            className="friendsList-cardImg"
-          ></img>
-          <div className="friendsList-avatar"></div>
-          <p>Name</p>
+      <div className="friendsList_container">
+        <Link href="/">
+          <div className="friendsList_itemBox">
+            <Image
+              src="/assets/profile_image.jpg"
+              alt="icon"
+              width={80}
+              height={80}
+              className="friends_profileImg"
+            />
+            <p>Thomas Philip</p>
+          </div>
+        </Link>
+        <div className="friendsList_status">
+          <Button variant="contained" size="small">
+            Add
+          </Button>
+          <Button variant="outlined" size="small">
+            Unfriend
+          </Button>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

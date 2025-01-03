@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
 
@@ -24,7 +26,7 @@ function Setting() {
   return (
     <div className="setting-content">
       <h1>Setting</h1>
-      <Link to="/userupdateinfo">
+      <Link href="/userupdateinfo">
         <h3>Update Profile</h3>
       </Link>
       <React.Fragment>
@@ -45,7 +47,7 @@ function Setting() {
           </DialogContent>
           <DialogActions>
             <Button onClick={handleClose}>No</Button>
-            <Link to="/login">
+            <Link href="/login">
               <Button onClick={handleClose} autoFocus>
                 Yes, I'm sure
               </Button>

@@ -1,7 +1,17 @@
 .registerPage {
   height: 100%;
+  &-content {
+    align-items: center;
+    justify-items: center;
+    padding: 0 50px;
+    &-companyLogo {
+      display: block;
+      width: auto;
+      align-items: center;
+      // padding: 180px 10px 50px;
+    }
+  }
 }
-
 .formField {
   display: flex;
   flex-direction: column;
@@ -17,9 +27,12 @@
 }
 
 .btn {
-  align-items: left;
+  text-align: center;
   margin: 20px;
   padding: 10px 30px;
+  a {
+    text-decoration: none; // Remove underline from links
+  }
   &-signUp {
     border: 1px solid pink;
     background-color: pink;

@@ -1,14 +1,15 @@
 import React from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 import "./header.scss";
 
 import Logo from "../../../public/assets/icon.png";
 import profileImg from "../../../public/assets/profile_image.jpg";
 
-import { config } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "@fortawesome/fontawesome-svg-core/styles.css";
-config.autoAddCss = false;
+// config.autoAddCss = false;
 import {
   faHome,
   faUserGroup,
@@ -16,50 +17,42 @@ import {
   faCalendarDay,
 } from "@fortawesome/free-solid-svg-icons";
 
-const header_list = [faHome, faUserGroup, faPeopleGroup, faCalendarDay];
-
-const logo_image = Logo;
-const profile_Img = profileImg;
-
 function Header() {
   const navList = [
     { name: faHome, url: "/home" },
-    { name: faUserGroup, url: "/friendList" },
-    { name: faPeopleGroup, url: "/communityList" },
-    { name: faCalendarDay, url: "/event" },
+    { name: faUserGroup, url: "/friends" },
+    { name: faPeopleGroup, url: "/community" },
   ];
 
   return (
     <header>
-      {/* <h1>this is a header</h1> */}
-      <div className="header-full-container">
-        <Link to="/home">
-          <img
-            src={logo_image}
-            alt="Groupmania"
-            className="header-companyLogo"
-            width="80px"
-          ></img>
+      <div className="header_container">
+        <Link href="/home">
+          <Image
+            src="/assets/icon.png"
+            alt="icon"
+            width={80}
+            height={80}
+            className="header_company_Logo"
+          />
         </Link>
-        <div className="header-m-container">
-          {header_list.map((item, index) => (
-            <div key={index} className="header-m-container-tab">
-              <div>
-                <FontAwesomeIcon
-                  icon={item}
-                  size="lg"
-                  className="header-container-tab-icon-color"
-                />
-              </div>
+        <div className="header_tablist">
+          {navList.map((item, index) => (
+            <div key={index} className="header_tablist_icon">
+              <Link href={item.url}>
+                <FontAwesomeIcon icon={item.name} size="lg" />
+              </Link>
             </div>
           ))}
         </div>
-        <div className="header-userImg">
-          <img
-            src={profile_Img}
-            alt="Groupmania"
-            className="header-profileImg"
-          ></img>
+        <div className="header_test">
+          <Image
+            src="/assets/profile_image.jpg"
+            alt="icon"
+            width={80}
+            height={80}
+            className="header_profileImg"
+          />
         </div>
       </div>
     </header>

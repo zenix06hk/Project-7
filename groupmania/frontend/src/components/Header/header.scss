@@ -1,31 +1,61 @@
 // @import "~@fortawesome/fontawesome-svg-core/styles.css";
 
 .header {
-  &-full-container {
-    border: 2px solid purple;
+  &_container {
+    // border: 5px solid purple;
     display: flex;
     justify-content: space-between;
     padding: 5px 50px;
     align-items: center;
-    height: 20%;
-  }
-  &-m-container {
-    border: 2px solid red;
-    display: flex;
-    &-tab {
-      border: 1px solid orange;
-      align-items: center;
-      padding: 0 60px;
+    height: 30%;
+    border-bottom: 1px solid grey;
+
+    &_test {
+      border: 1px solid black;
+      object-fit: cover;
+      width: 70px; /* Set width */
+      height: 70px; /* Set height */
+      border-radius: 50px;
     }
   }
-  &-userImg {
-    padding: 10px;
+  &_logo {
+    display: block;
+    width: auto;
+    align-items: center;
   }
-  &-profileImg {
-    // border: 1px solid black;
+  &_tablist {
+    border: 5px solid red;
+    display: flex;
+    padding: 0 10px;
+    &_icon {
+      // border: 5px solid blue;
+      margin: 0 100px;
+    }
+  }
+  &_profileImg {
+    border: 2px solid blue;
     object-fit: cover;
-    width: 70px; /* Set width */
-    height: 70px; /* Set height */
+    width: 75px; /* Set width */
+    height: 75px; /* Set height */
     border-radius: 50px;
   }
+  //   &-m-container {
+  //     border: 2px solid red;
+  //     display: flex;
+  //     &-tab {
+  //       border: 1px solid orange;
+  //       align-items: center;
+  //       padding: 0 60px;
+  //     }
+  //   }
+  //   &-userImg {
+  //     padding: 10px;
+  //   }
+  // .profileImg {
+  //   border: 1px solid black;
+  //   object-fit: cover;
+  //   width: 70px; /* Set width */
+  //   height: 70px; /* Set height */
+  //   border-radius: 50px;
+  // }
 }

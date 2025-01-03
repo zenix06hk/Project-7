@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import "./userUpdateInfo.scss";
 
-import profileImg from "../../../public/assets/hands_together";
+// import profileImg from "../../../public/assets/hands_together";
 
 import {
   Formik,
@@ -14,7 +14,7 @@ import {
 } from "formik";
 import * as Yup from "yup";
 
-const profile_Img = profileImg;
+// const profile_Img = profileImg;
 
 const validationSchema = Yup.object().shape({
   name: Yup.string()
@@ -62,7 +62,7 @@ function UserUpdateInfo() {
       <div className="userupdate-container-content">
         <div className="userupdate-container-img">
           <img
-            src={profile_Img}
+            // src={profile_Img}
             alt="Groupmania"
             className="userupdate-profileImg"
           ></img>
@@ -169,7 +169,7 @@ function UserUpdateInfo() {
                 />
               </label>
               <br></br>
-              <Link to="/home">
+              <Link href="/home">
                 <button
                   type="submit"
                   className="btn btn-signUp"
