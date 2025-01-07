@@ -1,8 +1,9 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 
 import * as React from "react";
-import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import { red } from "@mui/material/colors";
 
@@ -24,8 +25,8 @@ function FriendsList() {
             <Image
               src="/assets/profile_image.jpg"
               alt="icon"
-              width={80}
-              height={80}
+              width={60}
+              height={60}
               className="friendsList_profileImg"
             />
           </Link>

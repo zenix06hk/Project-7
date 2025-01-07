@@ -1,0 +1,20 @@
+@import ".././base/default";
+@import ".././base/mixin";
+@import ".././base/normalize";
+
+@import "./Login/login";
+@import "./AuthSideImg/authSideImg";
+@import "./Register/register";
+
+@import "./Header/header";
+@import "./Sidebar/sidebar";
+
+@import "./PostContent/postContent";
+@import "./Usershare/userShare";
+@import "./MembersShare/membersShare";
+
+@import "./UserUpdateInfo/userupdateinfo";
+@import "./UserSaved//userSave";
+@import "./Settings/settings";
+@import "./FriendsList/friendsList";
+@import "./Events/events";

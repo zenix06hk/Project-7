@@ -1,0 +1,45 @@
+.usershare-container {
+  display: flex;
+  flex-direction: row;
+  border: 1px solid green;
+  height: 100%;
+  margin: 20px 300px;
+  &-content {
+    width: 100%;
+  }
+  &-top {
+    border: 1px solid red;
+    display: flex;
+    &-inner {
+      width: 90%;
+      align-items: center;
+      padding: 10px 20px;
+      &-input {
+        width: 100%;
+        height: 80px;
+      }
+    }
+  }
+  &-profileImg {
+    border: 1px solid black;
+    object-fit: cover;
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+    margin: 20px;
+  }
+  &-bottom {
+    border: 1px solid purple;
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+    width: 100%;
+  }
+}
+// .usershare-textfield {
+//   border: 1px solid blue;
+// }
+
+.testinput {
+  width: 100%;
+}

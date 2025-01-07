@@ -32,6 +32,7 @@ const Register = () => {
     confirmPassword: "",
   };
   const handleSubmit = async (values, { setSubmitting }) => {
+    setSubmitting(true);
     console.log(values);
     //async call
     const response = await fetch("https://example.org/post", {
@@ -69,36 +70,16 @@ const Register = () => {
                   First Name:
                   <br></br>
                   <Field
-                    name="password"
-                    type="password"
+                    name="name"
+                    type="name"
                     className={errors.password ? "error" : ""}
                     size="50"
                   />
-                  <ErrorMessage
-                    className="error"
-                    name="password"
-                    component="div"
-                  />
+                  <ErrorMessage className="error" name="name" component="div" />
                 </label>
                 <br></br>
                 <label htmlFor="password">
                   Last Name:
-                  <br></br>
-                  <Field
-                    name="password"
-                    type="password"
-                    className={errors.password ? "error" : ""}
-                    size="50"
-                  />
-                  <ErrorMessage
-                    className="error"
-                    name="password"
-                    component="div"
-                  />
-                </label>
-                <br></br>
-                <label htmlFor="password">
-                  Staff number:
                   <br></br>
                   <Field
                     name="password"

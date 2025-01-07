@@ -1,0 +1,38 @@
+/* login and register*/
+
+.login {
+  display: flex;
+}
+
+.register {
+  display: flex;
+}
+
+/*Homepage container*/
+
+.bottom-container {
+  display: flex;
+}
+
+.bottom-container-LH {
+  border: 1px solid purple;
+}
+
+.bottom-container-MD {
+  border: 1px solid orange;
+  width: 70%;
+  height: auto;
+}
+
+.postContent-top {
+  border: 1px solid brown;
+}
+
+.bottom-container-RH {
+  border: 1px solid blue;
+}
+
+.sidebarLayout {
+  width: 20%;
+  height: auto;
+}

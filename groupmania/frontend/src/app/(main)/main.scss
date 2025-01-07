@@ -9,7 +9,18 @@
   width: 100%;
   height: auto;
 }
+.mainLayout_content {
+  width: 100%;
+}
 
 .mainLayout_sidebar {
   margin-top: 50px;
+}
+
+.homePage_content {
+  display: flex;
+  flex-direction: column;
+  // width: auto;
+  // align-items: center;
+  // text-align: center;
 }

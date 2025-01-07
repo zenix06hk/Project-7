@@ -1,27 +1,47 @@
 .friendsList {
   &_container {
+    // position: relative;
+    // right: -300px;
     border: 5px solid orange;
+    margin: 30px 130px;
     display: flex;
+    // width: 100vh;
+    justify-content: space-between;
   }
   &_itemBox {
+    border: 1px solid blue;
     display: flex;
-    width: 100vh;
-    height: auto;
-    padding: 30px 10px;
-    margin: 20px 20px;
+    align-items: center;
+
+    // width: auto;
+    // padding: 30px 10px;
+    // margin: 20px 20px;
+    & > a {
+      padding: 10px;
+      margin: 0;
+      // justify-items: center;
+    }
+    & > p {
+      margin: 0;
+    }
   }
   &_profileImg {
     border: 2px solid blue;
     object-fit: cover;
-    width: 75px; /* Set width */
-    height: 75px; /* Set height */
+    width: 78px; /* Set width */
+    height: 70px; /* Set height */
     border-radius: 50px;
   }
   &_status {
+    border: 1px solid green;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 10px;
     color: red;
+
+    & > button {
+      margin: 0 10px;
+    }
   }
 }
