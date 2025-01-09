@@ -18,11 +18,14 @@ const color = red[500];
 function CommunityPage() {
   return (
     <>
-      <h1>Community</h1>
+      <div className="h1-test">
+        <h1>Community</h1>
+        <h2>test</h2>
+      </div>
       <div className="community_container">
         <Link href="/">
           <div className="community_itemBox">
-            <div>
+            <div className="community_profileImgBox">
               <Image
                 src="/assets/profile_image.jpg"
                 alt="icon"

@@ -1,7 +1,57 @@
-.event_container {
+.events {
+  &_container {
+    // position: relative;
+    // right: -300px;
+    border: 5px solid orange;
+    margin: 30px 130px;
+    display: flex;
+    // width: 100vh;
+    justify-content: space-between;
+    text-decoration: none;
+  }
+  &_itemBox {
+    border: 1px solid blue;
+    display: flex;
+    // flex-direction: row;
+    align-items: center;
+    text-decoration: none;
+    padding: 0 20px;
+    h3,
+    p,
+    a {
+      text-decoration: none !important; // Use !important to override other styles
+    }
+    // width: auto;
+    // padding: 30px 10px;
+    // margin: 20px 20px;
+  }
+  &_profileImgBox {
+    margin: 0 20px;
+  }
+  &_profileImg {
+    border: 2px solid blue;
+    object-fit: cover;
+    width: 78px; /* Set width */
+    height: 70px; /* Set height */
+    border-radius: 50px;
+    display: flex;
+  }
+  &_status {
+    border: 1px solid green;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    color: red;
+
+    & > button {
+      margin: 0 10px;
+    }
+  }
+}
+
+.h1-test {
   border: 1px solid red;
   display: flex;
   justify-content: space-between;
-  //   width: 100vh;
-  //   box-sizing: border-box;
 }

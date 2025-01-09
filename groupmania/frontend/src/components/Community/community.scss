@@ -1,7 +1,4 @@
 .community {
-  & > a {
-    text-decoration: none;
-  }
   &_container {
     // position: relative;
     // right: -300px;
@@ -16,8 +13,9 @@
     border: 1px solid blue;
     display: flex;
     // flex-direction: row;
-    // align-items: center;
+    align-items: center;
     text-decoration: none;
+    padding: 0 20px;
     h3,
     p,
     a {
@@ -27,12 +25,16 @@
     // padding: 30px 10px;
     // margin: 20px 20px;
   }
+  &_profileImgBox {
+    margin: 0 20px;
+  }
   &_profileImg {
     border: 2px solid blue;
     object-fit: cover;
     width: 78px; /* Set width */
     height: 70px; /* Set height */
     border-radius: 50px;
+    display: flex;
   }
   &_status {
     border: 1px solid green;
@@ -46,4 +48,10 @@
       margin: 0 10px;
     }
   }
+}
+
+.h1-test {
+  border: 1px solid red;
+  display: flex;
+  justify-content: space-between;
 }

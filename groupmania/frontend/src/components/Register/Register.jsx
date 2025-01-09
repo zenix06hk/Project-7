@@ -9,6 +9,7 @@ import { useFormik } from "formik";
 import { Formik, Field, ErrorMessage } from "formik";
 import React from "react";
 import * as Yup from "yup";
+import { useRouter } from "next/navigation";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string()
@@ -25,6 +26,8 @@ const validationSchema = Yup.object().shape({
 });
 
 const Register = () => {
+  const router = useRouter();
+
   const initialValues = {
     name: "",
     email: "",
@@ -34,19 +37,20 @@ const Register = () => {
   const handleSubmit = async (values, { setSubmitting }) => {
     setSubmitting(true);
     console.log(values);
+    router.push("/home");
     //async call
-    const response = await fetch("https://example.org/post", {
-      body: JSON.stringify(values),
-    });
-    console.log(response);
+    // const response = await fetch("https://example.org/post", {
+    //   body: JSON.stringify(values),
+    // });
+    // console.log(response);
     setSubmitting(false);
-    if (response.status === 201) {
-    } else {
-    }
-    setTimeout(() => {
-      console.log(values);
-      setSubmitting(false);
-    }, 500);
+    // if (response.status === 201) {
+    // } else {
+    // }
+    // setTimeout(() => {
+    //   console.log(values);
+    //   setSubmitting(false);
+    // }, 500);
   };
   return (
     <>
