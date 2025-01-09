@@ -1,11 +1,16 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
+// import { useState } from "react";
 
 import "./createpost.scss";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPhotoFilm, faArrowUp } from "@fortawesome/free-solid-svg-icons";
+
+// export default function Form() {
+//   const [submit, setSubmit] = useState();
+//   const [error, setError] = useState(null);
 
 function CreatePost() {
   return (

@@ -11,3 +11,14 @@ a {
   text-decoration: none;
   cursor: pointer;
 }
+
+//form errors
+form {
+  input.error {
+    border: 1px solid red;
+  }
+
+  div.error {
+    color: red;
+  }
+}

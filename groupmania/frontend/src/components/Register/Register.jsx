@@ -146,12 +146,14 @@ const Register = () => {
                   />
                 </label>
                 <br></br>
-                <div
-                  type="submit"
-                  className="btn btn-signUp"
-                  disabled={isSubmitting}
-                >
-                  <Link href="/home">Sign Up</Link>
+                <div>
+                  <button
+                    type="submit"
+                    className="btn btn-signUp"
+                    disabled={isSubmitting}
+                  >
+                    Sign Up
+                  </button>
                 </div>
               </form>
             )}
