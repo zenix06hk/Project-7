@@ -1,19 +1,21 @@
-// import React from "react";
+"use client";
 
-// import UserShare from "../CreatePost/CreatePost";
-// import MembersShare from "../PostStream/PostStream";
+import React from "react";
 
-// function PostContent() {
-//   return (
-//     <div className="postContent-container">
-//       <div className="postContent-top">
-//         <UserShare />
-//       </div>
-//       <div className="postContent-bottom">
-//         <MembersShare />
-//       </div>
-//     </div>
-//   );
-// }
+import UserShare from "../CreatePost/CreatePost";
+import MembersShare from "../PostStream/PostStream";
 
-// export default PostContent;
+function PostContent() {
+  return (
+    <div className="postContent-container">
+      <div className="postContent-top">
+        <UserShare />
+      </div>
+      <div className="postContent-bottom">
+        <MembersShare />
+      </div>
+    </div>
+  );
+}
+
+export default PostContent;

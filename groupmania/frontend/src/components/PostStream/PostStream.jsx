@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import Image from "next/image";
 
@@ -26,9 +28,11 @@ function MembersShare() {
       />
       <div className="poststream_content">
         <div className="poststream_top">
-          <div className="poststream_top_inner">
-            <h1>this is posted preview</h1>
-          </div>
+          <h1>
+            this is posted preview jhaklsjdfh
+            ljkajksdfgkaghlkasjhdflhkalksdjhfklahakjhdfklas
+            khasd,mfjgaslkjgdfaklsjhgdflkasjhdflkfasjhfdkljhaskldfjhklasdjh
+          </h1>
         </div>
         <div className="poststream_bottom">
           <FontAwesomeIcon

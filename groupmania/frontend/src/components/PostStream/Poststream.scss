@@ -19,15 +19,14 @@
     margin: 20px;
   }
   &_top {
-    border: 1px solid red;
+    // border: 1px solid green;
     display: flex;
-    &_inner {
-      h1 {
-        width: 100%;
-        align-items: baseline;
-        justify-items: baseline;
-        padding: 10px 20px;
-      }
+    & > h1 {
+      border: 1px solid red;
+      align-items: baseline;
+      justify-items: baseline;
+      padding: 10px 20px;
+      width: calc(100% - 100px);
     }
   }
 

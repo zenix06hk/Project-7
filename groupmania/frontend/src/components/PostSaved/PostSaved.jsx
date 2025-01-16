@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import Image from "next/image";
 
@@ -27,7 +29,10 @@ function PostSaved() {
       <div className="postsaved_content">
         <div className="postsaved_top">
           <div className="postsaved_top_inner">
-            <h1>this is posted preview</h1>
+            <h1>
+              this is posted preview .lkakjshfdlkasjghdflkjkadflkjhaslkdfjhas
+              aljkdhsflkasjdflkjhlkjdfaslkdjfhaklsdjhflaksjdhf
+            </h1>
           </div>
         </div>
         <div className="postsaved_bottom">
