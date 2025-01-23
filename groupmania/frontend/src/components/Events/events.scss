@@ -1,5 +1,5 @@
 .events {
-  &_container {
+  &__container {
     // position: relative;
     // right: -300px;
     border: 5px solid orange;
@@ -9,26 +9,22 @@
     justify-content: space-between;
     text-decoration: none;
   }
-  &_itemBox {
+  &__itemBox {
     border: 1px solid blue;
     display: flex;
     // flex-direction: row;
     align-items: center;
     text-decoration: none;
     padding: 0 20px;
-    h3,
-    p,
-    a {
-      text-decoration: none !important; // Use !important to override other styles
-    }
+
     // width: auto;
     // padding: 30px 10px;
     // margin: 20px 20px;
   }
-  &_profileImgBox {
+  &__profileImgBox {
     margin: 0 20px;
   }
-  &_profileImg {
+  &__profileImg {
     border: 2px solid blue;
     object-fit: cover;
     width: 78px; /* Set width */
@@ -36,7 +32,7 @@
     border-radius: 50px;
     display: flex;
   }
-  &_status {
+  &__status {
     border: 1px solid green;
     display: flex;
     justify-content: center;
@@ -44,14 +40,8 @@
     padding: 10px;
     color: red;
 
-    & > button {
+    button {
       margin: 0 10px;
     }
   }
-}
-
-.h1-test {
-  border: 1px solid red;
-  display: flex;
-  justify-content: space-between;
 }

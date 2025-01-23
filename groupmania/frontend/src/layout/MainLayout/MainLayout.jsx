@@ -6,7 +6,6 @@ function HomeLayout({ children }) {
     <div className="mainLayout">
       <Header />
       <Sidebar />
-      <div>This is the main layout</div>
       {children}
     </div>
   );

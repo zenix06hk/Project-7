@@ -21,7 +21,7 @@ const sidebar_list = [
 
 function Sidebar() {
   return (
-    <div className="sidebar_container">
+    <div className="sidebar__container">
       {sidebar_list.map((item, index) => (
         <Link href={item.path} key={index}>
           <div key={index} className="sidebar_menu">

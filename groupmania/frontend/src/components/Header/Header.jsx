@@ -5,9 +5,6 @@ import Image from "next/image";
 
 import "./header.scss";
 
-import Logo from "../../../public/assets/icon.png";
-import profileImg from "../../../public/assets/profile_image.jpg";
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "@fortawesome/fontawesome-svg-core/styles.css";
 // config.autoAddCss = false;
@@ -15,7 +12,6 @@ import {
   faHome,
   faUserGroup,
   faPeopleGroup,
-  faCalendarDay,
 } from "@fortawesome/free-solid-svg-icons";
 
 function Header() {
@@ -27,34 +23,26 @@ function Header() {
 
   return (
     <header>
-      <div className="header_container">
+      <div className="header__container">
         <Link href="/home">
-          <Image
-            src="/assets/icon.png"
-            alt="icon"
-            width={80}
-            height={80}
-            className="header_company_Logo"
-          />
+          <Image src="/assets/icon.png" alt="icon" width={80} height={80} />
         </Link>
-        <div className="header_tablist">
+        <div className="header__tablist">
           {navList.map((item, index) => (
-            <div key={index} className="header_tablist_icon">
+            <div key={index} className="header__tablist_icon">
               <Link href={item.url}>
                 <FontAwesomeIcon icon={item.name} size="xl" />
               </Link>
             </div>
           ))}
         </div>
-        <div className="header_test">
-          <Image
-            src="/assets/profile_image.jpg"
-            alt="icon"
-            width={80}
-            height={80}
-            className="header_profileImg"
-          />
-        </div>
+        <Image
+          src="/assets/profile_image.jpg"
+          alt="icon"
+          width={80}
+          height={80}
+          className="header__profileImg"
+        />
       </div>
     </header>
   );

@@ -4,11 +4,7 @@ import React from "react";
 import Image from "next/image";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faThumbsUp,
-  faThumbsDown,
-  faHeart,
-} from "@fortawesome/free-solid-svg-icons";
+import { faThumbsUp, faThumbsDown } from "@fortawesome/free-solid-svg-icons";
 
 // import profileImg from "../../assets/profile_image.jpg";
 
@@ -16,40 +12,34 @@ import "./Poststream.scss";
 
 // const profile_Img = profileImg;
 
-function MembersShare() {
+function MembersShare({ posts }) {
+  // const { username, description, uploadedImage } = item;
+
   return (
-    <div className="poststream_container">
+    <div className="poststream__container">
       <Image
         src="/assets/profile_image.jpg"
         alt="icon"
         width={80}
         height={80}
-        className="poststream_profileImg"
+        className="poststream__profileImg"
       />
-      <div className="poststream_content">
-        <div className="poststream_top">
-          <h1>
-            this is posted preview jhaklsjdfh
-            ljkajksdfgkaghlkasjhdflhkalksdjhfklahakjhdfklas
-            khasd,mfjgaslkjgdfaklsjhgdflkasjhdflkfasjhfdkljhaskldfjhklasdjh
-          </h1>
+      <div className="poststream__content">
+        {/* <h3>{username}</h3> */}
+        <div className="poststream__upperBlock">
+          {/* <p>{description}</p> */}
         </div>
-        <div className="poststream_bottom">
+        {/* <span>{uploadedImage}</span> */}
+        <div className="poststream__bottom">
           <FontAwesomeIcon
             icon={faThumbsUp}
-            className="poststream_icon"
+            className="poststream__icon"
             width="30px"
             height="30px"
           />
           <FontAwesomeIcon
             icon={faThumbsDown}
-            className="poststream_icon"
-            width="30px"
-            height="30px"
-          />
-          <FontAwesomeIcon
-            icon={faHeart}
-            className="poststream_icon"
+            className="poststream__icon"
             width="30px"
             height="30px"
           />

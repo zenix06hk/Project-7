@@ -1,7 +1,7 @@
 // @import "~@fortawesome/fontawesome-svg-core/styles.css";
 
 .header {
-  &_container {
+  &__container {
     // border: 5px solid purple;
     display: flex;
     justify-content: space-between;
@@ -9,21 +9,8 @@
     align-items: center;
     height: 30%;
     border-bottom: 1px solid grey;
-
-    &_test {
-      border: 1px solid black;
-      object-fit: cover;
-      width: 70px; /* Set width */
-      height: 70px; /* Set height */
-      border-radius: 50px;
-    }
   }
-  &_logo {
-    display: block;
-    width: auto;
-    align-items: center;
-  }
-  &_tablist {
+  &__tablist {
     // border: 5px solid red;
     display: flex;
     padding: 0 10px;
@@ -32,30 +19,11 @@
       margin: 0 100px;
     }
   }
-  &_profileImg {
-    border: 2px solid blue;
+  &__profileImg {
+    // border: 5px solid blue;
     object-fit: cover;
     width: 75px; /* Set width */
     height: 75px; /* Set height */
     border-radius: 50px;
   }
-  //   &-m-container {
-  //     border: 2px solid red;
-  //     display: flex;
-  //     &-tab {
-  //       border: 1px solid orange;
-  //       align-items: center;
-  //       padding: 0 60px;
-  //     }
-  //   }
-  //   &-userImg {
-  //     padding: 10px;
-  //   }
-  // .profileImg {
-  //   border: 1px solid black;
-  //   object-fit: cover;
-  //   width: 70px; /* Set width */
-  //   height: 70px; /* Set height */
-  //   border-radius: 50px;
-  // }
 }

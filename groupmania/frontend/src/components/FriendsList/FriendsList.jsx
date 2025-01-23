@@ -19,28 +19,28 @@ function FriendsList() {
   return (
     <>
       <h1>Friends</h1>
-      <div className="friendsList_container">
-        <div className="friendsList_itemBox">
+      <div className="friendsList__container">
+        <div className="friendsList__itemBox">
           <Link href="/">
             <Image
               src="/assets/profile_image.jpg"
               alt="icon"
               width={60}
               height={60}
-              className="friendsList_profileImg"
+              className="friendsList__profileImg"
             />
           </Link>
           <Link href="/">
             <p>Thomas Philip</p>
           </Link>
         </div>
-        <div className="friendsList_status">
+        <div className="friendsList__status">
           <Button variant="contained" size="small" color="salmon">
             Add
           </Button>
-          <Button variant="outlined" size="small" color="red">
+          {/* <Button variant="outlined" size="small" color="red">
             Unfriend
-          </Button>
+          </Button> */}
         </div>
       </div>
     </>

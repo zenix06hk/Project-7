@@ -1,5 +1,5 @@
 .friendsList {
-  &_container {
+  &__container {
     // position: relative;
     // right: -300px;
     border: 5px solid orange;
@@ -8,7 +8,7 @@
     // width: 100vh;
     justify-content: space-between;
   }
-  &_itemBox {
+  &__itemBox {
     border: 1px solid blue;
     display: flex;
     align-items: center;
@@ -16,23 +16,23 @@
     // width: auto;
     // padding: 30px 10px;
     // margin: 20px 20px;
-    & > a {
+    a {
       padding: 10px;
       margin: 0;
       // justify-items: center;
     }
-    & > p {
+    p {
       margin: 0;
     }
   }
-  &_profileImg {
+  &__profileImg {
     border: 2px solid blue;
     object-fit: cover;
     width: 78px; /* Set width */
     height: 70px; /* Set height */
     border-radius: 50px;
   }
-  &_status {
+  &__status {
     border: 1px solid green;
     display: flex;
     justify-content: center;
@@ -40,7 +40,7 @@
     padding: 10px;
     color: red;
 
-    & > button {
+    button {
       margin: 0 10px;
     }
   }

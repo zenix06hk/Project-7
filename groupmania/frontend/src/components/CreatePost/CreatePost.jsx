@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import Image from "next/image";
+import Form from "next/form";
 // import { useState } from "react";
 
 import "./createpost.scss";
@@ -23,44 +24,58 @@ function CreatePost({
   const { name, img, description, uploadedImage } = createUserPost;
 
   return (
-    <div className="createPost_container">
+    <div className="createPost__container">
       <Image
         src="/assets/profile_image.jpg"
         alt="icon"
         width={80}
         height={80}
-        className="createPost_container-profileImg"
+        className="createPost__profileImg"
       />
-      <div className="createPost_container-content">
-        <div className="createPost_container-top">
-          <div className="createPost_container-top-inner">
-            <form>
-              <label htmlFor="fname"></label>
-              <input
-                type="text"
-                id="description"
-                name="description"
-                placeholder="  How's going today?"
-                className="createPost_container-top-inner-input"
-                value={description}
-                onChange={(click) => postDescription(click.target.value)}
-              />
-            </form>
-          </div>
+      <div className="createPost__content">
+        <div className="createPost__upperBlock">
+          {/* <div className="createPost__test"> */}
+          <Form>
+            <label htmlFor="fname"></label>
+            <input
+              type="text"
+              id="description"
+              name={name}
+              placeholder="  How's going today?"
+              size="100"
+              className="createPost__container-top-inner-input"
+              value={description}
+              onChange={(e) => postDescription(e.target.value)}
+            />
+          </Form>
+          {/* </div> */}
         </div>
-        <div className="createPost_container-bottom">
-          <div className="createPost_button photo" onClick={postImage}>
+        <div className="createPost__bottomBlock">
+          {/* <div className="createPost_button photo"> */}
+          <button
+            type="submit"
+            className="createPost__button photo"
+            onClick={postImage}
+          >
             <FontAwesomeIcon
               icon={faPhotoFilm}
-              className="createPost_container-tab-icon"
+              className="createPost__container-tab-icon"
               width="30px"
               height="30px"
             />
             <p>Photo</p>
-          </div>
-          <div className="createPost_button submit" onClick={newPostItem}>
+          </button>
+          {/* </div> */}
+          {/* <div className="createPost_button submit" onClick={newPostItem}> */}
+
+          <button
+            type="submit"
+            className="createPost__button submit"
+            onClick={newPostItem}
+          >
             <p>Post</p>
-          </div>
+          </button>
+          {/* </div> */}
         </div>
       </div>
     </div>

@@ -1,15 +1,14 @@
 "use client";
 
-import Link from "next/link";
+import React from "react";
 import Image from "next/image";
 
 import "./register.scss";
 
 import { useFormik } from "formik";
 import { Formik, Field, ErrorMessage } from "formik";
-import React from "react";
-import * as Yup from "yup";
 import { useRouter } from "next/navigation";
+import * as Yup from "yup";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string()

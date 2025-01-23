@@ -12,20 +12,19 @@ import "./events.scss";
 function Events() {
   return (
     <>
-      <div className="h1-test">
+      <div className="events__heading">
         <h1>Events</h1>
-        <h2>test</h2>
       </div>
-      <div className="events_container">
+      <div className="events__container">
         <Link href="/">
-          <div className="events_itemBox">
+          <div className="events__itemBox">
             <div className="events_profileImgBox">
               <Image
                 src="/assets/profile_image.jpg"
                 alt="icon"
                 width={60}
                 height={60}
-                className="events_profileImg"
+                className="events__profileImg"
               />
             </div>
             <div>
@@ -37,7 +36,7 @@ function Events() {
             </div>
           </div>
         </Link>
-        <div className="events_status">
+        <div className="events__status">
           <Button variant="contained" size="small" color="salmon">
             Join
           </Button>

@@ -1,9 +1,8 @@
 .sidebar {
-  &_container {
+  &__container {
     // border: 3px solid pink;
     flex: none;
-    width: 20%;
-    a {
+    width: auto a {
       text-decoration: none; // Remove underline from links
     }
   }

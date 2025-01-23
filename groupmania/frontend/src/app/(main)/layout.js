@@ -4,15 +4,15 @@ import "./main.scss";
 
 export default function Layout({ children }) {
   return (
-    <div className="mainLayout_container">
-      <div className="mainLayout_header">
+    <div className="mainLayout__container">
+      <div className="mainLayout__header">
         <Header />
       </div>
-      <div className="mainLayout_body">
-        <div className="mainLayout_sidebar">
+      <div className="mainLayout__body">
+        <div className="mainLayout__sidebar">
           <Sidebar />
         </div>
-        <div className="mainLayout_content">{children}</div>
+        <div className="mainLayout__content">{children}</div>
       </div>
     </div>
   );

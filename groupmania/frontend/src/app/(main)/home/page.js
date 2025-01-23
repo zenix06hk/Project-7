@@ -8,7 +8,7 @@ import PostStream from "@/components/PostStream/PostStream";
 function HomePage() {
   //user create form
   const [createUserPost, setCreateUserPost] = useState({
-    name: "",
+    username: "",
     img: "",
     description: "",
     uploadedImage: "",
@@ -16,26 +16,36 @@ function HomePage() {
   //published posts on the page
   const [posts, setPosts] = useState([]);
 
-  //update the post stream content
-  const postDescription = (item) => {
+  //update username to post stream content
+  const postUsername = (value) => {
     setCreateUserPost({
       ...createUserPost,
-      // description: "",
+      username: value,
     });
   };
 
-  //update the post image
-
-  const postImage = (item) => {
+  //update description to post stream content
+  const postDescription = (value) => {
     setCreateUserPost({
       ...createUserPost,
-      uploadedImage: item,
+      description: value,
+    });
+  };
+
+  //update image to post stream content
+
+  const postImage = (value) => {
+    console.log("test photo");
+    setCreateUserPost({
+      ...createUserPost,
+      uploadedImage: value,
     });
   };
 
   //create new post item
 
   const newPostItem = () => {
+    console.log("test post");
     //update the latest post stream
     setPosts([...posts, createUserPost]);
     //reset the user form
@@ -50,6 +60,7 @@ function HomePage() {
     <div className="homePage_content">
       <CreatePost
         createUserPost={createUserPost}
+        postUsername={postUsername}
         postDescription={postDescription}
         postImage={postImage}
         newPostItem={newPostItem}
