@@ -20,10 +20,17 @@
     // border: 3px solid red;
   }
 
+  &__textfield {
+    margin: 10px 0;
+    width: 95%;
+    height: 50px;
+    padding: 0 10px;
+  }
+
   &__upperBlock {
     // border: 1px solid red;
     display: flex;
-    padding: 10px 20px;
+    padding: 10px 0;
     input {
       height: 80px;
     }
@@ -50,8 +57,20 @@
       margin: 10px 0;
     }
   }
+  &__uploadImg {
+    padding-bottom: 10px;
+  }
+  &__uploadImgBtn {
+    padding: 20px;
+    color: red;
+  }
+
+  &__comment {
+    // display: flex;
+  }
 }
 
 .submit {
   background-color: $pink;
+  height: 40px;
 }
