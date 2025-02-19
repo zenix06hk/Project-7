@@ -12,62 +12,60 @@ function HomePage() {
     img: "",
     description: "",
     uploadedImage: "",
+    comment: [],
   });
   //published posts on the page
   const [posts, setPosts] = useState([]);
-  const [comment, setComment] = useState([]);
-
-  //update username to post stream content
-  // const postUsername = (value) => {
-  //   setUserPost({
-  //     ...createUserPost,
-  //     username: value,
-  //   });
-  // };
+  const [comment, setComment] = useState("");
+  const [id, setId] = useState(1);
 
   //update description to post stream content
   const postDescription = (value) => {
-    // console.log("test description");
+    console.log(value);
     setUserPost({
       ...userPost,
+      id: 1,
       description: value,
       uploadedImage: userPost.uploadedImage ?? "",
     });
   };
 
   //update image to post stream content
-
   const postImage = (files) => {
-    // console.log("test photo");
-    // console.log(URL.createObjectURL(files[0]));
     setUserPost({
       ...userPost,
-      uploadedImage: URL.createObjectURL(files[0]),
+      id: id,
+      uploadedImage: files.length > 0 ? URL.createObjectURL(files[0]) : null,
     });
   };
 
   //create new post item
-
   const newPostItem = (e) => {
-    // console.log(e.target);
-    //update the latest post stream
+    e.preventDefault();
     setPosts([...posts, userPost]);
     //reset the user form
     setUserPost({
+      username: "",
       img: "",
       description: "",
       uploadedImage: "",
+      comment: "",
     });
   };
 
   const postComment = (value) => {
-    // console.log(e.target);
-    //update the latest post stream
-    setPosts([...comment]);
-    //reset the user form
+    console.log(value);
     setComment({
-      comment: value,
+      comment: comment,
     });
+
+    // const updatedPosts = [...posts];
+    // const latestPost = updatedPosts[updatedPosts.length - 1];
+    // if (latestPost) {
+    //   latestPost.comment = [...latestPost.comment, value];
+    //   setPosts(updatedPosts);
+    // }
+    //reset the comment form
   };
 
   return (
@@ -78,7 +76,6 @@ function HomePage() {
         postImage={postImage}
         newPostItem={newPostItem}
       />
-      {/* post update from CreatePost submitted */}
       <PostStream posts={posts} postComment={postComment} />
     </div>
   );

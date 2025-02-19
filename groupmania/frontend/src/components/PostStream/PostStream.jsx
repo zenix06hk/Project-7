@@ -3,6 +3,7 @@
 import React from "react";
 import Image from "next/image";
 import Form from "next/form";
+import { useState } from "react";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -18,7 +19,13 @@ import "./Poststream.scss";
 
 // const profile_Img = profileImg;
 
-function MembersShare({ posts, comment, updateComment, postComment }) {
+function MembersShare({ posts, postComment }) {
+  const { comment } = postComment;
+  // const [comment, setComment] = useState("");
+
+  // const updateComment = (value) => {
+  //   setComment(value);
+  // };
   return (
     <div>
       {posts.map((item, index) => {
@@ -33,18 +40,22 @@ function MembersShare({ posts, comment, updateComment, postComment }) {
               className="poststream__profileImg"
             />
             <div className="poststream__content">
-              {/* <h3>{username}</h3> */}
               <div className="poststream__upperBlock">
                 <p>{description}</p>
               </div>
               <span>
-                <Image
-                  src={uploadedImage}
-                  alt="icon"
-                  width={500}
-                  height={500}
-                  className="poststream__uploadedImg"
-                />
+                {uploadedImage && (
+                  <Image
+                    src={uploadedImage}
+                    alt="icon"
+                    width={500}
+                    height={500}
+                    className="poststream__uploadedImg"
+                  />
+                )}
+              </span>
+              <span>
+                <p>{comment}</p>
               </span>
               <div className="poststream__bottom">
                 <FontAwesomeIcon
@@ -76,22 +87,29 @@ function MembersShare({ posts, comment, updateComment, postComment }) {
               <Form>
                 <input
                   type="text"
-                  id="description"
+                  id="comment"
                   placeholder="Comment here..."
                   size="100"
                   className="createPost__textfield"
                   value={comment}
-                  // onChange={(e) => postComment(e.target.value)}
+                  onChange={(e) => postComment(e.target.value)}
                 />
+                <button
+                  type="submit"
+                  className="createPost__button submit"
+                  onClick={postComment}
+                  height="30px"
+                  value=""
+                >
+                  <p>Post</p>
+                </button>
               </Form>
             </div>
           </div>
         );
       })}
 
-      {/*Demo*/}
-
-      <div className="poststream__container">
+      {/* <div className="poststream__container">
         <Image
           src="/assets/profile_image.jpg"
           alt="icon"
@@ -100,7 +118,6 @@ function MembersShare({ posts, comment, updateComment, postComment }) {
           className="poststream__profileImg"
         />
         <div className="poststream__content">
-          {/* <h3>{username}</h3> */}
           <div className="poststream__upperBlock">
             <p>This is 1st posted</p>
           </div>
@@ -157,7 +174,7 @@ function MembersShare({ posts, comment, updateComment, postComment }) {
             </button>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

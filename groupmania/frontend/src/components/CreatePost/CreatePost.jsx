@@ -21,7 +21,7 @@ import { faPhotoFilm } from "@fortawesome/free-solid-svg-icons";
 //   const [error, setError] = useState(null);
 
 function CreatePost({ userPost, postDescription, postImage, newPostItem }) {
-  const { name, img, description, uploadedImage } = userPost;
+  const { description, uploadedImage } = userPost;
   // console.log({ uploadedImage });
 
   const RedColor = red[500];
@@ -38,18 +38,7 @@ function CreatePost({ userPost, postDescription, postImage, newPostItem }) {
     whiteSpace: "nowrap",
     width: 1,
   });
-  // const [file, setFile] = useState();
-  // function handleChange(e) {
-  //   console.log(e.target.file);
-  //   setFile(URL.createObjectURL(e.target.file[0]));
-  // }
 
-  // const handleImageUpload = (e) => {
-  //   const [file] = e.target.files;
-  //   if (file) {
-  //     console.log(file);
-  //   }
-  // };
   return (
     <div className="createPost__container">
       <Image
@@ -61,7 +50,6 @@ function CreatePost({ userPost, postDescription, postImage, newPostItem }) {
       />
       <div className="createPost__content">
         <div className="createPost__upperBlock">
-          {/* <div className="createPost__test"> */}
           <Form>
             <label htmlFor="fname"></label>
             <input
@@ -74,13 +62,6 @@ function CreatePost({ userPost, postDescription, postImage, newPostItem }) {
               onChange={(e) => postDescription(e.target.value)}
             />
             <label htmlFor="image"></label>
-            {/* <input
-              type="file"
-              id="image"
-              name="image"
-              value=""
-              onChange={(e) => postImage(e.target.files)}
-            /> */}
             <Button
               component="label"
               className="createPost__uploadImgBtn"
@@ -95,7 +76,7 @@ function CreatePost({ userPost, postDescription, postImage, newPostItem }) {
               <VisuallyHiddenInput
                 type="file"
                 color={RedColor}
-                onChange={(event) => console.log(event.target.files)}
+                onChange={(event) => postImage(event.target.files)}
                 label={'margin="none"'}
                 multiple
               />
@@ -110,10 +91,9 @@ function CreatePost({ userPost, postDescription, postImage, newPostItem }) {
           >
             <p>Post</p>
           </button>
-          {/* </div> */}
         </div>
         <div className="createPost__bottomBlock">
-          {uploadedImage && (
+          {uploadedImage && uploadedImage !== "" && (
             <Image
               src={uploadedImage}
               alt="icon"
@@ -122,31 +102,6 @@ function CreatePost({ userPost, postDescription, postImage, newPostItem }) {
               className="createPost__uploadImg"
             />
           )}
-          {/* <input
-            type="file"
-            accept="image/*"
-            onChange={handleImageUpload}
-            multiple={true}
-          /> */}
-
-          {/* <div className="createPost_button photo"> */}
-          {/* <button
-            type="submit"
-            className="createPost__button photo"
-            onClick={postImage}
-          >
-            <FontAwesomeIcon
-              icon={faPhotoFilm}
-              className="createPost__container-tab-icon"
-              width="30px"
-              height="30px"
-            />
-            <p>Photo</p>
-          </button> */}
-          {/* </div> */}
-          {/* <div className="createPost_button submit" onClick={newPostItem}> */}
-
-          {/* </div> */}
         </div>
       </div>
     </div>
