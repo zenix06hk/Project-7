@@ -4,9 +4,11 @@
 function HomeLayout({ children }) {
   return (
     <div className="mainLayout">
-      <Header />
-      <Sidebar />
-      {children}
+      <ThemeProvider attribute="class" defaultTheme="system">
+        <Header />
+        <Sidebar />
+        {children}
+      </ThemeProvider>
     </div>
   );
 }

@@ -16,12 +16,12 @@ function HomePage() {
   });
   //published posts on the page
   const [posts, setPosts] = useState([]);
-  const [comment, setComment] = useState("");
+  const [comment, setComment] = useState([]);
   const [id, setId] = useState(1);
 
   //update description to post stream content
   const postDescription = (value) => {
-    console.log(value);
+    // console.log(value);
     setUserPost({
       ...userPost,
       id: 1,
@@ -45,6 +45,7 @@ function HomePage() {
     setPosts([...posts, userPost]);
     //reset the user form
     setUserPost({
+      id: id,
       username: "",
       img: "",
       description: "",

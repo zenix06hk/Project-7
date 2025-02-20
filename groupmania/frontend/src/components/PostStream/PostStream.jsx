@@ -20,16 +20,32 @@ import "./Poststream.scss";
 // const profile_Img = profileImg;
 
 function MembersShare({ posts, postComment }) {
-  const { comment } = postComment;
   // const [comment, setComment] = useState("");
 
   // const updateComment = (value) => {
   //   setComment(value);
   // };
+  const [comment, setComment] = useState("");
+  const [comments, setComments] = useState({});
+
+  const handleInputChange = (e) => {
+    setComment(e.target.value);
+  };
+
+  const handleSubmit = (e, index) => {
+    e.preventDefault();
+    postComment(comment);
+    setComments((prevComments) => ({
+      ...prevComments,
+      [index]: comment,
+    }));
+    setComment("");
+  };
+
   return (
     <div>
       {posts.map((item, index) => {
-        const { description, uploadedImage, comment } = item;
+        const { description, uploadedImage, comment: itemComment } = item;
         return (
           <div key={index} className="poststream__container">
             <Image
@@ -54,9 +70,6 @@ function MembersShare({ posts, postComment }) {
                   />
                 )}
               </span>
-              <span>
-                <p>{comment}</p>
-              </span>
               <div className="poststream__bottom">
                 <FontAwesomeIcon
                   icon={faThumbsUp}
@@ -70,12 +83,12 @@ function MembersShare({ posts, postComment }) {
                   width="30px"
                   height="30px"
                 />
-                <FontAwesomeIcon
+                {/* <FontAwesomeIcon
                   icon={faComment}
                   className="poststream__icon"
                   width="30px"
                   height="30px"
-                />
+                /> */}
                 <FontAwesomeIcon
                   icon={faPen}
                   className="poststream__icon"
@@ -84,7 +97,7 @@ function MembersShare({ posts, postComment }) {
                 />
               </div>
               <label htmlFor="fname"></label>
-              <Form>
+              <Form onSubmit={handleSubmit}>
                 <input
                   type="text"
                   id="comment"
@@ -92,7 +105,7 @@ function MembersShare({ posts, postComment }) {
                   size="100"
                   className="createPost__textfield"
                   value={comment}
-                  onChange={(e) => postComment(e.target.value)}
+                  onChange={handleInputChange}
                 />
                 <button
                   type="submit"
@@ -104,77 +117,11 @@ function MembersShare({ posts, postComment }) {
                   <p>Post</p>
                 </button>
               </Form>
+              {/* <p>{comment}</p> */}
             </div>
           </div>
         );
       })}
-
-      {/* <div className="poststream__container">
-        <Image
-          src="/assets/profile_image.jpg"
-          alt="icon"
-          width={80}
-          height={80}
-          className="poststream__profileImg"
-        />
-        <div className="poststream__content">
-          <div className="poststream__upperBlock">
-            <p>This is 1st posted</p>
-          </div>
-          <span>
-            <Image
-              src="/assets/DSC02183.jpg"
-              alt="icon"
-              width={500}
-              height={500}
-              className="poststream__uploadedImg"
-            />
-          </span>
-          <div className="poststream__bottom">
-            <FontAwesomeIcon
-              icon={faThumbsUp}
-              className="poststream__icon"
-              width="30px"
-              height="30px"
-            />
-            <FontAwesomeIcon
-              icon={faThumbsDown}
-              className="poststream__icon"
-              width="30px"
-              height="30px"
-            />
-            <FontAwesomeIcon
-              icon={faPen}
-              className="poststream__icon"
-              width="30px"
-              height="30px"
-            />
-          </div>
-          <div className="poststream__comment">
-            <label htmlFor="fname"></label>
-            <Form>
-              <input
-                type="text"
-                id="description"
-                placeholder="Comment here..."
-                size="100"
-                className="createPost__textfield"
-                value={comment}
-                onChange={(e) => postComment(e.target.value)}
-              />
-            </Form>
-            <button
-              type="submit"
-              className="createPost__button submit"
-              onClick={updateComment}
-              height="30px"
-              value=""
-            >
-              <p>Post</p>
-            </button>
-          </div>
-        </div>
-      </div> */}
     </div>
   );
 }
