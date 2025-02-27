@@ -70,6 +70,9 @@ function MembersShare({ posts, postComment }) {
                   />
                 )}
               </span>
+              <span>
+                <p>{itemComment}</p>
+              </span>
               <div className="poststream__bottom">
                 <FontAwesomeIcon
                   icon={faThumbsUp}
@@ -83,12 +86,12 @@ function MembersShare({ posts, postComment }) {
                   width="30px"
                   height="30px"
                 />
-                {/* <FontAwesomeIcon
+                <FontAwesomeIcon
                   icon={faComment}
                   className="poststream__icon"
                   width="30px"
                   height="30px"
-                /> */}
+                />
                 <FontAwesomeIcon
                   icon={faPen}
                   className="poststream__icon"
@@ -117,7 +120,6 @@ function MembersShare({ posts, postComment }) {
                   <p>Post</p>
                 </button>
               </Form>
-              {/* <p>{comment}</p> */}
             </div>
           </div>
         );

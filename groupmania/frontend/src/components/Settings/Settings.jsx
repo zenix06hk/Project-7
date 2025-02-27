@@ -12,6 +12,8 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
+import ThemeSwitcher from "@/components/DarkModeTheme/ThemeSwitcher";
+
 function Setting() {
   const [open, setOpen] = React.useState(false);
 
@@ -29,6 +31,10 @@ function Setting() {
       <Link href="/userupdateinfo">
         <h3>Update Profile</h3>
       </Link>
+      <h3>
+        Dark Mode
+        <ThemeSwitcher />
+      </h3>
       <React.Fragment>
         <h3 variant="outlined" onClick={handleClickOpen}>
           Delete account
@@ -49,7 +55,7 @@ function Setting() {
             <Button onClick={handleClose}>No</Button>
             <Link href="/login">
               <Button onClick={handleClose} autoFocus>
-                Yes, I'm sure
+                Confirm delete account
               </Button>
             </Link>
           </DialogActions>

@@ -21,7 +21,7 @@ function HomePage() {
 
   //update description to post stream content
   const postDescription = (value) => {
-    // console.log(value);
+    console.log(value);
     setUserPost({
       ...userPost,
       id: 1,
@@ -45,7 +45,6 @@ function HomePage() {
     setPosts([...posts, userPost]);
     //reset the user form
     setUserPost({
-      id: id,
       username: "",
       img: "",
       description: "",
