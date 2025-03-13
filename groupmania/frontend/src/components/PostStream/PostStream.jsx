@@ -24,23 +24,23 @@ function MembersShare({ posts, postComment }) {
 
   // const updateComment = (value) => {
   //   setComment(value);
+  // // };
+  // const [comment, setComment] = useState("");
+  // const [comments, setComments] = useState({});
+
+  // const handleInputChange = (e) => {
+  //   setComment(e.target.value);
   // };
-  const [comment, setComment] = useState("");
-  const [comments, setComments] = useState({});
 
-  const handleInputChange = (e) => {
-    setComment(e.target.value);
-  };
-
-  const handleSubmit = (e, index) => {
-    e.preventDefault();
-    postComment(comment);
-    setComments((prevComments) => ({
-      ...prevComments,
-      [index]: comment,
-    }));
-    setComment("");
-  };
+  // const handleSubmit = (e, index) => {
+  //   e.preventDefault();
+  //   postComment(comment);
+  //   setComments((prevComments) => ({
+  //     ...prevComments,
+  //     [index]: comment,
+  //   }));
+  //   setComment("");
+  // };
 
   return (
     <div>
@@ -100,7 +100,15 @@ function MembersShare({ posts, postComment }) {
                 />
               </div>
               <label htmlFor="fname"></label>
-              <Form onSubmit={handleSubmit}>
+              {item?.comments.map((commentItem, index) => {
+                return (
+                  <div key={index}>
+                    {commentItem.id} - {commentItem.comment}
+                  </div>
+                );
+              })}
+              <Comments id={id} postComment={postComment} />
+              {/* <Form onSubmit={handleSubmit}>
                 <input
                   type="text"
                   id="comment"
@@ -119,7 +127,7 @@ function MembersShare({ posts, postComment }) {
                 >
                   <p>Post</p>
                 </button>
-              </Form>
+              </Form> */}
             </div>
           </div>
         );

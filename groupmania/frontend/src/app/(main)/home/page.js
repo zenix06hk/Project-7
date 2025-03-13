@@ -13,10 +13,10 @@ function HomePage() {
     description: "",
     uploadedImage: "",
     comment: [],
+    id: 1,
   });
   //published posts on the page
   const [posts, setPosts] = useState([]);
-  const [comment, setComment] = useState([]);
   const [id, setId] = useState(1);
 
   //update description to post stream content
@@ -24,7 +24,6 @@ function HomePage() {
     console.log(value);
     setUserPost({
       ...userPost,
-      id: 1,
       description: value,
       uploadedImage: userPost.uploadedImage ?? "",
     });
@@ -49,15 +48,26 @@ function HomePage() {
       img: "",
       description: "",
       uploadedImage: "",
-      comment: "",
+      comment: [],
     });
+    setId(id + 1);
   };
 
-  const postComment = (value) => {
+  const postComment = (value, id) => {
     console.log(value);
-    setComment({
-      comment: comment,
+    const updatePostWithComment = posts.map((item) => {
+      if (item.id === id) {
+        console.log(item);
+        const newComments = [...item.comments, { comment: value, id: id }];
+        return {
+          ...item,
+          comments: newComments,
+        };
+      }
+
+      return item;
     });
+    setPosts(updatePostWithComment);
 
     // const updatedPosts = [...posts];
     // const latestPost = updatedPosts[updatedPosts.length - 1];
