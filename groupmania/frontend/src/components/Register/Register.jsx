@@ -28,7 +28,9 @@ const Register = () => {
   const router = useRouter();
 
   const initialValues = {
-    name: "",
+    username: "",
+    first_name: "",
+    last_name: "",
     email: "",
     password: "",
     confirmPassword: "",
@@ -36,7 +38,7 @@ const Register = () => {
   const handleSubmit = async (values, { setSubmitting }) => {
     setSubmitting(true);
     console.log(values);
-    router.push("/home");
+    // router.push("/home");
     //async call
     // const response = await fetch("https://example.org/post", {
     //   body: JSON.stringify(values),
@@ -69,30 +71,50 @@ const Register = () => {
           >
             {({ isSubmitting, errors, handleSubmit }) => (
               <form onSubmit={handleSubmit}>
-                <label htmlFor="firstName">
-                  First Name:
+                <label htmlFor="username">
+                  Username:
                   <br></br>
                   <Field
-                    name="name"
-                    type="name"
-                    className={errors.password ? "error" : ""}
-                    size="50"
-                  />
-                  <ErrorMessage className="error" name="name" component="div" />
-                </label>
-                <br></br>
-                <label htmlFor="password">
-                  Last Name:
-                  <br></br>
-                  <Field
-                    name="password"
-                    type="password"
+                    name="username"
+                    type="text"
                     className={errors.password ? "error" : ""}
                     size="50"
                   />
                   <ErrorMessage
                     className="error"
-                    name="password"
+                    name="username"
+                    component="div"
+                  />
+                </label>
+                <br></br>
+                <label htmlFor="first_name">
+                  First Name:
+                  <br></br>
+                  <Field
+                    name="first_name"
+                    type="text"
+                    className={errors.password ? "error" : ""}
+                    size="50"
+                  />
+                  <ErrorMessage
+                    className="error"
+                    name="first_name"
+                    component="div"
+                  />
+                </label>
+                <br></br>
+                <label htmlFor="last_name">
+                  Last Name:
+                  <br></br>
+                  <Field
+                    name="last_name"
+                    type="text"
+                    className={errors.password ? "error" : ""}
+                    size="50"
+                  />
+                  <ErrorMessage
+                    className="error"
+                    name="last_name"
                     component="div"
                   />
                 </label>
@@ -129,18 +151,18 @@ const Register = () => {
                   />
                 </label>
                 <br></br>
-                <label htmlFor="confirm-password">
+                <label htmlFor="confirmPassword">
                   Confirm password:
                   <br></br>
                   <Field
-                    name="password"
+                    name="confirmPassword"
                     type="password"
                     className={errors.password ? "error" : ""}
                     size="50"
                   />
                   <ErrorMessage
                     className="error"
-                    name="password"
+                    name="confirmPassword"
                     component="div"
                   />
                 </label>
@@ -151,7 +173,7 @@ const Register = () => {
                     className="btn btn-signUp"
                     disabled={isSubmitting}
                   >
-                    Sign Up
+                    Sign Up {isSubmitting}
                   </button>
                 </div>
               </form>

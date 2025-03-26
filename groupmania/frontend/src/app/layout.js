@@ -1,7 +1,7 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
-import ThemeProvider from "@/components/DarkModeTheme/ThemeProvider";
-import ThemeSwitcher from "@/components/DarkModeTheme/ThemeSwitcher";
+// import ThemeProvider from "@/components/DarkModeTheme/ThemeProvider";
+// import ThemeSwitcher from "@/components/DarkModeTheme/ThemeSwitcher";
 const inter = Inter({ subsets: ["latin"] });
 export const metadata = {
   title: "Create Next App",
@@ -11,10 +11,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`bg-white dark:bg-black ${inter.className}`}>
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
-          <ThemeSwitcher />
-          <main>{children}</main>
-        </ThemeProvider>
+        {/* <ThemeProvider attribute="class" defaultTheme="system" enableSystem> */}
+        {/* <ThemeSwitcher /> */}
+        <main>{children}</main>
+        {/* </ThemeProvider> */}
       </body>
     </html>
   );

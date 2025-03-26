@@ -7,10 +7,10 @@
       "server": "localhost",
       "port": 5432,
       "driver": "PostgreSQL",
-      "name": "local",
-      "database": "groupmania_database",
-      "username": "zenix06hk",
-      "password": "Zenix@2023"
+      "username": "postgres",
+      "password": "Zenix@2023",
+      "database": "groupmania",
+      "name": "PostgreSQL 17"
     }
   ]
 }

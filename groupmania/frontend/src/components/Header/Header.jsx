@@ -12,6 +12,7 @@ import {
   faHome,
   faUserGroup,
   faPeopleGroup,
+  faGear,
 } from "@fortawesome/free-solid-svg-icons";
 
 function Header() {
@@ -19,6 +20,7 @@ function Header() {
     { name: faHome, url: "/home" },
     { name: faUserGroup, url: "/friends" },
     { name: faPeopleGroup, url: "/community" },
+    { name: faGear, url: "/settings" },
   ];
 
   return (

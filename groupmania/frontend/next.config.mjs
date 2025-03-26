@@ -7,8 +7,8 @@ const nextConfig = {
 
 export default nextConfig;
 
-module.exports = {
-  experimental: {
-    serverAction: true,
-  },
-};
+// module.exports = {
+//   experimental: {
+//     serverAction: true,
+//   },
+// };
