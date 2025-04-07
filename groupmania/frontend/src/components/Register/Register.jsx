@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation";
 import * as Yup from "yup";
 
 const validationSchema = Yup.object().shape({
-  name: Yup.string()
+  username: Yup.string()
     .min(6, "Name must be minimum 2")
     .max(30, "Name must not be more than 100 characters")
     .required("Name is required"),
@@ -25,6 +25,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const Register = () => {
+  console.log(`${process.env.NEXT_PUBLIC_BACKEND_API}auth/sign-up`);
   const router = useRouter();
 
   const initialValues = {
@@ -40,18 +41,28 @@ const Register = () => {
     console.log(values);
     // router.push("/home");
     //async call
-    // const response = await fetch("https://example.org/post", {
-    //   body: JSON.stringify(values),
-    // });
-    // console.log(response);
+    //this is a fetch call for the backend environment for api
+
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_API}auth/sign-up`,
+      {
+        method: "POST",
+        body: JSON.stringify({
+          username: values.username,
+          first_name: values.first_name,
+          last_name: values.last_name,
+          email: values.email,
+          password: values.password,
+          confirmPassword: values.confirmPassword,
+        }),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }
+    );
+    const data = await res.json();
+    console.log(data);
     setSubmitting(false);
-    // if (response.status === 201) {
-    // } else {
-    // }
-    // setTimeout(() => {
-    //   console.log(values);
-    //   setSubmitting(false);
-    // }, 500);
   };
   return (
     <>
@@ -171,7 +182,7 @@ const Register = () => {
                   <button
                     type="submit"
                     className="btn btn-signUp"
-                    disabled={isSubmitting}
+                    // disabled={isSubmitting}
                   >
                     Sign Up {isSubmitting}
                   </button>
