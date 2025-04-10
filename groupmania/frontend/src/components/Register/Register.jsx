@@ -6,7 +6,7 @@ import Image from "next/image";
 import "./register.scss";
 
 import { useFormik } from "formik";
-import { Formik, Field, ErrorMessage } from "formik";
+import { Formik, Field, ErrorMessage, Form } from "formik";
 import { useRouter } from "next/navigation";
 import * as Yup from "yup";
 
@@ -42,27 +42,35 @@ const Register = () => {
     // router.push("/home");
     //async call
     //this is a fetch call for the backend environment for api
-
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_API}auth/sign-up`,
-      {
-        method: "POST",
-        body: JSON.stringify({
-          username: values.username,
-          first_name: values.first_name,
-          last_name: values.last_name,
-          email: values.email,
-          password: values.password,
-          confirmPassword: values.confirmPassword,
-        }),
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-        },
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_API}auth/sign-up`,
+        {
+          method: "POST",
+          body: JSON.stringify({
+            username: values.username,
+            first_name: values.first_name,
+            last_name: values.last_name,
+            email: values.email,
+            password: values.password,
+            confirmPassword: values.confirmPassword,
+          }),
+          headers: {
+            "Content-type": "application/json; charset=UTF-8",
+          },
+        }
+      );
+      const data = await res.json();
+      console.log(data);
+      setSubmitting(false);
+      if (data?.success) {
+        console.log("User created successfully");
+      } else {
+        console.log(data?.error ?? "Error has occur ");
       }
-    );
-    const data = await res.json();
-    console.log(data);
-    setSubmitting(false);
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <>
@@ -81,7 +89,7 @@ const Register = () => {
             onSubmit={handleSubmit}
           >
             {({ isSubmitting, errors, handleSubmit }) => (
-              <form onSubmit={handleSubmit}>
+              <Form>
                 <label htmlFor="username">
                   Username:
                   <br></br>
@@ -187,7 +195,7 @@ const Register = () => {
                     Sign Up {isSubmitting}
                   </button>
                 </div>
-              </form>
+              </Form>
             )}
           </Formik>
         </div>
