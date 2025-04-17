@@ -1,18 +1,19 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 
 import "./register.scss";
 
+import Link from "next/link";
 import { useFormik } from "formik";
-import { Formik, Field, ErrorMessage } from "formik";
+import { Formik, Field, ErrorMessage, Form } from "formik";
 import { useRouter } from "next/navigation";
 import * as Yup from "yup";
 
 const validationSchema = Yup.object().shape({
   username: Yup.string()
-    .min(6, "Name must be minimum 2")
+    .min(6, "Name must be minimum 6")
     .max(30, "Name must not be more than 100 characters")
     .required("Name is required"),
   email: Yup.string().email("Invalid email").required("Email is required"),
@@ -24,45 +25,59 @@ const validationSchema = Yup.object().shape({
     .required("Confirm Password is required"),
 });
 
+const initialValues = {
+  username: "",
+  first_name: "",
+  last_name: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+};
+
 const Register = () => {
-  console.log(`${process.env.NEXT_PUBLIC_BACKEND_API}auth/sign-up`);
   const router = useRouter();
 
-  const initialValues = {
-    username: "",
-    first_name: "",
-    last_name: "",
-    email: "",
-    password: "",
-    confirmPassword: "",
-  };
-  const handleSubmit = async (values, { setSubmitting }) => {
+  const handleSubmit = async (
+    values,
+    { setSubmitting, setStatus, resetForm }
+  ) => {
     setSubmitting(true);
     console.log(values);
+
     // router.push("/home");
     //async call
     //this is a fetch call for the backend environment for api
-
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_API}auth/sign-up`,
-      {
-        method: "POST",
-        body: JSON.stringify({
-          username: values.username,
-          first_name: values.first_name,
-          last_name: values.last_name,
-          email: values.email,
-          password: values.password,
-          confirmPassword: values.confirmPassword,
-        }),
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-        },
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_API}auth/sign-up`,
+        {
+          method: "POST",
+          body: JSON.stringify({
+            username: values.username,
+            first_name: values.first_name,
+            last_name: values.last_name,
+            email: values.email,
+            password: values.password,
+            confirmPassword: values.confirmPassword,
+          }),
+          headers: {
+            "Content-type": "application/json; charset=UTF-8",
+          },
+        }
+      );
+      const data = await res.json();
+      console.log(data);
+      setSubmitting(false);
+      if (data?.success) {
+        resetForm();
+        setStatus({ success: true, message: "success" });
+      } else {
+        setStatus({ error: true, message: data?.error ?? "Error has occur" });
       }
-    );
-    const data = await res.json();
-    console.log(data);
-    setSubmitting(false);
+    } catch (error) {
+      console.log("error");
+      setStatus({ error: true, message: "Error has occur" });
+    }
   };
   return (
     <>
@@ -80,8 +95,8 @@ const Register = () => {
             validationSchema={validationSchema}
             onSubmit={handleSubmit}
           >
-            {({ isSubmitting, errors, handleSubmit }) => (
-              <form onSubmit={handleSubmit}>
+            {({ isSubmitting, errors, status }) => (
+              <Form>
                 <label htmlFor="username">
                   Username:
                   <br></br>
@@ -178,16 +193,24 @@ const Register = () => {
                   />
                 </label>
                 <br></br>
+
+                {status?.error && <div className="error">{status.message}</div>}
+                {status?.success && (
+                  <div className="error">
+                    {status.message} - Register completed, please login
+                    <Link href="/login">here</Link>
+                  </div>
+                )}
                 <div>
                   <button
                     type="submit"
                     className="btn btn-signUp"
-                    // disabled={isSubmitting}
+                    disabled={isSubmitting}
                   >
                     Sign Up {isSubmitting}
                   </button>
                 </div>
-              </form>
+              </Form>
             )}
           </Formik>
         </div>
