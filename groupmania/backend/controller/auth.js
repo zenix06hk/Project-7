@@ -81,32 +81,33 @@ exports.login = async (req, res) => {
     console.log(req.body);
 
     const { email, password } = req.body;
-    // const hashedPassword = await bcrypt.hash(password, saltRounds);
-    // console.log("hashedPassword", hashedPassword);
     try {
       const result = await db.query(
-        "INSERT INTO users (username, first_name, last_name, email, password)  VALUES ($1, $2, $3, $4, $5) RETURNING *",
-        [username, first_name, last_name, email, hashedPassword]
+        " SELECT  email, password	FROM users WHERE email = $1",
+        [email]
       );
-      const username_data = result.rows[0].username;
-      const firstName = result.rows[0].first_name;
-      const lastName = result.rows[0].last_name;
-      const email_data = result.rows[0].email;
+      console.log(result.rows[0]);
+      const comparePassword = await bcrypt.compare(
+        password,
+        result.rows[0].password
+      );
+      console.log("comparePassword", comparePassword);
+
       // const password = result.rows[0].password;
-      const avatar = result.rows[0].avatar;
-      res.status(201).json({
-        message: "User created successfully",
-        success: true,
-        data: {
-          username: username_data,
-          first_name: firstName,
-          last_name: lastName,
-          email: email_data,
-          // password:
-          //   "$2b$10$PSmzo0gjn7jOuMf7m1UoQ.YeZCQhsTOB7.edKyMbCiJoO2QiCxu7q",
-          avatar: null,
-        },
-      });
+      // const avatar = result.rows[0].avatar;
+      // res.status(201).json({
+      //   message: "User created successfully",
+      //   success: true,
+      //   data: {
+      //     username: username_data,
+      //     first_name: firstName,
+      //     last_name: lastName,
+      //     email: email_data,
+      //     // password:
+      //     //   "$2b$10$PSmzo0gjn7jOuMf7m1UoQ.YeZCQhsTOB7.edKyMbCiJoO2QiCxu7q",
+      //     avatar: null,
+      //   },
+      // });
     } catch (error) {
       if (error.code === "23505") {
         res.status(409).json({
