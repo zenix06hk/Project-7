@@ -1,0 +1,31 @@
+const express = require("express");
+const { Pool } = require("pg");
+const app = express();
+const port = 3000;
+
+// PostgreSQL connection pool
+const pool = new Pool({
+  user: "your_user",
+  host: "localhost",
+  database: "your_database",
+  password: "your_password",
+  port: 5432,
+});
+
+app.get("/search", async (req, res) => {
+  const searchTerm = req.query.term;
+  try {
+    const result = await pool.query(
+      "SELECT * FROM your_table WHERE your_column ILIKE $1",
+      [`%${searchTerm}%`]
+    );
+    res.json(result.rows);
+  } catch (error) {
+    console.error("Error executing query", error.stack);
+    res.status(500).send("Error executing query");
+  }
+});
+
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}/`);
+});

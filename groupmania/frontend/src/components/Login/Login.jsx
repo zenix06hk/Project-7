@@ -5,7 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Formik, Field, ErrorMessage, Form } from "formik";
 import * as Yup from "yup";
-// import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 import "./login.scss";
 
@@ -22,34 +22,48 @@ const initialValues = {
 };
 
 const Login = () => {
-  // const router = useRouter();
+  const router = useRouter();
   //Submit the Login clicking
   const handleSubmit = async (values, { setSubmitting }) => {
     // console.log(values);
     //async call
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_API}auth/sign-up`,
-      {
-        method: "POST",
-        body: JSON.stringify({
-          email: values.email,
-          password: values.password,
-        }),
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-        },
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_API}auth/login`,
+        {
+          method: "POST",
+          body: JSON.stringify({
+            email: values.email,
+            password: values.password,
+          }),
+          headers: {
+            "Content-type": "application/json; charset=UTF-8",
+          },
+        }
+      );
+      // console.log(res);
+      const data = await res.json();
+      setSubmitting(false);
+      // if (data?.success) {
+      //   setStatus({ success: true, message: data.message });
+      if (data?.error) {
+        alert(data.error); // Show error message from backend
+      } else if (data?.success) {
+        console.log("Login successful", data);
+        router.push("/home"); // Redirect to homepage
+        // } else {
+        //   setStatus({
+        //     error: true,
+        //     message: data?.error ?? "Invalid email or password",
+        //   });
       }
-    );
-    // console.log(res);
-    setSubmitting(false);
-    if (res.status === 201) {
-    } else {
+      console.log("data", data);
+    } catch (error) {
+      // console.log("error");
+      // setStatus({ error: true, message: "Error has occur" });
+      console.error("Error occurred during login:", error);
+      alert("An error occurred. Please try again.");
     }
-
-    // setTimeout(() => {
-    //  console.log(values);
-    //  setSubmitting(false);
-    // }, 500);
   };
 
   // function Login() {
@@ -64,18 +78,13 @@ const Login = () => {
             height={80}
             className="loginPage-content-companyLogo"
           />
-          {/* <img
-            src="/assets/hands_together.webp"
-            alt="Groupmania"
-            className="loginPage-content-companyLogo"
-          ></img> */}
           <h3>Sign in with your Groupomania ID</h3>
           <Formik
             initialValues={initialValues}
             validationSchema={validationSchema}
             onSubmit={handleSubmit}
           >
-            {({ isSubmitting, errors, status }) => (
+            {({ isSubmitting, errors }) => (
               <Form>
                 <label htmlFor="email">
                   Email:
@@ -85,11 +94,6 @@ const Login = () => {
                     type="text"
                     className={errors.password ? "error" : ""}
                     size="50"
-                  />
-                  <ErrorMessage
-                    className="error"
-                    name="email"
-                    component="div"
                   />
                 </label>
                 <br></br>
@@ -102,21 +106,37 @@ const Login = () => {
                     className={errors.password ? "error" : ""}
                     size="50"
                   />
+                  <br></br>
                   <ErrorMessage
                     className="error"
                     name="password"
                     component="div"
                   />
-                  <br></br>
                 </label>
                 <br></br>
                 <div className="loginPage-content-btns">
-                  <div className="loginPage-content btns signIn">
+                  <button
+                    type="submit"
+                    className="loginPage-content btns signIn"
+                    disabled={isSubmitting}
+                  >
+                    Log in
+                  </button>
+                  <br></br>
+                  {/* <div className="loginPage-content btns signIn">
                     <Link href="/home">Log In</Link>
-                  </div>
-                  <div className="loginPage-content btns register">
+                  </div> */}
+                  <button
+                    type="submit"
+                    className="loginPage-content btns register"
+                    disabled={isSubmitting}
+                  >
+                    Sign Up {isSubmitting}
+                  </button>
+                  <br></br>
+                  {/* <div className="loginPage-content btns register">
                     <Link href="/register">Sign up</Link>
-                  </div>
+                  </div> */}
                   <a href=".">Forget password?</a>
                 </div>
               </Form>

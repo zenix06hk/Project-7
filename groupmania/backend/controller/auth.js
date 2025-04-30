@@ -1,6 +1,6 @@
 const db = require("../db");
 
-//Password-hashing functio
+//Password-hashing function
 const bcrypt = require("bcrypt");
 
 //To securely transfer information over the web
@@ -10,11 +10,11 @@ const saltRounds = 10;
 //Controller for creating a user account
 exports.signUp = async (req, res) => {
   try {
-    console.log(req.body);
+    // console.log(req.body);
 
     const { username, first_name, last_name, email, password } = req.body;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
-    console.log("hashedPassword", hashedPassword);
+    // console.log("hashedPassword", hashedPassword);
     try {
       const result = await db.query(
         "INSERT INTO users (username, first_name, last_name, email, password)  VALUES ($1, $2, $3, $4, $5) RETURNING *",
@@ -24,7 +24,7 @@ exports.signUp = async (req, res) => {
       const firstName = result.rows[0].first_name;
       const lastName = result.rows[0].last_name;
       const email_data = result.rows[0].email;
-      // const password = result.rows[0].password;
+      const password = result.rows[0].password;
       const avatar = result.rows[0].avatar;
       res.status(201).json({
         message: "User created successfully",
@@ -78,20 +78,20 @@ exports.signUp = async (req, res) => {
 
 exports.login = async (req, res) => {
   try {
-    console.log(req.body);
-
     const { email, password } = req.body;
+    console.log(req.body);
     try {
       const result = await db.query(
-        " SELECT  email, password	FROM users WHERE email = $1",
+        "SELECT email, password FROM users WHERE email = $1",
         [email]
       );
-      console.log(result.rows[0]);
+      console.log(result);
+      // console.log(result.rows[0]);
       const comparePassword = await bcrypt.compare(
         password,
         result.rows[0].password
       );
-      console.log("comparePassword", comparePassword);
+      // console.log("comparePassword", comparePassword);
 
       // const password = result.rows[0].password;
       // const avatar = result.rows[0].avatar;
@@ -118,8 +118,21 @@ exports.login = async (req, res) => {
         res.status(500).json({ error: "Internal server error" });
       }
     }
-    return;
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: "Invalid email or password" });
+    }
 
+    const user = result.rows[0];
+    const isPasswordMatch = await bcrypt.compare(password, user.password);
+
+    if (!isPasswordMatch) {
+      return res.status(401).json({ error: "Password does not match" });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Login successful",
+    });
     // db.query(
     //   "INSERT INTO users (username, first_name, last_name, email, password) VALUES ($1, $2, $3, $4, $5) RETURNING *",
     //   [username, first_name, last_name, email, password],
