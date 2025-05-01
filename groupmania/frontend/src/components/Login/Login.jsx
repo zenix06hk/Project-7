@@ -12,7 +12,8 @@ import "./login.scss";
 const validationSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
   password: Yup.string()
-    .email("Invalid password")
+
+    .min(6, "must be at least 6 characters long")
     .required("Password is required"),
 });
 
@@ -25,7 +26,7 @@ const Login = () => {
   const router = useRouter();
   //Submit the Login clicking
   const handleSubmit = async (values, { setSubmitting }) => {
-    // console.log(values);
+    console.log(values);
     //async call
     try {
       const res = await fetch(
@@ -87,17 +88,18 @@ const Login = () => {
             {({ isSubmitting, errors }) => (
               <Form>
                 <label htmlFor="email">
-                  Email:
+                  Email: {isSubmitting}
                   <br></br>
                   <Field
                     name="email"
                     type="text"
-                    className={errors.password ? "error" : ""}
+                    className={errors.email ? "error" : ""}
                     size="50"
                   />
                 </label>
                 <br></br>
-                <label htmlFor="fname">
+                <ErrorMessage className="error" name="email" component="div" />
+                <label htmlFor="password">
                   Password:
                   <br></br>
                   <Field

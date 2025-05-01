@@ -77,83 +77,103 @@ exports.signUp = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
+  // try {
+  const { email, password } = req.body;
+  console.log(req.body);
   try {
-    const { email, password } = req.body;
-    console.log(req.body);
-    try {
-      const result = await db.query(
-        "SELECT email, password FROM users WHERE email = $1",
-        [email]
-      );
-      console.log(result);
-      // console.log(result.rows[0]);
-      const comparePassword = await bcrypt.compare(
-        password,
-        result.rows[0].password
-      );
-      // console.log("comparePassword", comparePassword);
-
-      // const password = result.rows[0].password;
-      // const avatar = result.rows[0].avatar;
-      // res.status(201).json({
-      //   message: "User created successfully",
-      //   success: true,
-      //   data: {
-      //     username: username_data,
-      //     first_name: firstName,
-      //     last_name: lastName,
-      //     email: email_data,
-      //     // password:
-      //     //   "$2b$10$PSmzo0gjn7jOuMf7m1UoQ.YeZCQhsTOB7.edKyMbCiJoO2QiCxu7q",
-      //     avatar: null,
-      //   },
-      // });
-    } catch (error) {
-      if (error.code === "23505") {
-        res.status(409).json({
-          error: "Duplicate key violation: User ID already exists",
-        });
-      } else {
-        console.error("Database error:", error);
-        res.status(500).json({ error: "Internal server error" });
-      }
+    const result = await db.query(
+      "SELECT email, password FROM users WHERE email = $1",
+      [email]
+    );
+    console.log(result?.rows?.length);
+    if (result?.rows?.length !== 1) {
+      console.log("hello");
+      return res.status(401).json({
+        error: "User not found!",
+      });
     }
-    if (result.rows.length === 0) {
-      return res.status(404).json({ error: "Invalid email or password" });
+    // console.log(result.rows[0]);
+    const comparePassword = await bcrypt.compare(
+      password,
+      result.rows[0].password
+    );
+    console.log("comparePassword", comparePassword);
+    if (!comparePassword) {
+      return res.status(401).json({
+        error: "Password incorrect!",
+      });
     }
 
-    const user = result.rows[0];
-    const isPasswordMatch = await bcrypt.compare(password, user.password);
-
-    if (!isPasswordMatch) {
-      return res.status(401).json({ error: "Password does not match" });
-    }
-
-    return res.status(200).json({
-      success: true,
-      message: "Login successful",
+    //Creation of the authentication token
+    const token = jwt.sign({ userId: user._id }, "RANDOM_TOKEN_SECRET", {
+      expiresIn: "24h",
     });
-    // db.query(
-    //   "INSERT INTO users (username, first_name, last_name, email, password) VALUES ($1, $2, $3, $4, $5) RETURNING *",
-    //   [username, first_name, last_name, email, password],
-    //   (error, results) => {
-    //     if (error) {
-    //       throw error;
-    //       // res.status(403).send("User already exists");
-    //       // return;
-    //     }
-    //     res
-    //       .status(200)
-    //       // .send(`User added with ID: ${results.rows[0].id}`)
-    //       .json({
-    //         message: "Email has been sign up.",
-    //         success: true,
-    //         data: results.rows[0],
-    //       });
-    //   }
-    // );
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Internal Server Error");
+    res.status(200).json({
+      userId: user._id,
+      token: token,
+    });
+
+    // const password = result.rows[0].password;
+    // const avatar = result.rows[0].avatar;
+    // res.status(201).json({
+    //   message: "User created successfully",
+    //   success: true,
+    //   data: {
+    //     username: username_data,
+    //     first_name: firstName,
+    //     last_name: lastName,
+    //     email: email_data,
+    //     // password:
+    //     //   "$2b$10$PSmzo0gjn7jOuMf7m1UoQ.YeZCQhsTOB7.edKyMbCiJoO2QiCxu7q",
+    //     avatar: null,
+    //   },
+    // });
+  } catch (error) {
+    if (error.code === "23505") {
+      res.status(409).json({
+        error: "Duplicate key violation: User ID already exists",
+      });
+    } else {
+      console.error("Database error:", error);
+      res.status(500).json({ error: "Internal server error" });
+    }
   }
+  // if (result.rows.length === 0) {
+  //   return res.status(404).json({ error: "Invalid email or password" });
+  // }
+
+  // const user = result.rows[0];
+  // const isPasswordMatch = await bcrypt.compare(password, user.password);
+
+  // if (!isPasswordMatch) {
+  //   return res.status(401).json({ error: "Password does not match" });
+  // }
+
+  // return res.status(200).json({
+  //   success: true,
+  //   message: "Login successful",
+  // });
+  // db.query(
+  //   "INSERT INTO users (username, first_name, last_name, email, password) VALUES ($1, $2, $3, $4, $5) RETURNING *",
+  //   [username, first_name, last_name, email, password],
+  //   (error, results) => {
+  //     if (error) {
+  //       throw error;
+  //       // res.status(403).send("User already exists");
+  //       // return;
+  //     }
+  //     res
+  //       .status(200)
+  //       // .send(`User added with ID: ${results.rows[0].id}`)
+  //       .json({
+  //         message: "Email has been sign up.",
+  //         success: true,
+  //         data: results.rows[0],
+  //       });
+  //   }
+  // );
+  // } catch (err) {
+  //   console.error(err);
+  //   res.status(500).send("Internal Server Error");
+  // }
 };
