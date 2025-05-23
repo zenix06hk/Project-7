@@ -131,9 +131,11 @@ const Login = () => {
                   <button
                     type="submit"
                     className="loginPage-content btns register"
-                    disabled={isSubmitting}
+                    href="/register"
+                    onClick={() => router.push("/register")}
+                    // disabled={isSubmitting}
                   >
-                    Sign Up {isSubmitting}
+                    Sign Up
                   </button>
                   <br></br>
                   {/* <div className="loginPage-content btns register">

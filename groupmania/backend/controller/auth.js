@@ -6,7 +6,12 @@ const bcrypt = require("bcrypt");
 //To securely transfer information over the web
 const jwt = require("jsonwebtoken");
 const saltRounds = 10;
-
+exports.test = async (req, res) => {
+  res.status(201).json({
+    message: "test successfully",
+    success: true,
+  });
+};
 //Controller for creating a user account
 exports.signUp = async (req, res) => {
   try {
@@ -34,8 +39,7 @@ exports.signUp = async (req, res) => {
           first_name: firstName,
           last_name: lastName,
           email: email_data,
-          // password:
-          //   "$2b$10$PSmzo0gjn7jOuMf7m1UoQ.YeZCQhsTOB7.edKyMbCiJoO2QiCxu7q",
+
           avatar: null,
         },
       });
@@ -77,17 +81,18 @@ exports.signUp = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
-  // try {
   const { email, password } = req.body;
+
   console.log(req.body);
+
   try {
     const result = await db.query(
-      "SELECT email, password FROM users WHERE email = $1",
+      "SELECT email, username, userid, password FROM users WHERE email = $1",
       [email]
     );
-    console.log(result?.rows?.length);
+    // console.log(result?.rows?.length);
     if (result?.rows?.length !== 1) {
-      console.log("hello");
+      // console.log("hello");
       return res.status(401).json({
         error: "User not found!",
       });
@@ -97,7 +102,7 @@ exports.login = async (req, res) => {
       password,
       result.rows[0].password
     );
-    console.log("comparePassword", comparePassword);
+    // console.log("comparePassword", comparePassword);
     if (!comparePassword) {
       return res.status(401).json({
         error: "Password incorrect!",
@@ -105,29 +110,27 @@ exports.login = async (req, res) => {
     }
 
     //Creation of the authentication token
-    const token = jwt.sign({ userId: user._id }, "RANDOM_TOKEN_SECRET", {
-      expiresIn: "24h",
-    });
+    const token = jwt.sign(
+      {
+        userId: result.rows[0].userid,
+        // userName: result.rows[0].username,
+      },
+      process.env.SECRET_KEY,
+      {
+        expiresIn: "24h",
+      }
+    );
+
+    // console.log(token);
+
+    const username = result.rows[0].username;
+    const userId = result.rows[0].userId;
+
     res.status(200).json({
-      userId: user._id,
+      userId: userId,
+      username: username,
       token: token,
     });
-
-    // const password = result.rows[0].password;
-    // const avatar = result.rows[0].avatar;
-    // res.status(201).json({
-    //   message: "User created successfully",
-    //   success: true,
-    //   data: {
-    //     username: username_data,
-    //     first_name: firstName,
-    //     last_name: lastName,
-    //     email: email_data,
-    //     // password:
-    //     //   "$2b$10$PSmzo0gjn7jOuMf7m1UoQ.YeZCQhsTOB7.edKyMbCiJoO2QiCxu7q",
-    //     avatar: null,
-    //   },
-    // });
   } catch (error) {
     if (error.code === "23505") {
       res.status(409).json({
@@ -138,6 +141,7 @@ exports.login = async (req, res) => {
       res.status(500).json({ error: "Internal server error" });
     }
   }
+
   // if (result.rows.length === 0) {
   //   return res.status(404).json({ error: "Invalid email or password" });
   // }
