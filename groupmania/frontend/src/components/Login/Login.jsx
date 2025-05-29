@@ -24,6 +24,8 @@ const initialValues = {
 
 const Login = () => {
   const router = useRouter();
+  // const { data: session } = useSession();
+  // console.log({ session });
   //Submit the Login clicking
   const handleSubmit = async (values, { setSubmitting }) => {
     console.log(values);

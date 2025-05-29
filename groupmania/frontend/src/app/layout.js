@@ -3,7 +3,7 @@ import "./globals.css";
 // import ThemeProvider from "@/components/DarkModeTheme/ThemeProvider";
 // import ThemeSwitcher from "@/components/DarkModeTheme/ThemeSwitcher";
 const inter = Inter({ subsets: ["latin"] });
-import { SessionProvider } from "next-auth/react";
+import AuthProviders from "@/components/AuthProvider/AuthProviders";
 
 export const metadata = {
   title: "Create Next App",
@@ -15,9 +15,9 @@ export default function RootLayout({ children }) {
       <body className={`bg-white dark:bg-black ${inter.className}`}>
         {/* <ThemeProvider attribute="class" defaultTheme="system" enableSystem> */}
         {/* <ThemeSwitcher /> */}
-        <SessionProvider>
-          <main>{children}</main>
-        </SessionProvider>
+        <main>
+          <AuthProviders>{children}</AuthProviders>
+        </main>
         {/* </ThemeProvider> */}
       </body>
     </html>
