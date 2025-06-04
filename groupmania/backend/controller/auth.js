@@ -87,7 +87,7 @@ exports.login = async (req, res) => {
 
   try {
     const result = await db.query(
-      "SELECT email, username, userid, password FROM users WHERE email = $1",
+      "SELECT email, username, first_name, userid, password FROM users WHERE email = $1",
       [email]
     );
     // console.log(result?.rows?.length);
@@ -124,11 +124,16 @@ exports.login = async (req, res) => {
     // console.log(token);
 
     const username = result.rows[0].username;
-    const userId = result.rows[0].userId;
+    const userId = result.rows[0].userid;
+    const first_name = result.rows[0].first_name;
 
     res.status(200).json({
-      userId: userId,
-      username: username,
+      user: {
+        userId: userId,
+        username: username,
+        name: first_name,
+        email: email,
+      },
       token: token,
     });
   } catch (error) {

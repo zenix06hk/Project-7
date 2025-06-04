@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 import "./header.scss";
+import LoginBtn from "../LoginBtn/LoginBtn";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "@fortawesome/fontawesome-svg-core/styles.css";
@@ -46,6 +47,8 @@ function Header() {
           className="header__profileImg"
         />
       </div>
+
+      <LoginBtn />
     </header>
   );
 }

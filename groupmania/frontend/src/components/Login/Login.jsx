@@ -6,6 +6,8 @@ import Image from "next/image";
 import { Formik, Field, ErrorMessage, Form } from "formik";
 import * as Yup from "yup";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
+import { signIn } from "next-auth/react";
 
 import "./login.scss";
 
@@ -24,43 +26,34 @@ const initialValues = {
 
 const Login = () => {
   const router = useRouter();
-  // const { data: session } = useSession();
-  // console.log({ session });
+  const { data: session } = useSession();
+  console.log({ session });
   //Submit the Login clicking
   const handleSubmit = async (values, { setSubmitting }) => {
     console.log(values);
     //async call
     try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_API}auth/login`,
-        {
-          method: "POST",
-          body: JSON.stringify({
-            email: values.email,
-            password: values.password,
-          }),
-          headers: {
-            "Content-type": "application/json; charset=UTF-8",
-          },
-        }
-      );
-      // console.log(res);
-      const data = await res.json();
-      setSubmitting(false);
-      // if (data?.success) {
-      //   setStatus({ success: true, message: data.message });
-      if (data?.error) {
-        alert(data.error); // Show error message from backend
-      } else if (data?.success) {
-        console.log("Login successful", data);
-        router.push("/home"); // Redirect to homepage
-        // } else {
-        //   setStatus({
-        //     error: true,
-        //     message: data?.error ?? "Invalid email or password",
-        //   });
-      }
-      console.log("data", data);
+      const result = await signIn("credentials", {
+        redirect: false,
+        email: values.email,
+        password: values.password,
+      });
+
+      // setSubmitting(false);
+      // // if (data?.success) {
+      // //   setStatus({ success: true, message: data.message });
+      // if (data?.error) {
+      //   alert(data.error); // Show error message from backend
+      // } else if (data?.success) {
+      //   console.log("Login successful", data);
+      //   router.push("/home"); // Redirect to homepage
+      //   // } else {
+      //   //   setStatus({
+      //   //     error: true,
+      //   //     message: data?.error ?? "Invalid email or password",
+      //   //   });
+      // }
+      console.log(result);
     } catch (error) {
       // console.log("error");
       // setStatus({ error: true, message: "Error has occur" });

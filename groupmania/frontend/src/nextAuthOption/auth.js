@@ -13,20 +13,25 @@ export const authOptions = {
         },
         password: { label: "Password", type: "password" },
       },
-      async authorize(credentials, req) {
+      async authorize(credentials) {
         // --- YOUR BACKEND LOGIN API CALL ---
-        const res = await fetch("YOUR_BACKEND_API_URL/api/login", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            email: credentials.email,
-            password: credentials.password,
-          }),
-        });
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_API}auth/login`,
+          {
+            method: "POST",
+            body: JSON.stringify({
+              email: credentials.email,
+              password: credentials.password,
+            }),
+            headers: {
+              "Content-type": "application/json; charset=UTF-8",
+            },
+          }
+        );
+        // console.log(res)
 
         const data = await res.json();
+        console.log(data);
 
         if (res.ok && data.token && data.user) {
           // Return the user object, which will be passed to the jwt callback.
