@@ -64,86 +64,86 @@ const Login = () => {
 
   // function Login() {
   return (
-    <>
-      <div className="loginPage">
-        <div className="loginPage-content">
-          <Image
-            src="/assets/icon_and_name.png"
-            alt="icon"
-            width={500}
-            height={80}
-            className="loginPage-content-companyLogo"
-          />
-          <h3>Sign in with your Groupomania ID</h3>
-          <Formik
-            initialValues={initialValues}
-            validationSchema={validationSchema}
-            onSubmit={handleSubmit}
-          >
-            {({ isSubmitting, errors }) => (
-              <Form>
-                <label htmlFor="email">
-                  Email: {isSubmitting}
-                  <br></br>
-                  <Field
-                    name="email"
-                    type="text"
-                    className={errors.email ? "error" : ""}
-                    size="50"
-                  />
-                </label>
+    <div className="loginPage">
+      <div className="loginPage-content">
+        <Image
+          src="/assets/icon_and_name.png"
+          alt="icon"
+          width={500}
+          height={80}
+          className="loginPage-content-companyLogo"
+        />
+        <h3>Sign in with your Groupomania ID</h3>
+        <Formik
+          initialValues={initialValues}
+          validationSchema={validationSchema}
+          onSubmit={handleSubmit}
+        >
+          {({ isSubmitting, errors }) => (
+            <Form>
+              <label htmlFor="email">
+                Email: {isSubmitting}
                 <br></br>
-                <ErrorMessage className="error" name="email" component="div" />
-                <label htmlFor="password">
-                  Password:
-                  <br></br>
-                  <Field
-                    name="password"
-                    type="text"
-                    className={errors.password ? "error" : ""}
-                    size="50"
-                  />
-                  <br></br>
-                  <ErrorMessage
-                    className="error"
-                    name="password"
-                    component="div"
-                  />
-                </label>
+                <Field
+                  name="email"
+                  type="text"
+                  className={errors.email ? "error" : ""}
+                  size="50"
+                />
+              </label>
+              <br></br>
+              <ErrorMessage className="error" name="email" component="div" />
+              <label htmlFor="password">
+                Password:
                 <br></br>
-                <div className="loginPage-content-btns">
-                  <button
-                    type="submit"
-                    className="loginPage-content btns signIn"
-                    disabled={isSubmitting}
-                  >
-                    Log in
-                  </button>
-                  <br></br>
-                  {/* <div className="loginPage-content btns signIn">
+                <Field
+                  name="password"
+                  type="text"
+                  className={errors.password ? "error" : ""}
+                  size="50"
+                />
+                <br></br>
+                <ErrorMessage
+                  className="error"
+                  name="password"
+                  component="div"
+                />
+              </label>
+              <br></br>
+              <div className="loginPage-content-btns">
+                <button
+                  type="submit"
+                  className="loginPage-content btns signIn"
+                  // disabled={isSubmitting}
+                  onClick={() => router.push("/")}
+                  // redirect="/"
+                >
+                  Log in
+                </button>
+                <br></br>
+                {/* <div className="loginPage-content btns signIn">
                     <Link href="/home">Log In</Link>
                   </div> */}
-                  <button
-                    type="submit"
-                    className="loginPage-content btns register"
-                    href="/register"
-                    onClick={() => router.push("/register")}
-                    // disabled={isSubmitting}
-                  >
-                    Sign Up
-                  </button>
-                  <br></br>
-                  {/* <div className="loginPage-content btns register">
+                <button
+                  type="submit"
+                  className="loginPage-content btns register"
+                  href="/register"
+                  onClick={() => router.push("/register")}
+                  // disabled={isSubmitting}
+                >
+                  Sign Up
+                </button>
+                <br></br>
+                {/* <div className="loginPage-content btns register">
                     <Link href="/register">Sign up</Link>
                   </div> */}
-                  <a href=".">Forget password?</a>
-                </div>
-              </Form>
-            )}
-          </Formik>
-        </div>
+                <a href=".">Forget password?</a>
+              </div>
+            </Form>
+          )}
+        </Formik>
       </div>
-    </>
+    </div>
   );
 };
 

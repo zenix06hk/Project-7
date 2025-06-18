@@ -6,11 +6,9 @@ import {
 
 export default function Page() {
   return (
-    <>
-      <div>
-        <FontAwesomeIcon icon={faMagnifyingGlass} />
-        <FontAwesomeIcon icon={faCircleStop} />
-      </div>
-    </>
+    <div>
+      <FontAwesomeIcon icon={faMagnifyingGlass} />
+      <FontAwesomeIcon icon={faCircleStop} />
+    </div>
   );
 }
