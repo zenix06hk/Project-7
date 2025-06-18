@@ -1,7 +1,10 @@
 import { useSession, signIn, signOut } from "next-auth/react";
 
 function LoginBtn() {
-  const { data: session } = useSession();
+  const { data: status, session } = useSession();
+
+  console.log(status);
+  console.log(session);
   if (session) {
     return (
       <>

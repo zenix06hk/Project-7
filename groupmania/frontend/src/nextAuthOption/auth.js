@@ -14,38 +14,46 @@ export const authOptions = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
+        console.log(credentials);
         // --- YOUR BACKEND LOGIN API CALL ---
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_API}/api/auth/login`,
-          {
-            method: "POST",
-            body: JSON.stringify({
-              email: credentials.email,
-              password: credentials.password,
-            }),
-            headers: {
-              "Content-type": "application/json; charset=UTF-8",
-            },
+        try {
+          const res = await fetch(
+            `${process.env.NEXT_PUBLIC_BACKEND_API}/api/auth/login`,
+            {
+              method: "POST",
+              body: JSON.stringify({
+                email: credentials.email,
+                password: credentials.password,
+              }),
+              headers: {
+                "Content-Type": "application/json",
+              },
+            }
+          );
+
+          const data = await res.json();
+          console.log(data);
+
+          // console.log(res)
+          if (res.ok) {
+            // Return the user object, which will be passed to the jwt callback.
+            // IMPORTANT: Include your custom token here!
+            console.log(data);
+            console.log("data part show");
+            return {
+              id: data.user.userId,
+              name: data.user.username,
+              email: data.user.email,
+              accessToken: data.token, // Store your custom token here
+              // Add any other user data you want to store in the session
+            };
+          } else {
+            console.log("res not ok");
+            // If you return null or throw an Error, the user will be sent to the error page.
+            return null;
           }
-        );
-        // console.log(res)
-
-        const data = await res.json();
-        console.log(data);
-
-        if (res.ok && data.token && data.user) {
-          // Return the user object, which will be passed to the jwt callback.
-          // IMPORTANT: Include your custom token here!
-          return {
-            id: data.user.id,
-            name: data.user.name,
-            email: data.user.email,
-            accessToken: data.token, // Store your custom token here
-            // Add any other user data you want to store in the session
-          };
-        } else {
-          // If you return null or throw an Error, the user will be sent to the error page.
-          return null;
+        } catch (error) {
+          console.error("Error during authorization:", error);
         }
       },
     }),
