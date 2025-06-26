@@ -1,3 +1,4 @@
+import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { getServerSession } from "next-auth"; // Used for server-side session access
 
@@ -75,12 +76,12 @@ export const authOptions = {
     },
     async session({ session, token }) {
       // The `token` object is what was returned from the `jwt` callback.
-      if (token) {
-        session.user.id = token.id;
-        session.user.name = token.name;
-        session.user.email = token.email;
-        session.accessToken = token.accessToken; // Expose the token to the client-side session
-      }
+      // if (token) {
+      session.user.id = token.id;
+      session.user.name = token.name;
+      session.user.email = token.email;
+      session.accessToken = token.accessToken; // Expose the token to the client-side session
+      // }
       return session;
     },
   },
@@ -93,6 +94,8 @@ export const authOptions = {
 };
 
 // This helper is for server components/API routes to get the session
-export function auth(...args) {
-  return getServerSession(...args, authOptions);
-}
+// export function auth(...args) {
+//   return getServerSession(...args, authOptions);
+// }
+
+export default NextAuth(authOptions);
