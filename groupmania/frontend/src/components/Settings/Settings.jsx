@@ -12,7 +12,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
-import ThemeSwitcher from "@/components/DarkModeTheme/ThemeSwitcher";
+// import ThemeSwitcher from "@/components/DarkModeTheme/ThemeSwitcher";
 
 function Setting() {
   const [open, setOpen] = React.useState(false);
@@ -33,7 +33,7 @@ function Setting() {
       </Link>
       <h3>
         Dark Mode
-        <ThemeSwitcher />
+        {/* <ThemeSwitcher /> */}
       </h3>
       <React.Fragment>
         <h3 variant="outlined" onClick={handleClickOpen}>

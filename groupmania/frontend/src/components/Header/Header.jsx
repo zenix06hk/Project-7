@@ -39,6 +39,7 @@ function Header() {
             </div>
           ))}
         </div>
+        <LoginBtn />
         <Image
           src="/assets/profile_image.jpg"
           alt="icon"
@@ -47,8 +48,6 @@ function Header() {
           className="header__profileImg"
         />
       </div>
-
-      <LoginBtn />
     </header>
   );
 }

@@ -1,7 +1,5 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
-// import ThemeProvider from "@/components/DarkModeTheme/ThemeProvider";
-// import ThemeSwitcher from "@/components/DarkModeTheme/ThemeSwitcher";
 const inter = Inter({ subsets: ["latin"] });
 import AuthProviders from "@/components/AuthProvider/AuthProviders";
 
@@ -12,6 +10,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      {/* <body> */}
       <body className={`bg-white dark:bg-black ${inter.className}`}>
         {/* <ThemeProvider attribute="class" defaultTheme="system" enableSystem> */}
         {/* <ThemeSwitcher /> */}

@@ -31,11 +31,12 @@ export const authOptions = {
             }
           );
 
-          const data = await res.json();
-          console.log(data);
+          // const data = await res.json();
+          // console.log(data);
 
           // console.log(res)
           if (res.ok) {
+            const data = await res.json();
             // Return the user object, which will be passed to the jwt callback.
             // IMPORTANT: Include your custom token here!
             console.log(data);
@@ -48,7 +49,7 @@ export const authOptions = {
               // Add any other user data you want to store in the session
             };
           } else {
-            console.log("res not ok");
+            console.log("res not ok", res);
             // If you return null or throw an Error, the user will be sent to the error page.
             return null;
           }
