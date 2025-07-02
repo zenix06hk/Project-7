@@ -16,6 +16,7 @@ import {
 // import profileImg from "../../assets/profile_image.jpg";
 
 import "./Poststream.scss";
+import Comments from "../Comments/Comments";
 
 // const profile_Img = profileImg;
 
@@ -100,14 +101,20 @@ function MembersShare({ posts, postComment }) {
                 />
               </div>
               <label htmlFor="fname"></label>
-              {item?.comments.map((commentItem, index) => {
+              {/* {item?.comments.map((commentItem, index) => {
                 return (
                   <div key={index}>
                     {commentItem.id} - {commentItem.comment}
                   </div>
                 );
-              })}
-              <Comments id={id} postComment={postComment} />
+              })} */}
+              {Array.isArray(item.comments) &&
+                item?.comments.map((commentItem, index) => (
+                  <div key={index}>
+                    {commentItem.id} - {commentItem.comment}
+                  </div>
+                ))}
+              <Comments postComment={postComment} />
               {/* <Form onSubmit={handleSubmit}>
                 <input
                   type="text"

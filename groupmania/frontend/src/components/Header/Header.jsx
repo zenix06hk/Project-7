@@ -18,7 +18,7 @@ import {
 
 function Header() {
   const navList = [
-    { name: faHome, url: "/home" },
+    { name: faHome, url: "/" },
     { name: faUserGroup, url: "/friends" },
     { name: faPeopleGroup, url: "/community" },
     { name: faGear, url: "/settings" },

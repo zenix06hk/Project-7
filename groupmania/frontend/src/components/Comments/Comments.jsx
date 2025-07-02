@@ -13,7 +13,7 @@ function Comments({ id, postComment }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     setComment("");
-    postComment(comment, id);
+    postComment(comments, id);
   };
 
   return (
@@ -32,7 +32,9 @@ function Comments({ id, postComment }) {
         className="createPost__button submit"
         height="30px"
         value=""
-      ></button>
+      >
+        Send
+      </button>
     </Form>
   );
 }
