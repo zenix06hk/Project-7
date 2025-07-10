@@ -38,9 +38,15 @@ function HomePage() {
     });
   };
 
+  // Prevent posting if both uploadedImage and description are empty
+  const canPost =
+    userPost.description.trim() !== "" ||
+    (userPost.uploadedImage && userPost.uploadedImage !== "");
+
   //create new post item
   const newPostItem = (e) => {
     e.preventDefault();
+    if (!canPost) return;
     setPosts([...posts, userPost]);
     //reset the user form
     setUserPost({

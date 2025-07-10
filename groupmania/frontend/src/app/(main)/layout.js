@@ -4,7 +4,7 @@ import Header from "@/components/Header/Header";
 import Sidebar from "@/components/Sidebar/Sidebar";
 import "./main.scss";
 
-export default function Layout({ children }) {
+function Layout({ children }) {
   return (
     <div className="mainLayout__container">
       <div className="mainLayout__header">
@@ -19,3 +19,5 @@ export default function Layout({ children }) {
     </div>
   );
 }
+
+export default Layout;

@@ -9,8 +9,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faThumbsUp,
   faThumbsDown,
-  faComment,
-  faPen,
+  faBookmark,
 } from "@fortawesome/free-solid-svg-icons";
 
 // import profileImg from "../../assets/profile_image.jpg";
@@ -88,13 +87,7 @@ function MembersShare({ posts, postComment }) {
                   height="30px"
                 />
                 <FontAwesomeIcon
-                  icon={faComment}
-                  className="poststream__icon"
-                  width="30px"
-                  height="30px"
-                />
-                <FontAwesomeIcon
-                  icon={faPen}
+                  icon={faBookmark}
                   className="poststream__icon"
                   width="30px"
                   height="30px"

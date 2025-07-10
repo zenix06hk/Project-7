@@ -13,7 +13,7 @@ function Comments({ id, postComment }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     setComment("");
-    postComment(comments, id);
+    postComment(Comments, id);
   };
 
   return (
