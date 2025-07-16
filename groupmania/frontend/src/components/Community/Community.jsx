@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 import * as React from "react";
+import { useState } from "react";
 import Button from "@mui/material/Button";
 import { red } from "@mui/material/colors";
 
@@ -16,6 +17,14 @@ import "./community.scss";
 const color = red[500];
 
 function CommunityPage() {
+  // State to track community membership status
+  const [isMember, setIsMember] = useState(false);
+
+  // Handle button click to toggle membership status
+  const handleMembershipToggle = () => {
+    setIsMember(!isMember);
+  };
+
   return (
     <>
       <div className="community__heading">
@@ -43,11 +52,13 @@ function CommunityPage() {
           </div>
         </Link>
         <div className="community__status">
-          <Button variant="contained" size="small" color="salmon">
-            Join
-          </Button>
-          <Button variant="outlined" size="small" color="red">
-            Leave
+          <Button
+            variant={isMember ? "outlined" : "contained"}
+            size="small"
+            color={isMember ? "error" : "primary"}
+            onClick={handleMembershipToggle}
+          >
+            {isMember ? "Leave" : "Join"}
           </Button>
         </div>
       </div>

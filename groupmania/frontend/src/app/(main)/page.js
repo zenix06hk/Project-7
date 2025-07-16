@@ -12,7 +12,7 @@ function HomePage() {
     img: "",
     description: "",
     uploadedImage: "",
-    comment: [],
+    comments: [],
     id: 1,
   });
   //published posts on the page
@@ -54,7 +54,7 @@ function HomePage() {
       img: "",
       description: "",
       uploadedImage: "",
-      comment: [],
+      comments: [],
     });
     setId(id + 1);
   };
@@ -64,7 +64,9 @@ function HomePage() {
     const updatePostWithComment = posts.map((item) => {
       if (item.id === id) {
         console.log(item);
-        const newComments = [...item.comments, { comment: value, id: id }];
+        // Ensure comments array exists, if not create it
+        const currentComments = item.comments || [];
+        const newComments = [...currentComments, { comment: value, id: id }];
         return {
           ...item,
           comments: newComments,
@@ -74,14 +76,6 @@ function HomePage() {
       return item;
     });
     setPosts(updatePostWithComment);
-
-    // const updatedPosts = [...posts];
-    // const latestPost = updatedPosts[updatedPosts.length - 1];
-    // if (latestPost) {
-    //   latestPost.comment = [...latestPost.comment, value];
-    //   setPosts(updatedPosts);
-    // }
-    //reset the comment form
   };
 
   return (

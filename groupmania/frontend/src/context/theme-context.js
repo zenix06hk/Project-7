@@ -9,15 +9,19 @@ const ThemeContext = createContext();
 export const ThemeProvider = ({ children }) => {
   // Initialize theme from localStorage or default to 'light'
   const [theme, setTheme] = useState(() => {
-    const savedTheme = localStorage.getItem("theme");
-    return savedTheme || "light";
+    return typeof window !== "undefined"
+      ? localStorage.getItem("theme")
+      : "light";
   });
 
   // Update localStorage and document class when theme changes
   useEffect(() => {
     localStorage.setItem("theme", theme);
     if (typeof window !== "undefined") {
+      console.log("test");
       document.body.className = theme;
+    } else {
+      console.log("test2");
     }
   }, [theme]);
 

@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 import * as React from "react";
+import { useState } from "react";
 import Button from "@mui/material/Button";
 import { red } from "@mui/material/colors";
 
@@ -16,6 +17,14 @@ import "./friendsList.scss";
 const color = red[500];
 
 function FriendsList() {
+  // State to track friendship status
+  const [isFriend, setIsFriend] = useState(false);
+
+  // Handle button click to toggle friendship status
+  const handleFriendshipToggle = () => {
+    setIsFriend(!isFriend);
+  };
+
   return (
     <>
       <h1>Friends</h1>
@@ -35,12 +44,14 @@ function FriendsList() {
           </Link>
         </div>
         <div className="friendsList__status">
-          <Button variant="contained" size="small" color="salmon">
-            Add
+          <Button
+            variant={isFriend ? "outlined" : "contained"}
+            size="small"
+            color={isFriend ? "error" : "primary"}
+            onClick={handleFriendshipToggle}
+          >
+            {isFriend ? "Unfriend" : "Add"}
           </Button>
-          {/* <Button variant="outlined" size="small" color="red">
-            Unfriend
-          </Button> */}
         </div>
       </div>
     </>

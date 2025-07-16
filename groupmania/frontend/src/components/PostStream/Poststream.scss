@@ -37,5 +37,65 @@
   &__icon {
     // border: 1px solid purple;
     margin: 0 10px;
+    transition: color 0.3s ease, transform 0.2s ease;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+
+    &--thumbs-up {
+      &:hover {
+        color: #007bff !important;
+      }
+
+      &.active {
+        color: #007bff !important;
+      }
+    }
+
+    &--thumbs-down {
+      &:hover {
+        color: #dc3545 !important;
+      }
+
+      &.active {
+        color: #dc3545 !important;
+      }
+    }
+  }
+
+  &__comments {
+    margin-top: 15px;
+    padding: 15px;
+    // background-color: #f8f9fa;
+    // border-radius: 8px;
+    // border-top: 1px solid #e0e0e0;
+
+    h4 {
+      margin: 0 0 10px 0;
+      font-size: 16px;
+      color: #ffffff;
+      font-weight: 600;
+    }
+  }
+
+  &__comment {
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 10px 12px;
+    margin-bottom: 8px;
+    // border-left: 3px solid #007bff;
+    // box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    p {
+      margin: 0;
+      font-size: 14px;
+      color: #ffffff;
+      line-height: 1.4;
+    }
   }
 }

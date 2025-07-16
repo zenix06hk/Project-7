@@ -12,14 +12,36 @@ import {
   faBookmark,
 } from "@fortawesome/free-solid-svg-icons";
 
-// import profileImg from "../../assets/profile_image.jpg";
-
 import "./Poststream.scss";
 import Comments from "../Comments/Comments";
 
-// const profile_Img = profileImg;
-
 function MembersShare({ posts, postComment }) {
+  // State to track like/dislike status for each post
+  const [postReactions, setPostReactions] = useState({});
+
+  // Handle thumbs up click
+  const handleThumbsUp = (postId) => {
+    setPostReactions((prev) => ({
+      ...prev,
+      [postId]: {
+        ...prev[postId],
+        thumbsUp: !prev[postId]?.thumbsUp,
+        thumbsDown: false, // Reset thumbs down when thumbs up is clicked
+      },
+    }));
+  };
+
+  // Handle thumbs down click
+  const handleThumbsDown = (postId) => {
+    setPostReactions((prev) => ({
+      ...prev,
+      [postId]: {
+        ...prev[postId],
+        thumbsDown: !prev[postId]?.thumbsDown,
+        thumbsUp: false, // Reset thumbs up when thumbs down is clicked
+      },
+    }));
+  };
   // const [comment, setComment] = useState("");
 
   // const updateComment = (value) => {
@@ -45,7 +67,13 @@ function MembersShare({ posts, postComment }) {
   return (
     <div>
       {posts.map((item, index) => {
-        const { description, uploadedImage, comment: itemComment } = item;
+        const {
+          description,
+          uploadedImage,
+          comment: itemComment,
+          id,
+          comments,
+        } = item;
         return (
           <div key={index} className="poststream__container">
             <Image
@@ -76,58 +104,52 @@ function MembersShare({ posts, postComment }) {
               <div className="poststream__bottom">
                 <FontAwesomeIcon
                   icon={faThumbsUp}
-                  className="poststream__icon"
+                  className={`poststream__icon poststream__icon--thumbs-up ${
+                    postReactions[id]?.thumbsUp ? "active" : ""
+                  }`}
                   width="30px"
                   height="30px"
+                  onClick={() => handleThumbsUp(id)}
+                  style={{
+                    cursor: "pointer",
+                    color: postReactions[id]?.thumbsUp ? "#007bff" : "inherit",
+                  }}
                 />
                 <FontAwesomeIcon
                   icon={faThumbsDown}
-                  className="poststream__icon"
+                  className={`poststream__icon poststream__icon--thumbs-down ${
+                    postReactions[id]?.thumbsDown ? "active" : ""
+                  }`}
                   width="30px"
                   height="30px"
+                  onClick={() => handleThumbsDown(id)}
+                  style={{
+                    cursor: "pointer",
+                    color: postReactions[id]?.thumbsDown
+                      ? "#dc3545"
+                      : "inherit",
+                  }}
                 />
-                <FontAwesomeIcon
+                {/* <FontAwesomeIcon
                   icon={faBookmark}
                   className="poststream__icon"
                   width="30px"
                   height="30px"
-                />
+                /> */}
               </div>
               <label htmlFor="fname"></label>
-              {/* {item?.comments.map((commentItem, index) => {
-                return (
-                  <div key={index}>
-                    {commentItem.id} - {commentItem.comment}
-                  </div>
-                );
-              })} */}
-              {Array.isArray(item.comments) &&
-                item?.comments.map((commentItem, index) => (
-                  <div key={index}>
-                    {commentItem.id} - {commentItem.comment}
-                  </div>
-                ))}
-              <Comments postComment={postComment} />
-              {/* <Form onSubmit={handleSubmit}>
-                <input
-                  type="text"
-                  id="comment"
-                  placeholder="Comment here..."
-                  size="100"
-                  className="createPost__textfield"
-                  value={comment}
-                  onChange={handleInputChange}
-                />
-                <button
-                  type="submit"
-                  className="createPost__button submit"
-                  onClick={postComment}
-                  height="30px"
-                  value=""
-                >
-                  <p>Post</p>
-                </button>
-              </Form> */}
+              {/* Display submitted comments */}
+              {Array.isArray(comments) && comments.length > 0 && (
+                <div className="poststream__comments">
+                  <h4>Comments:</h4>
+                  {comments.map((commentItem, commentIndex) => (
+                    <div key={commentIndex} className="poststream__comment">
+                      <p>{commentItem.comment}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+              <Comments postComment={postComment} id={id} />
             </div>
           </div>
         );

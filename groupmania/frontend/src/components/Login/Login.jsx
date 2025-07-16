@@ -29,11 +29,11 @@ const Login = () => {
   const { data: session } = useSession();
   console.log({ session });
   //Submit the Login clicking
-  const handleSubmit = async (values, { setSubmitting }) => {
+  const handleSubmit = async (values, { setStatus }) => {
     console.log(values);
     //async call
     try {
-      const result = await signIn("credentials", {
+      const response = await signIn("credentials", {
         redirect: false,
         email: values.email,
         password: values.password,
@@ -53,12 +53,20 @@ const Login = () => {
       //   //     message: data?.error ?? "Invalid email or password",
       //   //   });
       // }
-      console.log(result);
+
+      if (response.ok) {
+        router.push("/");
+        // console.log("success");
+      } else {
+        setStatus({
+          message: "invalid email or password",
+        });
+      }
     } catch (error) {
-      // console.log("error");
-      // setStatus({ error: true, message: "Error has occur" });
+      setStatus({
+        message: "An error occurred. Please try again.",
+      });
       console.error("Error occurred during login:", error);
-      alert("An error occurred. Please try again.");
     }
   };
 
@@ -79,7 +87,7 @@ const Login = () => {
           validationSchema={validationSchema}
           onSubmit={handleSubmit}
         >
-          {({ isSubmitting, errors }) => (
+          {({ isSubmitting, errors, status }) => (
             <Form>
               <label htmlFor="email">
                 Email: {isSubmitting}
@@ -110,24 +118,25 @@ const Login = () => {
                 />
               </label>
               <br></br>
+
+              {status?.message && <div>{status.message}</div>}
               <div className="loginPage-content-btns">
                 <button
                   type="submit"
                   className="loginPage-content btns signIn"
                   // disabled={isSubmitting}
-                  onClick={() => router.push("/")}
                   // redirect="/"
                 >
                   Log in
                 </button>
                 <br></br>
+
                 {/* <div className="loginPage-content btns signIn">
                     <Link href="/home">Log In</Link>
                   </div> */}
                 <button
-                  type="submit"
+                  type="button"
                   className="loginPage-content btns register"
-                  href="/register"
                   onClick={() => router.push("/register")}
                   // disabled={isSubmitting}
                 >

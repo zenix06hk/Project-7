@@ -12,8 +12,10 @@ function Comments({ id, postComment }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    setComment("");
-    postComment(Comments, id);
+    if (comment.trim()) {
+      postComment(comment, id);
+      setComment("");
+    }
   };
 
   return (
