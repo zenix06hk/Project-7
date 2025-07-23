@@ -1,9 +1,9 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Form from "next/form";
-import { useState } from "react";
+import { useTheme } from "../../context/theme-context";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -16,6 +16,14 @@ import "./Poststream.scss";
 import Comments from "../Comments/Comments";
 
 function MembersShare({ posts, postComment }) {
+  const { theme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  // Ensure component is mounted before using theme
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   // State to track like/dislike status for each post
   const [postReactions, setPostReactions] = useState({});
 
@@ -73,6 +81,7 @@ function MembersShare({ posts, postComment }) {
           comment: itemComment,
           id,
           comments,
+          timestamp,
         } = item;
         return (
           <div key={index} className="poststream__container">
@@ -98,6 +107,16 @@ function MembersShare({ posts, postComment }) {
                   />
                 )}
               </span>
+              {timestamp && (
+                <div
+                  className="poststream__timestamp"
+                  style={{
+                    color: mounted && theme === "dark" ? "white" : "black",
+                  }}
+                >
+                  <span>{timestamp}</span>
+                </div>
+              )}
               <span>
                 <p>{itemComment}</p>
               </span>

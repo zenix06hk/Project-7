@@ -47,7 +47,21 @@ function HomePage() {
   const newPostItem = (e) => {
     e.preventDefault();
     if (!canPost) return;
-    setPosts([...posts, userPost]);
+
+    // Create timestamp in DD/MM/YYYY T HH:MM:SS format
+    const now = new Date();
+    const timestamp =
+      now.toLocaleDateString("en-GB") +
+      " T " +
+      now.toLocaleTimeString("en-GB", { hour12: false });
+
+    const newPost = {
+      ...userPost,
+      timestamp: timestamp,
+      id: id,
+    };
+
+    setPosts([...posts, newPost]);
     //reset the user form
     setUserPost({
       username: "",

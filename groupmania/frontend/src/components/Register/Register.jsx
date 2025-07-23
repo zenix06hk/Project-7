@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Image from "next/image";
+import { useTheme } from "../../context/theme-context";
 
 import "./register.scss";
 
@@ -26,7 +27,6 @@ const validationSchema = Yup.object().shape({
 });
 
 const initialValues = {
-  username: "",
   first_name: "",
   last_name: "",
   email: "",
@@ -36,6 +36,13 @@ const initialValues = {
 
 const Register = () => {
   const router = useRouter();
+  const { theme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  // Ensure component is mounted before using theme
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleSubmit = async (
     values,
@@ -53,7 +60,6 @@ const Register = () => {
         {
           method: "POST",
           body: JSON.stringify({
-            username: values.username,
             first_name: values.first_name,
             last_name: values.last_name,
             email: values.email,
@@ -83,7 +89,11 @@ const Register = () => {
     <div className="registerPage">
       <div className="registerPage-content">
         <Image
-          src="/assets/icon_and_name.png"
+          src={
+            mounted && theme === "dark"
+              ? "/assets/icon_and_name_dark.png"
+              : "/assets/icon_and_name.png"
+          }
           alt="icon"
           width={500}
           height={80}
@@ -96,21 +106,6 @@ const Register = () => {
         >
           {({ isSubmitting, errors, status }) => (
             <Form>
-              <label htmlFor="username">
-                Username:
-                <br></br>
-                <Field
-                  name="username"
-                  type="text"
-                  className={errors.password ? "error" : ""}
-                  size="50"
-                />
-                <ErrorMessage
-                  className="error"
-                  name="username"
-                  component="div"
-                />
-              </label>
               <br></br>
               <label htmlFor="first_name">
                 First Name:
@@ -204,6 +199,10 @@ const Register = () => {
                 >
                   Sign Up {isSubmitting}
                 </button>
+                <div className="login-link">
+                  Already have an account?{" "}
+                  <Link href="/signin">Back to sign in page</Link>
+                </div>
               </div>
             </Form>
           )}

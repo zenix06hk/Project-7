@@ -4,10 +4,52 @@
     align-items: center;
     justify-items: center;
     padding: 0 50px;
+
+    // Form styling
+    form {
+      margin: 20px 0; // Reduced from 30px to 20px
+
+      label {
+        margin-bottom: 10px; // Reduced from 15px to 10px
+        display: block;
+      }
+    }
+
+    // Input field styling
+    input[type="text"],
+    input[type="email"],
+    input[type="password"] {
+      padding: 10px;
+      border: 2px solid #ddd;
+      border-radius: 4px;
+      transition: border-color 0.3s ease;
+      outline: none;
+      margin-top: 5px; // Reduced from 8px to 5px
+
+      // Hover and focus effects
+      &:hover,
+      &:focus {
+        border-color: #007bff; // Outer dark blue
+        box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.3); // Inner light blue
+      }
+
+      // Error state
+      &.error {
+        border-color: #dc3545; // Red border for errors
+      }
+    }
+
+    // Error message styling
+    .error {
+      color: #dc3545; // Red color for error messages
+      margin-top: 5px;
+    }
+
     &-companyLogo {
       display: block;
       width: auto;
       align-items: center;
+      margin: 15px 0; // Reduced from 20px to 15px
       // padding: 180px 10px 50px;
     }
   }
@@ -29,8 +71,9 @@
 
 .btn {
   text-align: center;
-  margin: 20px;
+  margin: 20px auto; // Changed to auto for horizontal centering
   padding: 10px 30px;
+  display: block; // Make button block element for centering
   a {
     text-decoration: none; // Remove underline from links
   }
@@ -38,7 +81,21 @@
     border: 1px solid pink;
     background-color: pink;
     border-radius: 5px;
-    align-items: center;
-    margin-left: 240px;
+    // Removed margin-left: 240px to allow auto centering
+  }
+}
+
+// Link section styling
+.login-link {
+  text-align: center;
+  margin-top: 15px;
+
+  a {
+    color: #007bff;
+    text-decoration: underline;
+
+    &:hover {
+      color: #0056b3;
+    }
   }
 }

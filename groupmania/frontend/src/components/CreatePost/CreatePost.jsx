@@ -20,7 +20,7 @@ import { faPhotoFilm } from "@fortawesome/free-solid-svg-icons";
 //   const [submit, setSubmit] = useState();
 //   const [error, setError] = useState(null);
 
-function CreatePost({ userPost, postDescription, postImage, newPostItem }) {
+const CreatePost = ({ userPost, postDescription, postImage, newPostItem }) => {
   const { description, uploadedImage } = userPost;
   // console.log({ uploadedImage });
 
@@ -39,6 +39,46 @@ function CreatePost({ userPost, postDescription, postImage, newPostItem }) {
     width: 1,
   });
 
+  const handleSubmit = async (
+    values,
+    { setSubmitting, setStatus, resetForm }
+  ) => {
+    setSubmitting(true);
+    // console.log(values);
+
+    // router.push("/home");
+    //async call
+    //this is a fetch call for the backend environment for api
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_API}auth/post`,
+        {
+          method: "POST",
+          body: JSON.stringify({
+            postContent: values.postContent,
+            postImg: values.postImg,
+          }),
+          headers: {
+            "Content-type": "application/json; charset=UTF-8",
+          },
+        }
+      );
+      // console.log(res);
+      const data = await res.json();
+      // console.log(data);
+      setSubmitting(false);
+      if (data?.success) {
+        resetForm();
+        setStatus({ success: true, message: "success" });
+      } else {
+        setStatus({ error: true, message: data?.error ?? "Error has occur" });
+      }
+    } catch (error) {
+      console.log("error");
+      setStatus({ error: true, message: "Error has occur" });
+    }
+  };
+
   return (
     <div className="createPost__container">
       <Image
@@ -53,6 +93,7 @@ function CreatePost({ userPost, postDescription, postImage, newPostItem }) {
           <Form>
             <label htmlFor="fname"></label>
             <input
+              name="postContent"
               type="text"
               id="description"
               placeholder="How's going today?"
@@ -106,6 +147,6 @@ function CreatePost({ userPost, postDescription, postImage, newPostItem }) {
       </div>
     </div>
   );
-}
+};
 
 export default CreatePost;

@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Formik, Field, ErrorMessage, Form } from "formik";
@@ -8,6 +8,7 @@ import * as Yup from "yup";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { signIn } from "next-auth/react";
+import { useTheme } from "../../context/theme-context";
 
 import "./login.scss";
 
@@ -27,6 +28,14 @@ const initialValues = {
 const Login = () => {
   const router = useRouter();
   const { data: session } = useSession();
+  const { theme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  // Ensure component is mounted before using theme
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   console.log({ session });
   //Submit the Login clicking
   const handleSubmit = async (values, { setStatus }) => {
@@ -75,7 +84,11 @@ const Login = () => {
     <div className="loginPage">
       <div className="loginPage-content">
         <Image
-          src="/assets/icon_and_name.png"
+          src={
+            mounted && theme === "dark"
+              ? "/assets/icon_and_name_dark.png"
+              : "/assets/icon_and_name.png"
+          }
           alt="icon"
           width={500}
           height={80}
@@ -98,15 +111,16 @@ const Login = () => {
                   className={errors.email ? "error" : ""}
                   size="50"
                 />
+                <br></br>
+                <ErrorMessage className="error" name="email" component="div" />
               </label>
               <br></br>
-              <ErrorMessage className="error" name="email" component="div" />
               <label htmlFor="password">
                 Password:
                 <br></br>
                 <Field
                   name="password"
-                  type="text"
+                  type="password"
                   className={errors.password ? "error" : ""}
                   size="50"
                 />
@@ -134,19 +148,13 @@ const Login = () => {
                 {/* <div className="loginPage-content btns signIn">
                     <Link href="/home">Log In</Link>
                   </div> */}
-                <button
-                  type="button"
-                  className="loginPage-content btns register"
-                  onClick={() => router.push("/register")}
-                  // disabled={isSubmitting}
-                >
-                  Sign Up
-                </button>
+                <Link href="/register" className="register-link">
+                  Create account
+                </Link>
                 <br></br>
                 {/* <div className="loginPage-content btns register">
                     <Link href="/register">Sign up</Link>
                   </div> */}
-                <a href=".">Forget password?</a>
               </div>
             </Form>
           )}

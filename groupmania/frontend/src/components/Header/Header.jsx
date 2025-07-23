@@ -1,7 +1,8 @@
 "use client";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useTheme } from "../../context/theme-context";
 
 import "./header.scss";
 import LoginBtn from "../LoginBtn/LoginBtn";
@@ -19,6 +20,14 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 function Header() {
+  const { theme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  // Ensure component is mounted before using theme
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const navList = [
     { name: faHome, url: "/" },
     { name: faUserGroup, url: "/friends" },
@@ -30,7 +39,16 @@ function Header() {
     <header>
       <div className="header__container">
         <Link href="/home">
-          <Image src="/assets/icon.png" alt="icon" width={80} height={80} />
+          <Image
+            src={
+              mounted && theme === "dark"
+                ? "/assets/icon_dark.png"
+                : "/assets/icon.png"
+            }
+            alt="icon"
+            width={80}
+            height={80}
+          />
         </Link>
         <div className="header__tablist">
           {navList.map((item, index) => (
