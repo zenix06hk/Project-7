@@ -36,10 +36,16 @@ const Login = () => {
     setMounted(true);
   }, []);
 
-  console.log({ session });
+  // Only log session changes, not on every render
+  useEffect(() => {
+    if (session) {
+      // console.log("Session updated:", session);
+    }
+  }, [session]);
+
   //Submit the Login clicking
   const handleSubmit = async (values, { setStatus }) => {
-    console.log(values);
+    // console.log("Login attempt:", values.email);
     //async call
     try {
       const response = await signIn("credentials", {
@@ -48,34 +54,22 @@ const Login = () => {
         password: values.password,
       });
 
-      // setSubmitting(false);
-      // // if (data?.success) {
-      // //   setStatus({ success: true, message: data.message });
-      // if (data?.error) {
-      //   alert(data.error); // Show error message from backend
-      // } else if (data?.success) {
-      //   console.log("Login successful", data);
-      //   router.push("/home"); // Redirect to homepage
-      //   // } else {
-      //   //   setStatus({
-      //   //     error: true,
-      //   //     message: data?.error ?? "Invalid email or password",
-      //   //   });
-      // }
+      // console.log("Login response:", response);
 
-      if (response.ok) {
+      if (response?.ok) {
+        // console.log("Login successful, redirecting...");
         router.push("/");
-        // console.log("success");
       } else {
+        // console.log("Login failed:", response?.error);
         setStatus({
-          message: "invalid email or password",
+          message: "Invalid email or password",
         });
       }
     } catch (error) {
+      console.error("Login error:", error); // Keep this for debugging errors
       setStatus({
         message: "An error occurred. Please try again.",
       });
-      console.error("Error occurred during login:", error);
     }
   };
 
@@ -148,9 +142,9 @@ const Login = () => {
                 {/* <div className="loginPage-content btns signIn">
                     <Link href="/home">Log In</Link>
                   </div> */}
-                <Link href="/register" className="register-link">
-                  Create account
-                </Link>
+                <div className="register-link">
+                  <Link href="/register">Create account</Link>
+                </div>
                 <br></br>
                 {/* <div className="loginPage-content btns register">
                     <Link href="/register">Sign up</Link>

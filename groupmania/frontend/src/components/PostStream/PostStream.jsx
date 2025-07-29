@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import Form from "next/form";
+import { useSession } from "next-auth/react";
 import { useTheme } from "../../context/theme-context";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -17,6 +18,7 @@ import Comments from "../Comments/Comments";
 
 function MembersShare({ posts, postComment }) {
   const { theme } = useTheme();
+  const { data: session } = useSession();
   const [mounted, setMounted] = useState(false);
 
   // Ensure component is mounted before using theme
@@ -73,7 +75,7 @@ function MembersShare({ posts, postComment }) {
   // };
 
   return (
-    <div>
+    <div className="poststream">
       {posts.map((item, index) => {
         const {
           description,

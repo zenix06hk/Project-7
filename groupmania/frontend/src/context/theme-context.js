@@ -18,10 +18,7 @@ export const ThemeProvider = ({ children }) => {
   useEffect(() => {
     localStorage.setItem("theme", theme);
     if (typeof window !== "undefined") {
-      console.log("test");
       document.body.className = theme;
-    } else {
-      console.log("test2");
     }
   }, [theme]);
 

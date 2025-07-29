@@ -11,9 +11,11 @@ module.exports = (req, res, next) => {
       });
     }
     const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
+    // console.log("Decoded token:", decodedToken); // Debug log
     req.user = decodedToken;
     next();
-  } catch {
+  } catch (error) {
+    // console.error("Auth middleware error:", error); // Debug log
     res.status(403).json({
       error: "unauthorized request!",
     });

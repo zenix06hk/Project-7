@@ -1,0 +1,350 @@
+.updateprofile-container {
+  min-height: 100vh;
+  padding: 20px;
+  max-width: 1200px; // Increased from 800px to 1200px
+  margin: 0 auto;
+
+  .updateprofile-header {
+    margin-bottom: 30px;
+
+    h1 {
+      font-size: 32px;
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: var(--text-color);
+    }
+
+    p {
+      color: var(--text-secondary);
+      font-size: 16px;
+      line-height: 1.5;
+    }
+  }
+
+  .updateprofile-content {
+    background: var(--background-secondary);
+    border-radius: 8px;
+    padding: 40px; // Increased from 30px to 40px
+  }
+
+  // Two-column layout
+  .updateprofile-layout {
+    display: grid;
+    grid-template-columns: 350px 1fr; // Increased from 300px to 350px
+    gap: 60px; // Increased from 40px to 60px
+    align-items: start;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+      gap: 30px;
+    }
+  }
+
+  // Left Panel - Profile Picture
+  .updateprofile-left-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 30px; // Increased from 20px to 30px
+    background: var(--background-primary);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    min-height: 400px; // Added minimum height for better proportion
+  }
+
+  // Right Panel - Form Fields
+  .updateprofile-right-panel {
+    flex: 1;
+    padding: 20px; // Added padding for better spacing
+  }
+
+  .updateprofile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+  }
+
+  // Status Messages
+  .updateprofile-status {
+    padding: 12px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 20px;
+
+    &.success {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    &.error {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+  }
+
+  // Profile Picture Section (now in left panel)
+  .updateprofile-picture-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 100%;
+
+    .updateprofile-avatar {
+      position: relative;
+
+      .updateprofile-avatar-img {
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid var(--border-color);
+      }
+    }
+
+    .updateprofile-change-picture-btn {
+      background: none;
+      border: none;
+      color: var(--primary-color);
+      cursor: pointer;
+      font-size: 14px;
+      padding: 12px 16px;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      transition: all 0.3s ease;
+      width: 100%;
+      max-width: 200px;
+
+      &:hover {
+        background: var(--background-hover);
+        border-color: var(--primary-color);
+      }
+    }
+
+    // User Info Display
+    .updateprofile-user-info {
+      margin-top: 25px;
+      text-align: center;
+
+      .updateprofile-name-row {
+        margin-bottom: 15px; // Increased spacing between name and email
+
+        .updateprofile-current-name {
+          font-size: 20px; // Increased from 18px
+          font-weight: 600;
+          color: var(--text-color);
+          display: block;
+          line-height: 1.4;
+        }
+      }
+
+      .updateprofile-email-row {
+        .updateprofile-current-email {
+          font-size: 16px; // Increased from 14px
+          color: var(--text-secondary);
+          display: block;
+          line-height: 1.4;
+        }
+      }
+    }
+  }
+
+  // Form Section Styling
+  .updateprofile-section {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    .updateprofile-label {
+      font-weight: 600;
+      color: var(--text-color);
+      font-size: 16px;
+      margin-bottom: 5px;
+    }
+
+    .updateprofile-description {
+      color: var(--text-secondary);
+      font-size: 14px;
+      margin-bottom: 15px;
+    }
+  }
+
+  // Input and Textarea Styling (matching Register component)
+  .updateprofile-input,
+  .updateprofile-textarea {
+    padding: 12px;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    transition: border-color 0.3s ease;
+    outline: none;
+    font-size: 16px;
+    background: var(--input-background);
+    color: var(--text-color);
+
+    &::placeholder {
+      color: var(--text-secondary);
+    }
+
+    // Hover and focus effects (same as Register)
+    &:hover,
+    &:focus {
+      border-color: #007bff; // Outer dark blue
+      box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.3); // Inner light blue
+    }
+
+    // Error state (same as Register)
+    &.error {
+      border-color: #dc3545; // Red border for errors
+    }
+  }
+
+  .updateprofile-textarea {
+    resize: vertical;
+    min-height: 120px;
+    font-family: inherit;
+  }
+
+  // Name Fields Layout
+  .updateprofile-name-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+
+    @media (max-width: 600px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  // Websites Section
+  .updateprofile-websites {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    .updateprofile-website-field {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+
+      .updateprofile-input {
+        flex: 1;
+      }
+
+      .updateprofile-remove-btn {
+        background: none;
+        border: 1px solid var(--border-color);
+        color: var(--text-secondary);
+        padding: 8px 16px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: all 0.3s ease;
+
+        &:hover {
+          background: var(--background-hover);
+          border-color: var(--border-hover);
+        }
+      }
+    }
+
+    .updateprofile-add-more-btn {
+      background: none;
+      border: 1px dashed var(--border-color);
+      color: var(--primary-color);
+      padding: 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      align-self: flex-start;
+
+      &:hover {
+        background: var(--background-hover);
+        border-color: var(--primary-color);
+      }
+    }
+  }
+
+  // Action Buttons
+  .updateprofile-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+
+    .updateprofile-cancel-btn,
+    .updateprofile-save-btn {
+      padding: 12px 24px;
+      border-radius: 5px;
+      font-size: 16px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+    }
+
+    .updateprofile-cancel-btn {
+      background: transparent;
+      color: var(--text-secondary);
+      border: 1px solid var(--border-color);
+
+      &:hover {
+        background: var(--background-hover);
+      }
+    }
+
+    .updateprofile-save-btn {
+      background-color: #007bff;
+      color: white;
+      border: 1px solid #007bff;
+
+      &:hover:not(:disabled) {
+        background-color: #0056b3;
+        border-color: #0056b3;
+      }
+
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+    }
+  }
+
+  // Error message styling (same as Register)
+  .error {
+    color: #dc3545; // Red color for error messages
+    margin-top: 5px;
+    font-size: 14px;
+  }
+
+  // Responsive Design
+  @media (max-width: 768px) {
+    padding: 15px;
+
+    .updateprofile-content {
+      padding: 20px;
+    }
+
+    .updateprofile-header h1 {
+      font-size: 28px;
+    }
+
+    .updateprofile-picture-section {
+      flex-direction: column;
+      text-align: center;
+      gap: 15px;
+    }
+
+    .updateprofile-actions {
+      flex-direction: column-reverse;
+
+      .updateprofile-cancel-btn,
+      .updateprofile-save-btn {
+        width: 100%;
+      }
+    }
+  }
+}

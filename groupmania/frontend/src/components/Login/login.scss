@@ -93,10 +93,15 @@ a {
 
 // Register link styling
 .register-link {
-  color: white;
-  text-decoration: underline;
+  text-align: center;
+  margin-top: 15px;
 
-  &:hover {
-    color: #f0f0f0;
+  a {
+    color: #007bff;
+    text-decoration: underline;
+
+    &:hover {
+      color: #0056b3;
+    }
   }
 }

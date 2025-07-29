@@ -11,9 +11,9 @@ function Layout({ children }) {
         <Header />
       </div>
       <div className="mainLayout__body">
-        <div className="mainLayout__sidebar">
+        {/* <div className="mainLayout__sidebar">
           <Sidebar />
-        </div>
+        </div> */}
         <div className="mainLayout__content">{children}</div>
       </div>
     </div>

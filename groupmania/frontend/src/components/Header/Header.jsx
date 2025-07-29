@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useSession } from "next-auth/react";
 import { useTheme } from "../../context/theme-context";
 
 import "./header.scss";
@@ -22,6 +23,7 @@ import {
 function Header() {
   const { theme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const { data: session } = useSession();
 
   // Ensure component is mounted before using theme
   useEffect(() => {
@@ -38,7 +40,7 @@ function Header() {
   return (
     <header>
       <div className="header__container">
-        <Link href="/home">
+        <Link href="/">
           <Image
             src={
               mounted && theme === "dark"
@@ -48,6 +50,7 @@ function Header() {
             alt="icon"
             width={80}
             height={80}
+            priority
           />
         </Link>
         <div className="header__tablist">
@@ -62,8 +65,8 @@ function Header() {
         <LoginBtn />
         <DarkModeToggle />
         <Image
-          src="/assets/profile_image.jpg"
-          alt="icon"
+          src={session?.user?.image ?? "/assets/annoymous_avatar.avif.jpg"}
+          alt="profile"
           width={80}
           height={80}
           className="header__profileImg"

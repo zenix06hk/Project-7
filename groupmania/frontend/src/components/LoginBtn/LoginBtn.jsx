@@ -2,13 +2,18 @@ import { useSession, signIn, signOut } from "next-auth/react";
 
 function LoginBtn() {
   const { data: session } = useSession();
-
-  console.log({ session });
   if (session) {
+    const displayName =
+      session.user.firstName && session.user.lastName
+        ? `${session.user.firstName} ${session.user.lastName}`
+        : session.user.name;
+
     return (
       <>
-        Signed in as {session.user.name} <br />
-        <button onClick={() => signOut()}>Sign out</button>
+        Signed in as {displayName} <br />
+        <button onClick={() => signOut({ callbackUrl: "/signin" })}>
+          Sign out
+        </button>
       </>
     );
   }

@@ -22,8 +22,15 @@ exports.signUp = async (req, res) => {
     // console.log("hashedPassword", hashedPassword);
     try {
       const result = await db.query(
-        "INSERT INTO users (username, first_name, last_name, email, password)  VALUES ($1, $2, $3, $4, $5) RETURNING *",
-        [username, first_name, last_name, email, hashedPassword]
+        "INSERT INTO users (username, first_name, last_name, email, password, avatar)  VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
+        [
+          username,
+          first_name,
+          last_name,
+          email,
+          hashedPassword,
+          "/assets/annoymous_avatar.avif.jpg",
+        ]
       );
       const username_data = result.rows[0].username;
       const firstName = result.rows[0].first_name;
@@ -31,6 +38,9 @@ exports.signUp = async (req, res) => {
       const email_data = result.rows[0].email;
       const password = result.rows[0].password;
       const avatar = result.rows[0].avatar;
+
+      console.log(result);
+
       res.status(201).json({
         message: "User created successfully",
         success: true,
@@ -39,8 +49,7 @@ exports.signUp = async (req, res) => {
           first_name: firstName,
           last_name: lastName,
           email: email_data,
-
-          avatar: null,
+          avatar: "/assets/annoymous_avatar.avif.jpg",
         },
       });
     } catch (error) {
@@ -87,7 +96,7 @@ exports.login = async (req, res) => {
 
   try {
     const result = await db.query(
-      "SELECT email, username, first_name, userid, password FROM users WHERE email = $1",
+      "SELECT email, username, avatar, first_name, last_name, userid, password FROM users WHERE email = $1",
       [email]
     );
     // console.log(result?.rows?.length);
@@ -113,7 +122,6 @@ exports.login = async (req, res) => {
     const token = jwt.sign(
       {
         userId: result.rows[0].userid,
-        // userName: result.rows[0].username,
       },
       process.env.SECRET_KEY,
       {
@@ -123,16 +131,24 @@ exports.login = async (req, res) => {
 
     // console.log(token);
 
+    // Extract user data to return
+
     const username = result.rows[0].username;
     const userId = result.rows[0].userid;
     const first_name = result.rows[0].first_name;
+    const last_name = result.rows[0].last_name;
+    const avatar = result.rows[0].avatar;
+
+    console.log(result.rows[0]);
 
     res.status(200).json({
       user: {
         userId: userId,
         username: username,
-        name: first_name,
+        first_name: first_name,
+        last_name: last_name,
         email: email,
+        image: avatar,
       },
       token: token,
     });
@@ -146,43 +162,226 @@ exports.login = async (req, res) => {
       res.status(500).json({ error: "Internal server error" });
     }
   }
+};
 
-  // if (result.rows.length === 0) {
-  //   return res.status(404).json({ error: "Invalid email or password" });
-  // }
+exports.deleteAccount = async (req, res) => {
+  try {
+    // Get user ID from JWT token (set by auth middleware)
+    const userId = req.user.userId;
 
-  // const user = result.rows[0];
-  // const isPasswordMatch = await bcrypt.compare(password, user.password);
+    console.log("Attempting to delete user:", userId);
 
-  // if (!isPasswordMatch) {
-  //   return res.status(401).json({ error: "Password does not match" });
-  // }
+    if (!userId) {
+      return res.status(400).json({
+        success: false,
+        error: "User ID is required",
+      });
+    }
 
-  // return res.status(200).json({
-  //   success: true,
-  //   message: "Login successful",
-  // });
-  // db.query(
-  //   "INSERT INTO users (username, first_name, last_name, email, password) VALUES ($1, $2, $3, $4, $5) RETURNING *",
-  //   [username, first_name, last_name, email, password],
-  //   (error, results) => {
-  //     if (error) {
-  //       throw error;
-  //       // res.status(403).send("User already exists");
-  //       // return;
-  //     }
-  //     res
-  //       .status(200)
-  //       // .send(`User added with ID: ${results.rows[0].id}`)
-  //       .json({
-  //         message: "Email has been sign up.",
-  //         success: true,
-  //         data: results.rows[0],
-  //       });
-  //   }
-  // );
-  // } catch (err) {
-  //   console.error(err);
-  //   res.status(500).send("Internal Server Error");
-  // }
+    // Check if user exists
+    const userCheck = await db.query(
+      "SELECT userid FROM users WHERE userid = $1",
+      [userId]
+    );
+
+    if (userCheck.rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        error: "User not found",
+      });
+    }
+
+    // Delete user's posts first (if you have a posts table)
+    try {
+      await db.query("DELETE FROM posts WHERE user_id = $1", [userId]);
+      console.log("User posts deleted");
+    } catch (error) {
+      console.log("No posts table or posts to delete");
+    }
+
+    // Delete user's comments (if you have a comments table)
+    try {
+      await db.query("DELETE FROM comments WHERE user_id = $1", [userId]);
+      console.log("User comments deleted");
+    } catch (error) {
+      console.log("No comments table or comments to delete");
+    }
+
+    // Finally delete the user account
+    const result = await db.query(
+      "DELETE FROM users WHERE userid = $1 RETURNING userid, username, email",
+      [userId]
+    );
+
+    if (result.rows.length > 0) {
+      console.log("User deleted successfully:", result.rows[0]);
+
+      res.status(200).json({
+        success: true,
+        message: "Account deleted successfully",
+        deletedUser: {
+          userId: result.rows[0].userid,
+          username: result.rows[0].username,
+          email: result.rows[0].email,
+        },
+      });
+    } else {
+      res.status(404).json({
+        success: false,
+        error: "Failed to delete user",
+      });
+    }
+  } catch (error) {
+    console.error("Delete account error:", error);
+    res.status(500).json({
+      success: false,
+      error: "Internal server error while deleting account",
+    });
+  }
+};
+
+exports.updateProfile = async (req, res) => {
+  try {
+    console.log("=== UPDATE PROFILE REQUEST ===");
+    console.log("Request body:", req.body);
+    console.log("User from token:", req.user);
+
+    const userId = req.user.userId; // From auth middleware
+
+    // Handle the updateContent structure from frontend
+    let updateData;
+    if (req.body.updateContent) {
+      updateData = req.body.updateContent;
+    } else {
+      updateData = req.body;
+    }
+
+    const { first_name, last_name, email, password } = updateData;
+
+    // Build the update query dynamically based on provided fields
+    let updateFields = [];
+    let values = [];
+    let paramCount = 1;
+
+    if (first_name) {
+      updateFields.push(`first_name = $${paramCount}`);
+      values.push(first_name);
+      paramCount++;
+    }
+
+    if (last_name) {
+      updateFields.push(`last_name = $${paramCount}`);
+      values.push(last_name);
+      paramCount++;
+    }
+
+    if (email) {
+      updateFields.push(`email = $${paramCount}`);
+      values.push(email);
+      paramCount++;
+    }
+
+    if (password) {
+      const hashedPassword = await bcrypt.hash(password, saltRounds);
+      updateFields.push(`password = $${paramCount}`);
+      values.push(hashedPassword);
+      paramCount++;
+    }
+
+    if (updateFields.length === 0) {
+      return res.status(400).json({
+        error: "No fields provided for update",
+        success: false,
+      });
+    }
+
+    // Add userId to values for WHERE clause
+    values.push(userId);
+
+    const query = `
+      UPDATE users 
+      SET ${updateFields.join(", ")} 
+      WHERE userid = $${paramCount} 
+      RETURNING userid, username, first_name, last_name, email, avatar
+    `;
+
+    console.log("Generated query:", query);
+    console.log("Query values:", values);
+
+    const result = await db.query(query, values);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        error: "User not found",
+        success: false,
+      });
+    }
+
+    const updatedUser = result.rows[0];
+
+    res.status(200).json({
+      message: "Profile updated successfully",
+      success: true,
+      data: {
+        id: updatedUser.userid,
+        username: updatedUser.username,
+        first_name: updatedUser.first_name,
+        last_name: updatedUser.last_name,
+        email: updatedUser.email,
+        avatar: updatedUser.avatar,
+      },
+    });
+  } catch (error) {
+    if (error.code === "23505") {
+      res.status(409).json({
+        error: "Email already exists",
+        success: false,
+      });
+    } else {
+      console.error("Database error:", error);
+      res.status(500).json({
+        error: "Internal server error",
+        success: false,
+      });
+    }
+  }
+};
+
+// Get user profile data from database
+exports.getUserProfile = async (req, res) => {
+  try {
+    const userId = req.user.userId; // From auth middleware
+
+    const result = await db.query(
+      "SELECT userid, username, first_name, last_name, email, avatar FROM users WHERE userid = $1",
+      [userId]
+    );
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        error: "User not found",
+        success: false,
+      });
+    }
+
+    const user = result.rows[0];
+
+    res.status(200).json({
+      success: true,
+      user: {
+        userId: user.userid,
+        username: user.username,
+        first_name: user.first_name,
+        last_name: user.last_name,
+        email: user.email,
+        image: user.avatar,
+      },
+    });
+  } catch (error) {
+    console.error("Database error:", error);
+    res.status(500).json({
+      error: "Internal server error",
+      success: false,
+    });
+  }
 };

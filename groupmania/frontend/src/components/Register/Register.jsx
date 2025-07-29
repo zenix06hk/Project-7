@@ -13,10 +13,14 @@ import { useRouter } from "next/navigation";
 import * as Yup from "yup";
 
 const validationSchema = Yup.object().shape({
-  username: Yup.string()
-    .min(6, "Name must be minimum 6")
-    .max(30, "Name must not be more than 100 characters")
-    .required("Name is required"),
+  first_name: Yup.string()
+    .min(2, "First name must be at least 2 characters")
+    .max(30, "First name must not be more than 30 characters")
+    .required("First name is required"),
+  last_name: Yup.string()
+    .min(2, "Last name must be at least 2 characters")
+    .max(30, "Last name must not be more than 30 characters")
+    .required("Last name is required"),
   email: Yup.string().email("Invalid email").required("Email is required"),
   password: Yup.string()
     .min(6, "Password must be at least 6 characters")
@@ -49,40 +53,53 @@ const Register = () => {
     { setSubmitting, setStatus, resetForm }
   ) => {
     setSubmitting(true);
-    console.log(values);
+    // console.log("Form values:", values);
 
-    // router.push("/home");
+    // Clear any previous status
+    setStatus(null);
+
     //async call
     //this is a fetch call for the backend environment for api
     try {
+      const requestBody = {
+        username: values.username,
+        first_name: values.first_name,
+        last_name: values.last_name,
+        email: values.email,
+        password: values.password,
+      };
+
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_API}auth/sign-up`,
         {
           method: "POST",
-          body: JSON.stringify({
-            first_name: values.first_name,
-            last_name: values.last_name,
-            email: values.email,
-            password: values.password,
-            confirmPassword: values.confirmPassword,
-          }),
+          body: JSON.stringify(requestBody),
           headers: {
             "Content-type": "application/json; charset=UTF-8",
           },
         }
       );
+
+      // console.log("Response status:", res.status);
+      // console.log("Response ok:", res.ok);
+
       const data = await res.json();
-      console.log(data);
+      // console.log("Response data:", data);
+
       setSubmitting(false);
       if (data?.success) {
         resetForm();
-        setStatus({ success: true, message: "success" });
+        setStatus({ success: true, message: "Account created successfully!" });
       } else {
-        setStatus({ error: true, message: data?.error ?? "Error has occur" });
+        setStatus({
+          error: true,
+          message: data?.error ?? "Registration failed. Please try again.",
+        });
       }
     } catch (error) {
-      console.log("error");
-      setStatus({ error: true, message: "Error has occur" });
+      console.error("Registration error:", error);
+      setSubmitting(false);
+      setStatus({ error: true, message: "Network error. Please try again." });
     }
   };
   return (
@@ -106,6 +123,21 @@ const Register = () => {
         >
           {({ isSubmitting, errors, status }) => (
             <Form>
+              <label htmlFor="username">
+                username:
+                <br></br>
+                <Field
+                  name="username"
+                  type="text"
+                  className={errors.username ? "error" : ""}
+                  size="50"
+                />
+                <ErrorMessage
+                  className="error"
+                  name="username"
+                  component="div"
+                />
+              </label>
               <br></br>
               <label htmlFor="first_name">
                 First Name:
@@ -113,7 +145,7 @@ const Register = () => {
                 <Field
                   name="first_name"
                   type="text"
-                  className={errors.password ? "error" : ""}
+                  className={errors.first_name ? "error" : ""}
                   size="50"
                 />
                 <ErrorMessage
@@ -129,7 +161,7 @@ const Register = () => {
                 <Field
                   name="last_name"
                   type="text"
-                  className={errors.password ? "error" : ""}
+                  className={errors.last_name ? "error" : ""}
                   size="50"
                 />
                 <ErrorMessage
@@ -173,7 +205,7 @@ const Register = () => {
                 <Field
                   name="confirmPassword"
                   type="password"
-                  className={errors.password ? "error" : ""}
+                  className={errors.confirmPassword ? "error" : ""}
                   size="50"
                 />
                 <ErrorMessage
@@ -186,9 +218,9 @@ const Register = () => {
 
               {status?.error && <div className="error">{status.message}</div>}
               {status?.success && (
-                <div className="error">
-                  {status.message} - Register completed, please login
-                  <Link href="/login">here</Link>
+                <div className="success">
+                  {status.message} - Registration completed, please login{" "}
+                  <Link href="/signin">here</Link>
                 </div>
               )}
               <div>
