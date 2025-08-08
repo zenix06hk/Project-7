@@ -70,7 +70,7 @@ const Register = () => {
       };
 
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_API}auth/sign-up`,
+        `${process.env.NEXT_PUBLIC_BACKEND_API}/api/auth/sign-up`,
         {
           method: "POST",
           body: JSON.stringify(requestBody),

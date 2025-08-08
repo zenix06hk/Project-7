@@ -27,6 +27,62 @@
     padding: 40px; // Increased from 30px to 40px
   }
 
+  // Section container styling
+  .updateprofile-section-container {
+    margin-bottom: 30px;
+    padding: 20px;
+    background: var(--background-primary);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+
+    h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: var(--text-color);
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 10px;
+    }
+
+    // Style specific form submit buttons to match Login button
+    .updateprofile-save-btn {
+      border-radius: 8px;
+      padding: 20px 50px;
+      margin: 20px 0 10px 0;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 1px solid #ffdbdb;
+      background-color: transparent;
+      color: var(--text-color);
+      width: auto;
+      display: block;
+      text-align: center;
+      min-width: 120px;
+      margin-left: auto;
+
+      &:hover:not(:disabled) {
+        background-color: rgba(255, 255, 255, 0.1);
+      }
+
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+    }
+
+    // Add a container for the button alignment
+    .updateprofile-form {
+      display: flex;
+      flex-direction: column;
+
+      .updateprofile-save-btn {
+        align-self: flex-end;
+      }
+    }
+  }
+
   // Two-column layout
   .updateprofile-layout {
     display: grid;

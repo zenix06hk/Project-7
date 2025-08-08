@@ -45,7 +45,7 @@ function Setting() {
 
       // Call your backend API to delete the user account
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_API}auth/delete-account`,
+        `${process.env.NEXT_PUBLIC_BACKEND_API}/api/auth/delete-account`,
         {
           method: "DELETE",
           headers: {

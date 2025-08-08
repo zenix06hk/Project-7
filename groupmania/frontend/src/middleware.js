@@ -8,5 +8,6 @@ export const config = {
     "/settings",
     "/events",
     "/postsaved",
+    "/updateProfile",
   ],
 };

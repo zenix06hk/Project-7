@@ -25,7 +25,7 @@ export const authOptions = {
         // --- YOUR BACKEND LOGIN API CALL ---
         try {
           const res = await fetch(
-            `${process.env.NEXT_PUBLIC_BACKEND_API}auth/login`,
+            `${process.env.NEXT_PUBLIC_BACKEND_API}/api/auth/login`,
             {
               method: "POST",
               body: JSON.stringify({

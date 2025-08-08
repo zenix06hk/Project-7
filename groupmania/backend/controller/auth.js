@@ -39,7 +39,7 @@ exports.signUp = async (req, res) => {
       const password = result.rows[0].password;
       const avatar = result.rows[0].avatar;
 
-      console.log(result);
+      // console.log(result);
 
       res.status(201).json({
         message: "User created successfully",
@@ -92,7 +92,7 @@ exports.signUp = async (req, res) => {
 exports.login = async (req, res) => {
   const { email, password } = req.body;
 
-  console.log(req.body);
+  // console.log(req.body);
 
   try {
     const result = await db.query(
@@ -139,7 +139,7 @@ exports.login = async (req, res) => {
     const last_name = result.rows[0].last_name;
     const avatar = result.rows[0].avatar;
 
-    console.log(result.rows[0]);
+    // console.log(result.rows[0]);
 
     res.status(200).json({
       user: {
@@ -194,17 +194,17 @@ exports.deleteAccount = async (req, res) => {
     // Delete user's posts first (if you have a posts table)
     try {
       await db.query("DELETE FROM posts WHERE user_id = $1", [userId]);
-      console.log("User posts deleted");
+      // console.log("User posts deleted");
     } catch (error) {
-      console.log("No posts table or posts to delete");
+      // console.log("No posts table or posts to delete");
     }
 
     // Delete user's comments (if you have a comments table)
     try {
       await db.query("DELETE FROM comments WHERE user_id = $1", [userId]);
-      console.log("User comments deleted");
+      // console.log("User comments deleted");
     } catch (error) {
-      console.log("No comments table or comments to delete");
+      // console.log("No comments table or comments to delete");
     }
 
     // Finally delete the user account
@@ -214,7 +214,7 @@ exports.deleteAccount = async (req, res) => {
     );
 
     if (result.rows.length > 0) {
-      console.log("User deleted successfully:", result.rows[0]);
+      // console.log("User deleted successfully:", result.rows[0]);
 
       res.status(200).json({
         success: true,
@@ -242,18 +242,21 @@ exports.deleteAccount = async (req, res) => {
 
 exports.updateProfile = async (req, res) => {
   try {
-    console.log("=== UPDATE PROFILE REQUEST ===");
-    console.log("Request body:", req.body);
-    console.log("User from token:", req.user);
-
     const userId = req.user.userId; // From auth middleware
 
     // Handle the updateContent structure from frontend
     let updateData;
+    let avatarData;
+
     if (req.body.updateContent) {
       updateData = req.body.updateContent;
     } else {
       updateData = req.body;
+    }
+
+    // Handle avatar update separately
+    if (req.body.updateAvatar) {
+      avatarData = req.body.updateAvatar;
     }
 
     const { first_name, last_name, email, password } = updateData;
@@ -288,6 +291,13 @@ exports.updateProfile = async (req, res) => {
       paramCount++;
     }
 
+    // Add avatar if provided
+    if (avatarData) {
+      updateFields.push(`avatar = $${paramCount}`);
+      values.push(avatarData);
+      paramCount++;
+    }
+
     if (updateFields.length === 0) {
       return res.status(400).json({
         error: "No fields provided for update",
@@ -304,9 +314,6 @@ exports.updateProfile = async (req, res) => {
       WHERE userid = $${paramCount} 
       RETURNING userid, username, first_name, last_name, email, avatar
     `;
-
-    console.log("Generated query:", query);
-    console.log("Query values:", values);
 
     const result = await db.query(query, values);
 

@@ -53,7 +53,7 @@ const CreatePost = ({ userPost, postDescription, postImage, newPostItem }) => {
     //this is a fetch call for the backend environment for api
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_API}auth/post`,
+        `${process.env.NEXT_PUBLIC_BACKEND_API}/api/auth/post`,
         {
           method: "POST",
           body: JSON.stringify({

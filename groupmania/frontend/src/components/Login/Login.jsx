@@ -127,7 +127,7 @@ const Login = () => {
               </label>
               <br></br>
 
-              {status?.message && <div>{status.message}</div>}
+              {status?.message && <div className="error">{status.message}</div>}
               <div className="loginPage-content-btns">
                 <button
                   type="submit"
@@ -139,16 +139,10 @@ const Login = () => {
                 </button>
                 <br></br>
 
-                {/* <div className="loginPage-content btns signIn">
-                    <Link href="/home">Log In</Link>
-                  </div> */}
                 <div className="register-link">
                   <Link href="/register">Create account</Link>
                 </div>
                 <br></br>
-                {/* <div className="loginPage-content btns register">
-                    <Link href="/register">Sign up</Link>
-                  </div> */}
               </div>
             </Form>
           )}
