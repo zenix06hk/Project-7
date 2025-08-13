@@ -57,56 +57,83 @@ function Header() {
           />
         </Link>
         <div className="header__tablist">
-          {navList.map((item, index) => (
-            <div key={index} className="header__tablist_icon">
-              <Link href={item.url}>
+          {/* {navList.map((item, index) => ( */}
+          {/* <div key={index} className="header__tablist_icon"> */}
+          <div className="header__tablist_link">
+            {/* <Link href={item.url}>
                 <FontAwesomeIcon
                   icon={item.name}
-                  size="xl"
+                  size="lg"
                   style={{
                     color: mounted && theme === "dark" ? "white" : "black",
                   }}
                 />
-              </Link>
-            </div>
-          ))}
-        </div>
-
-        <div className="dropdown">
-          <Image
-            src={session?.user?.image ?? "/assets/annoymous_avatar.avif.jpg"}
-            alt="profile"
-            width={80}
-            height={80}
-            className="header__profileImg dropdown-toggle"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-            style={{ cursor: "pointer" }}
-          />
-
-          <ul className="dropdown-menu dropdown-menu-end">
-            <li>
-              <a className="dropdown-item d-flex align-items-center" href="#">
-                <span>Update Profile</span>
-              </a>
-            </li>
-            <li>
+              </Link> */}
+            <Link href="/">
               <div
-                className="dropdown-item d-flex justify-content-between align-items-center"
-                style={{ paddingRight: "1rem" }}
+                style={{
+                  color: mounted && theme === "dark" ? "white" : "black",
+                }}
               >
-                <span style={{ marginRight: "2rem" }}>Dark Mode</span>
-                <DarkModeToggle />
+                Home
               </div>
-            </li>
-            <li>
-              <a className="dropdown-item d-flex align-items-center">
-                <span>
-                  <LoginBtn />
-                </span>
-              </a>
-            </li>
-          </ul>
+            </Link>
+            <Link href="/friends">
+              <div
+                style={{
+                  color: mounted && theme === "dark" ? "white" : "black",
+                }}
+              >
+                Friends
+              </div>
+            </Link>
+            <Link href="/settings">
+              <div
+                style={{
+                  color: mounted && theme === "dark" ? "white" : "black",
+                }}
+              >
+                Settings
+              </div>
+            </Link>
+          </div>
+          {/* ))} */}
+          <div className="dropdown">
+            <Image
+              src={session?.user?.image ?? "/assets/annoymous_avatar.avif.jpg"}
+              alt="profile"
+              width={80}
+              height={80}
+              className="header__profileImg dropdown-toggle"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+              style={{ cursor: "pointer" }}
+            />
+
+            <ul className="dropdown-menu dropdown-menu-end">
+              <li>
+                <a className="dropdown-item d-flex align-items-center" href="#">
+                  <span>Update Profile</span>
+                </a>
+              </li>
+              <li>
+                <div
+                  className="dropdown-item d-flex justify-content-between align-items-center"
+                  style={{ paddingRight: "1rem" }}
+                >
+                  <span style={{ marginRight: "2rem" }}>Dark Mode</span>
+                  <DarkModeToggle />
+                </div>
+              </li>
+              <li>
+                <a className="dropdown-item d-flex align-items-center">
+                  <span>
+                    <LoginBtn />
+                  </span>
+                </a>
+              </li>
+            </ul>
+          </div>
         </div>
       </div>
     </header>

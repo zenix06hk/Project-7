@@ -83,7 +83,7 @@ function Setting() {
       <div className="settings-container">
         <h1>Settings</h1>
         <Link href="/updateProfile">
-          <h3>Update Profile</h3>
+          <h3 className="update-profile-link">Update Profile</h3>
         </Link>
         <div className="setting-darkmode">
           <h3>Dark Mode</h3>

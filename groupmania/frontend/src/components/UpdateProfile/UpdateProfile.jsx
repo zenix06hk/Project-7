@@ -81,9 +81,9 @@ const UpdateProfile = () => {
     }
   }, [session]);
 
-  if (status === "loading" || isLoading) {
-    return <div>Loading...</div>;
-  }
+  // if (status === "loading" || isLoading) {
+  //   return <>Loading</>;
+  // }
 
   console.log("token?", session?.accessToken);
 
