@@ -354,7 +354,6 @@ exports.updateProfile = async (req, res) => {
   }
 };
 
-// Get user profile data from database
 exports.getUserProfile = async (req, res) => {
   try {
     const userId = req.user.userId; // From auth middleware
@@ -392,3 +391,35 @@ exports.getUserProfile = async (req, res) => {
     });
   }
 };
+
+exports.createPost = async (req, res) => {
+  try {
+    const userId = req.user.userId; // From auth middleware
+    const { content } = req.body;
+
+    if (!content) {
+      return res.status(400).json({
+        error: "Content is required",
+        success: false,
+      });
+    }
+
+    const result = await db.query(
+      "INSERT INTO posts (userid, post, post_img, post_time, likes, dislikes) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
+      [userId, content, null, new Date(), 0, 0]
+    );
+
+    res.status(201).json({
+      success: true,
+      post: result.rows[0],
+    });
+  } catch (error) {
+    console.error("Database error:", error);
+    res.status(500).json({
+      error: "Internal server error",
+      success: false,
+    });
+  }
+};
+
+exports.postComment = async (req, res) => {};
