@@ -20,6 +20,7 @@
     "@mui/material-nextjs": "^6.3.0",
     "@tailwindcss/postcss": "^4.0.7",
     "axios": "^0.27.2",
+    "bootstrap": "^5.3.7",
     "formik": "^2.4.6",
     "next": "15.0.3",
     "next-auth": "^4.24.11",

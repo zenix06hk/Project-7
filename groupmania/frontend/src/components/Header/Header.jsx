@@ -10,6 +10,7 @@ import LoginBtn from "../LoginBtn/LoginBtn";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "@fortawesome/fontawesome-svg-core/styles.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 import DarkModeToggle from "@/components/DarkModeToggle/DarkModeToggle.jsx";
 // config.autoAddCss = false;
@@ -28,6 +29,8 @@ function Header() {
   // Ensure component is mounted before using theme
   useEffect(() => {
     setMounted(true);
+    // Import Bootstrap JavaScript for interactive components
+    import("bootstrap/dist/js/bootstrap.bundle.min.js");
   }, []);
 
   const navList = [
@@ -57,20 +60,54 @@ function Header() {
           {navList.map((item, index) => (
             <div key={index} className="header__tablist_icon">
               <Link href={item.url}>
-                <FontAwesomeIcon icon={item.name} size="xl" />
+                <FontAwesomeIcon
+                  icon={item.name}
+                  size="xl"
+                  style={{
+                    color: mounted && theme === "dark" ? "white" : "black",
+                  }}
+                />
               </Link>
             </div>
           ))}
         </div>
-        <LoginBtn />
-        <DarkModeToggle />
-        <Image
-          src={session?.user?.image ?? "/assets/annoymous_avatar.avif.jpg"}
-          alt="profile"
-          width={80}
-          height={80}
-          className="header__profileImg"
-        />
+
+        <div className="dropdown">
+          <Image
+            src={session?.user?.image ?? "/assets/annoymous_avatar.avif.jpg"}
+            alt="profile"
+            width={80}
+            height={80}
+            className="header__profileImg dropdown-toggle"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+            style={{ cursor: "pointer" }}
+          />
+
+          <ul className="dropdown-menu dropdown-menu-end">
+            <li>
+              <a className="dropdown-item d-flex align-items-center" href="#">
+                <span>Update Profile</span>
+              </a>
+            </li>
+            <li>
+              <div
+                className="dropdown-item d-flex justify-content-between align-items-center"
+                style={{ paddingRight: "1rem" }}
+              >
+                <span style={{ marginRight: "2rem" }}>Dark Mode</span>
+                <DarkModeToggle />
+              </div>
+            </li>
+            <li>
+              <a className="dropdown-item d-flex align-items-center">
+                <span>
+                  <LoginBtn />
+                </span>
+              </a>
+            </li>
+          </ul>
+        </div>
       </div>
     </header>
   );

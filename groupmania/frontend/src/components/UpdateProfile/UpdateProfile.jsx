@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
@@ -47,12 +47,59 @@ const passwordValidationSchema = Yup.object().shape({
 });
 
 const UpdateProfile = () => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const [selectedAvatar, setSelectedAvatar] = useState(null);
   const [avatarPreview, setAvatarPreview] = useState(null);
   const [avatarStatus, setAvatarStatus] = useState(null);
 
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    async function fetchUserProfile() {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_API}/api/auth/user-profile`,
+        {
+          method: "GET",
+          headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            Authorization: `Bearer ${session?.accessToken}`,
+          },
+        }
+      );
+      const data = await res.json();
+    }
+
+    if (status === "loading") {
+      console.log("do nothing");
+      return;
+    }
+
+    if (status === "authenticated") {
+      fetchUserProfile();
+    } else {
+      console.log("something gone wrong");
+    }
+  }, [session]);
+
+  if (status === "loading" || isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  console.log("token?", session?.accessToken);
+
   const RedColor = red[500];
+
+  const VisuallyHiddenInput = styled("input")({
+    clip: "rect(0 0 0 0)",
+    clipPath: "inset(50%)",
+    height: 1,
+    overflow: "hidden",
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    whiteSpace: "nowrap",
+    width: 1,
+  });
 
   // Handle avatar file selection - same functionality as CreatePost
   const postImage = (files) => {
@@ -124,18 +171,6 @@ const UpdateProfile = () => {
       });
     }
   };
-
-  const VisuallyHiddenInput = styled("input")({
-    clip: "rect(0 0 0 0)",
-    clipPath: "inset(50%)",
-    height: 1,
-    overflow: "hidden",
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    whiteSpace: "nowrap",
-    width: 1,
-  });
 
   // Profile section initial values and handler
   const profileInitialValues = {

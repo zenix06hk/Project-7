@@ -13,10 +13,14 @@
   &__tablist {
     // border: 5px solid red;
     display: flex;
-    padding: 0 10px;
+    align-items: center;
+    padding: 0 5px;
+    margin-left: -80px;
     &_icon {
       // border: 5px solid blue;
-      margin: 0 100px;
+      margin: 0 25px;
+      display: flex;
+      align-items: center;
     }
   }
   &__profileImg {
@@ -26,4 +30,11 @@
     height: 75px; /* Set height */
     border-radius: 50px;
   }
+}
+
+.dropdown {
+  padding-left: 100px;
+}
+.dropdown-item-darkModeBtn {
+  display: flex;
 }

@@ -10,16 +10,14 @@ function LoginBtn() {
 
     return (
       <>
-        Signed in as {displayName} <br />
-        <button onClick={() => signOut({ callbackUrl: "/signin" })}>
-          Sign out
-        </button>
+        {/* Signed in as {displayName} <br /> */}
+        <div onClick={() => signOut({ callbackUrl: "/signin" })}>Sign out</div>
       </>
     );
   }
   return (
     <>
-      Not signed in <br />
+      {/* Not signed in <br /> */}
       <button onClick={() => signIn()}>Sign in</button>
     </>
   );

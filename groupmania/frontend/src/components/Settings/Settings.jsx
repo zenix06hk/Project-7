@@ -50,7 +50,7 @@ function Setting() {
           method: "DELETE",
           headers: {
             "Content-type": "application/json; charset=UTF-8",
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${token}0`,
           },
         }
       );
