@@ -62,8 +62,6 @@ const Register = () => {
     // Clear any previous status
     setStatus(null);
 
-    //async call
-    //this is a fetch call for the backend environment for api
     try {
       const requestBody = {
         username: values.username,

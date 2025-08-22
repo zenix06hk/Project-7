@@ -17,9 +17,9 @@ import "./createpost.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPhotoFilm } from "@fortawesome/free-solid-svg-icons";
 
-// export default function Form() {
-//   const [submit, setSubmit] = useState();
-//   const [error, setError] = useState(null);
+const initialValues = {
+  post: "",
+};
 
 const CreatePost = ({ userPost, postDescription, postImage, newPostItem }) => {
   const { data: session } = useSession();

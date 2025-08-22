@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { signIn } from "next-auth/react";
 import { useTheme } from "../../context/theme-context";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 import "./login.scss";
 
@@ -129,20 +130,26 @@ const Login = () => {
 
               {status?.message && <div className="error">{status.message}</div>}
               <div className="loginPage-content-btns">
-                <button
-                  type="submit"
-                  className="loginPage-content btns signIn"
-                  // disabled={isSubmitting}
-                  // redirect="/"
-                >
-                  Log in
-                </button>
-                <br></br>
+                <div className="button-spinner-container">
+                  <button
+                    type="submit"
+                    className="loginPage-content btns signIn"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <div className="spinner-border spinner-border-sm text-danger"></div>
+                        Authenticating...
+                      </>
+                    ) : (
+                      "Log in"
+                    )}
+                  </button>
+                </div>
 
                 <div className="register-link">
                   <Link href="/register">Create account</Link>
                 </div>
-                <br></br>
               </div>
             </Form>
           )}
