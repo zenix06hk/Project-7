@@ -3,6 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { useSession, signOut } from "next-auth/react";
+import { useTheme } from "@/context/theme-context.js";
 import DarkModeToggle from "@/components/DarkModeToggle/DarkModeToggle.jsx";
 
 import "./settings.scss";
@@ -19,7 +20,13 @@ import DialogTitle from "@mui/material/DialogTitle";
 function Setting() {
   const [open, setOpen] = React.useState(false);
   const [isDeleting, setIsDeleting] = React.useState(false);
+  const [mounted, setMounted] = React.useState(false);
   const { data: session } = useSession();
+  const { theme } = useTheme();
+
+  React.useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleClickOpen = () => {
     setOpen(true);

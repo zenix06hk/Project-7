@@ -12,7 +12,7 @@ router.get("/user-profile", auth, authCtrl.getUserProfile);
 router.put("/update-profile", auth, authCtrl.updateProfile);
 // router.get("/update-profile", authCtrl.updateProfile);
 // router.get("/:id", authCtrl.post);
-// router.post("/:id", authCtrl.post);
+router.post("/create-post", authCtrl.createPost);
 // router.put("/:id", authCtrl.post);
 // router.delete("/:id", authCtrl.post);
 

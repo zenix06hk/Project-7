@@ -112,9 +112,12 @@ function Header() {
 
             <ul className="dropdown-menu dropdown-menu-end">
               <li>
-                <a className="dropdown-item d-flex align-items-center" href="#">
+                <Link
+                  className="dropdown-item d-flex align-items-center"
+                  href="/updateProfile"
+                >
                   <span>Update Profile</span>
-                </a>
+                </Link>
               </li>
               <li>
                 <div

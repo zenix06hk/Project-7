@@ -51,41 +51,80 @@ const UpdateProfile = () => {
   const [selectedAvatar, setSelectedAvatar] = useState(null);
   const [avatarPreview, setAvatarPreview] = useState(null);
   const [avatarStatus, setAvatarStatus] = useState(null);
-
   const [isLoading, setIsLoading] = useState(true);
-
+  const [hasErrorFetching, setHasErrorFetching] = useState("");
+  const [profileUpdate, setProfileUpdate] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+  });
   useEffect(() => {
     async function fetchUserProfile() {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_API}/api/auth/user-profile`,
-        {
-          method: "GET",
-          headers: {
-            "Content-type": "application/json; charset=UTF-8",
-            Authorization: `Bearer ${session?.accessToken}`,
-          },
+      setIsLoading(true);
+
+      // Early return if no session token
+      if (!session?.accessToken) {
+        setIsLoading(false);
+        return;
+      }
+
+      try {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_API}/api/auth/user-profile`,
+          {
+            method: "GET",
+            headers: {
+              "Content-type": "application/json; charset=UTF-8",
+              Authorization: `Bearer ${session?.accessToken}`,
+            },
+          }
+        );
+
+        // Check if the response is actually JSON
+        const responseText = await res.text();
+
+        if (!res.ok) {
+          throw new Error(`HTTP ${res.status}: ${responseText}`);
         }
-      );
-      const data = await res.json();
+
+        // Try to parse as JSON
+        let data;
+        try {
+          data = JSON.parse(responseText);
+        } catch (parseError) {
+          throw new Error("Server returned non-JSON response");
+        }
+        if (data?.success) {
+          setProfileUpdate({
+            ...profileUpdate,
+            ...data.user,
+            // firstName: data?.user?.first_name,
+            // lastName: data?.user?.last_name,
+            // email: data?.user?.email,
+          });
+          setHasErrorFetching(false);
+        } else {
+          setHasErrorFetching("something has gone wrong");
+        }
+        setIsLoading(false);
+      } catch (error) {
+        setHasErrorFetching(`Failed to fetch user profile: ${error.message}`);
+        setIsLoading(false);
+      }
     }
 
     if (status === "loading") {
-      console.log("do nothing");
       return;
     }
 
     if (status === "authenticated") {
       fetchUserProfile();
-    } else {
-      console.log("something gone wrong");
     }
   }, [session]);
 
   // if (status === "loading" || isLoading) {
   //   return <>Loading</>;
   // }
-
-  console.log("token?", session?.accessToken);
 
   const RedColor = red[500];
 
@@ -128,11 +167,15 @@ const UpdateProfile = () => {
         const base64Avatar = e.target.result;
 
         const res = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_API}auth/update-profile`,
+          `${process.env.NEXT_PUBLIC_BACKEND_API}/api/auth/update-profile`,
           {
             method: "PUT",
             body: JSON.stringify({
-              updateAvatar: base64Avatar,
+              updateContent: {
+                first_name: value.firstName,
+                last_Name: value.lastName,
+                email: value.email,
+              },
             }),
             headers: {
               "Content-type": "application/json; charset=UTF-8",
@@ -164,7 +207,6 @@ const UpdateProfile = () => {
       };
       reader.readAsDataURL(selectedAvatar);
     } catch (error) {
-      console.error("Avatar update error:", error);
       setAvatarStatus({
         error: true,
         message: "Network error. Please try again.",
@@ -173,11 +215,6 @@ const UpdateProfile = () => {
   };
 
   // Profile section initial values and handler
-  const profileInitialValues = {
-    firstName: "",
-    lastName: "",
-    email: "",
-  };
 
   const handleProfileSubmit = async (
     values,
@@ -187,31 +224,31 @@ const UpdateProfile = () => {
     setStatus(null);
 
     try {
-      const requestBody = {};
+      // const requestBody = {};
 
-      // Only include fields that have values
-      if (values.firstName && values.firstName.trim()) {
-        requestBody.first_name = values.firstName.trim();
-      }
-      if (values.lastName && values.lastName.trim()) {
-        requestBody.last_name = values.lastName.trim();
-      }
-      if (values.email && values.email.trim()) {
-        requestBody.email = values.email.trim();
-      }
+      // // Only include fields that have values
+      // if (values.firstName && values.firstName.trim()) {
+      //   requestBody.first_name = values.firstName.trim();
+      // }
+      // if (values.lastName && values.lastName.trim()) {
+      //   requestBody.last_name = values.lastName.trim();
+      // }
+      // if (values.email && values.email.trim()) {
+      //   requestBody.email = values.email.trim();
+      // }
 
-      // Check if at least one field is provided
-      if (Object.keys(requestBody).length === 0) {
-        setStatus({
-          error: true,
-          message: "Please fill at least one field to update.",
-        });
-        setSubmitting(false);
-        return;
-      }
+      // // Check if at least one field is provided
+      // if (Object.keys(requestBody).length === 0) {
+      //   setStatus({
+      //     error: true,
+      //     message: "Please fill at least one field to update.",
+      //   });
+      //   setSubmitting(false);
+      //   return;
+      // }
 
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_API}auth/update-profile`,
+        `${process.env.NEXT_PUBLIC_BACKEND_API}/api/auth/update-profile`,
         {
           method: "PUT",
           body: JSON.stringify({
@@ -237,7 +274,6 @@ const UpdateProfile = () => {
         });
       }
     } catch (error) {
-      console.error("Profile update error:", error);
       setSubmitting(false);
       setStatus({ error: true, message: "Network error. Please try again." });
     }
@@ -278,7 +314,7 @@ const UpdateProfile = () => {
       };
 
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_API}auth/update-profile`,
+        `${process.env.NEXT_PUBLIC_BACKEND_API}/api/auth/update-profile`,
         {
           method: "PUT",
           body: JSON.stringify({
@@ -304,7 +340,6 @@ const UpdateProfile = () => {
         });
       }
     } catch (error) {
-      console.error("Password change error:", error);
       setSubmitting(false);
       setStatus({ error: true, message: "Network error. Please try again." });
     }
@@ -419,7 +454,7 @@ const UpdateProfile = () => {
             <div className="updateprofile-section-container">
               <h3>Profile Information</h3>
               <Formik
-                initialValues={profileInitialValues}
+                initialValues={profileUpdate}
                 validationSchema={profileValidationSchema}
                 onSubmit={handleProfileSubmit}
               >

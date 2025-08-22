@@ -38,10 +38,6 @@ export const authOptions = {
             }
           );
 
-          // const data = await res.json();
-          // console.log(data);
-
-          // console.log(res)
           if (res.ok) {
             const data = await res.json();
             // Return the user object, which will be passed to the jwt callback.
@@ -62,6 +58,7 @@ export const authOptions = {
           }
         } catch (error) {
           console.error("Error during authorization:", error);
+          return null;
         }
       },
     }),

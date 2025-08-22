@@ -13,6 +13,9 @@ import { useRouter } from "next/navigation";
 import * as Yup from "yup";
 
 const validationSchema = Yup.object().shape({
+  username: Yup.string()
+    .min(3, "Username must be at least 3 characters")
+    .max(20, "Username must not be more than 20 characters"),
   first_name: Yup.string()
     .min(2, "First name must be at least 2 characters")
     .max(30, "First name must not be more than 30 characters")
@@ -31,6 +34,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const initialValues = {
+  username: "",
   first_name: "",
   last_name: "",
   email: "",

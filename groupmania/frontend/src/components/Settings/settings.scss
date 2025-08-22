@@ -27,11 +27,19 @@
     text-decoration: none; // Remove underline from links
     width: 100%;
 
-    // Style for Update Profile link
     .update-profile-link {
-      color: white;
+      color: black;
     }
   }
+}
+
+// Theme-based styling outside the component scope
+body.light .setting-content .update-profile-link {
+  color: black;
+}
+
+body.dark .setting-content .update-profile-link {
+  color: white;
 }
 
 .setting-darkmode {
