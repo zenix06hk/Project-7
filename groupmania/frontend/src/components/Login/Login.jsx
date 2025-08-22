@@ -141,7 +141,7 @@ const Login = () => {
                     {isSubmitting ? (
                       <>
                         <div className="spinner-border spinner-border-sm text-danger"></div>
-                        Authenticating...
+                        Authenticating....
                       </>
                     ) : (
                       "Log in"
