@@ -126,7 +126,9 @@ const Login = () => {
                   component="div"
                 />
               </label>
-              <br></br>
+              <br>
+                <></>
+              </br>
 
               {status?.message && <div className="error">{status.message}</div>}
               <div className="loginPage-content-btns">
