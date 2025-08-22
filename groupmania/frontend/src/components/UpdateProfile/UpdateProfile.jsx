@@ -59,68 +59,17 @@ const UpdateProfile = () => {
     email: "",
   });
   useEffect(() => {
-    async function fetchUserProfile() {
-      setIsLoading(true);
-
-      // Early return if no session token
-      if (!session?.accessToken) {
-        setIsLoading(false);
+    if (status == "loading") {
+      {
+        //if status is loading, wait to loading
         return;
       }
-
-      try {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_API}/api/auth/user-profile`,
-          {
-            method: "GET",
-            headers: {
-              "Content-type": "application/json; charset=UTF-8",
-              Authorization: `Bearer ${session?.accessToken}`,
-            },
-          }
-        );
-
-        // Check if the response is actually JSON
-        const responseText = await res.text();
-
-        if (!res.ok) {
-          throw new Error(`HTTP ${res.status}: ${responseText}`);
-        }
-
-        // Try to parse as JSON
-        let data;
-        try {
-          data = JSON.parse(responseText);
-        } catch (parseError) {
-          throw new Error("Server returned non-JSON response");
-        }
-        if (data?.success) {
-          setProfileUpdate({
-            ...profileUpdate,
-            ...data.user,
-            // firstName: data?.user?.first_name,
-            // lastName: data?.user?.last_name,
-            // email: data?.user?.email,
-          });
-          setHasErrorFetching(false);
-        } else {
-          setHasErrorFetching("something has gone wrong");
-        }
-        setIsLoading(false);
-      } catch (error) {
-        setHasErrorFetching(`Failed to fetch user profile: ${error.message}`);
-        setIsLoading(false);
-      }
-    }
-
-    if (status === "loading") {
-      return;
-    }
-
-    if (status === "authenticated") {
-      fetchUserProfile();
     }
   }, [session]);
+
+  if (status === "loading" || isLoading) {
+    return <>Loading</>;
+  }
 
   // if (status === "loading" || isLoading) {
   //   return <>Loading</>;
