@@ -57,3 +57,16 @@ useEffect(() => {
     fetchUserProfile();
   }
 }, [session]);
+
+useEffect(() => {
+  if (status == "loading") {
+    {
+      //if status is loading, wait to loading
+      return;
+    }
+  }
+}, [session]);
+
+if (status === "loading" || isLoading) {
+  return <>Loading</>;
+}

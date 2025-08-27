@@ -59,16 +59,63 @@ const UpdateProfile = () => {
     email: "",
   });
   useEffect(() => {
+    // the method used to fetch my profile
+    async function fetchUserProfile() {
+      setIsLoading(true);
+      try {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_API}/api/auth/user-profile`,
+          {
+            method: "GET",
+            headers: {
+              "Content-type": "application/json; charset=UTF-8",
+              Authorization: `Bearer ${session?.accessToken}`,
+              // dummy token to test unauthorized below
+              // Authorization: `Bearer 21321365`,
+            },
+          }
+        );
+
+        // Check if the response is actually JSON
+        const data = await res.json();
+        if (!data.success) {
+          setIsLoading(false);
+          setHasErrorFetching(data.error || "something has gone wrong.");
+          return <></>;
+        }
+
+        setProfileUpdate({
+          ...profileUpdate,
+          //controller auth.js line 327
+          ...data.user,
+        });
+        setIsLoading(false);
+      } catch (error) {
+        setIsLoading(false);
+        console.log(error);
+        setHasErrorFetching("error has occurred");
+      }
+    }
     if (status == "loading") {
       {
         //if status is loading, wait to loading
         return;
       }
     }
+
+    if (status === "authenticated") {
+      fetchUserProfile();
+    } else {
+      console.log("user not authenticated");
+    }
   }, [session]);
 
   if (status === "loading" || isLoading) {
-    return <>Loading</>;
+    return <>Loading...</>;
+  }
+
+  if (hasErrorFetching) {
+    return <div>{hasErrorFetching}</div>;
   }
 
   // if (status === "loading" || isLoading) {
@@ -173,29 +220,6 @@ const UpdateProfile = () => {
     setStatus(null);
 
     try {
-      // const requestBody = {};
-
-      // // Only include fields that have values
-      // if (values.firstName && values.firstName.trim()) {
-      //   requestBody.first_name = values.firstName.trim();
-      // }
-      // if (values.lastName && values.lastName.trim()) {
-      //   requestBody.last_name = values.lastName.trim();
-      // }
-      // if (values.email && values.email.trim()) {
-      //   requestBody.email = values.email.trim();
-      // }
-
-      // // Check if at least one field is provided
-      // if (Object.keys(requestBody).length === 0) {
-      //   setStatus({
-      //     error: true,
-      //     message: "Please fill at least one field to update.",
-      //   });
-      //   setSubmitting(false);
-      //   return;
-      // }
-
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_API}/api/auth/update-profile`,
         {

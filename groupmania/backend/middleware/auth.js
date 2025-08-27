@@ -17,6 +17,7 @@ module.exports = (req, res, next) => {
   } catch (error) {
     // console.error("Auth middleware error:", error); // Debug log
     res.status(403).json({
+      success: false,
       error: "unauthorized request!",
     });
   }

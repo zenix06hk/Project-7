@@ -28,9 +28,11 @@ const initialValues = {
 
 const Login = () => {
   const router = useRouter();
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const { theme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const [hasErrorFetching, setHasErrorFetching] = useState("");
 
   // Ensure component is mounted before using theme
   useEffect(() => {
@@ -39,8 +41,53 @@ const Login = () => {
 
   // Only log session changes, not on every render
   useEffect(() => {
-    if (session) {
-      // console.log("Session updated:", session);
+    async function fetchUserProfile() {
+      setIsLoading(true);
+      try {
+        const res = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND_API}/api/login`,
+          {
+            method: "GET",
+            headers: {
+              "Content-type": "application/json; charset=UTF-8",
+              Authorization: `Bearer ${session?.accessToken}`,
+              // dummy token to test unauthorized below
+              // Authorization: `Bearer 21321365`,
+            },
+          }
+        );
+
+        // Check if the response is actually JSON
+        const data = await res.json();
+        if (!data.success) {
+          setIsLoading(false);
+          setHasErrorFetching(data.error || "something has gone wrong.");
+          return <></>;
+        }
+
+        setProfileUpdate({
+          ...profileUpdate,
+          //controller auth.js line 327
+          ...data.user,
+        });
+        setIsLoading(false);
+      } catch (error) {
+        setIsLoading(false);
+        console.log(error);
+        setHasErrorFetching("error has occurred");
+      }
+    }
+    if (status == "loading") {
+      {
+        //if status is loading, wait to loading
+        return;
+      }
+    }
+
+    if (status === "authenticated") {
+      fetchUserProfile();
+    } else {
+      console.log("user not authenticated");
     }
   }, [session]);
 
@@ -126,9 +173,7 @@ const Login = () => {
                   component="div"
                 />
               </label>
-              <br>
-                <></>
-              </br>
+              <br></br>
 
               {status?.message && <div className="error">{status.message}</div>}
               <div className="loginPage-content-btns">
