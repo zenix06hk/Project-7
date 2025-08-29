@@ -394,24 +394,40 @@ exports.getUserProfile = async (req, res) => {
 
 exports.createPost = async (req, res) => {
   try {
-    const userId = req.user.userId; // From auth middleware
-    const { content } = req.body;
+    const { newPost, newImage } = req.body;
 
-    if (!content) {
-      return res.status(400).json({
-        error: "Content is required",
-        success: false,
-      });
-    }
+    // if (!content) {
+    //   return res.status(400).json({
+    //     error: "Content is required",
+    //     success: false,
+    //   });
+    // }
 
     const result = await db.query(
-      "INSERT INTO posts (userid, post, post_img, post_time, likes, dislikes) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
-      [userId, content, null, new Date(), 0, 0]
+      "INSERT INTO post (post, post_img, post_time, likes, dislikes) VALUES ($1, $2, $3, $4, $5) RETURNING *",
+      [newPost, newImage, new Date(), 0, 0]
     );
 
+    // const post_id = result.rows[0].post_id;
+    const new_post = result.rows[0].newPost;
+    const post_img = result.rows[0].newImage;
+    const post_time = result.rows[0].post_time;
+    const likes = result.rows[0].likes;
+    const dislikes = result.rows[0].dislikes;
+
+    // console.log(result);
+
     res.status(201).json({
+      message: "Post created successfully",
       success: true,
-      post: result.rows[0],
+      data: {
+        // post_id: post_id,
+        new_Post: new_post,
+        post_img: post_img,
+        post_time: post_time,
+        likes: likes,
+        dislikes: dislikes,
+      },
     });
   } catch (error) {
     console.error("Database error:", error);

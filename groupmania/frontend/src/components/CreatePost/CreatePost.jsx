@@ -47,19 +47,20 @@ const CreatePost = ({ userPost, postDescription, postImage, newPostItem }) => {
   ) => {
     setSubmitting(true);
     // console.log(values);
-
+    setStatus(null);
     // router.push("/home");
     //async call
     //this is a fetch call for the backend environment for api
     try {
+      const requestBody = {
+        postContent: values.post,
+      };
+
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_API}/api/auth/post`,
+        `${process.env.NEXT_PUBLIC_BACKEND_API}/api/auth/create-post`,
         {
           method: "POST",
-          body: JSON.stringify({
-            postContent: values.postContent,
-            postImg: values.postImg,
-          }),
+          body: JSON.stringify(requestBody),
           headers: {
             "Content-type": "application/json; charset=UTF-8",
           },
@@ -76,8 +77,9 @@ const CreatePost = ({ userPost, postDescription, postImage, newPostItem }) => {
         setStatus({ error: true, message: data?.error ?? "Error has occur" });
       }
     } catch (error) {
-      console.log("error");
-      setStatus({ error: true, message: "Error has occur" });
+      console.error("Create post error:", error);
+      setSubmitting(false);
+      setStatus({ error: true, message: "Network error. Please try again." });
     }
   };
 

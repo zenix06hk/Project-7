@@ -87,7 +87,6 @@ const Register = () => {
 
       const data = await res.json();
       // console.log("Response data:", data);
-
       setSubmitting(false);
       if (data?.success) {
         resetForm();
