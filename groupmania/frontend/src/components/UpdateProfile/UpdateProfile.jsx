@@ -7,11 +7,13 @@ import { useSession } from "next-auth/react";
 
 import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { red } from "@mui/material/colors";
 import { Box, Alert } from "@mui/material";
 
 import "./updateProfile.scss";
+import ChangePassword from "../ChangePassword/ChangePassword";
 
 import {
   Formik,
@@ -167,11 +169,7 @@ const UpdateProfile = () => {
           {
             method: "PUT",
             body: JSON.stringify({
-              updateContent: {
-                first_name: value.firstName,
-                last_Name: value.lastName,
-                email: value.email,
-              },
+              updateAvatar: base64Avatar,
             }),
             headers: {
               "Content-type": "application/json; charset=UTF-8",
@@ -220,6 +218,12 @@ const UpdateProfile = () => {
     setStatus(null);
 
     try {
+      const requestBody = {
+        firstName: values.firstName?.trim(),
+        lastName: values.lastName?.trim(),
+        email: values.email?.trim(),
+      };
+
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_API}/api/auth/update-profile`,
         {
@@ -427,169 +431,97 @@ const UpdateProfile = () => {
             <div className="updateprofile-section-container">
               <h3>Profile Information</h3>
               <Formik
-                initialValues={profileUpdate}
+                initialValues={{
+                  firstName: profileUpdate?.firstName || "",
+                  lastName: profileUpdate?.lastName || "",
+                  email: profileUpdate?.email || "",
+                }}
                 validationSchema={profileValidationSchema}
+                enableReinitialize={true}
                 onSubmit={handleProfileSubmit}
               >
-                {({ isSubmitting, errors, status }) => (
+                {({
+                  isSubmitting,
+                  errors,
+                  status,
+                  values,
+                  handleChange,
+                  handleBlur,
+                  touched,
+                }) => (
                   <Form className="updateprofile-form">
-                    {/* First Name Section */}
-                    <div className="updateprofile-section">
-                      <label
-                        htmlFor="firstName"
-                        className="updateprofile-label"
-                      >
-                        First Name
-                      </label>
-                      <Field
-                        name="firstName"
-                        type="text"
-                        className={`updateprofile-input ${
-                          errors.firstName ? "error" : ""
-                        }`}
-                        placeholder=""
-                      />
-                      <ErrorMessage
-                        className="error"
-                        name="firstName"
-                        component="div"
-                      />
-                    </div>
+                    {/* Status Messages */}
+                    {status?.error && (
+                      <div className="updateprofile-status-error">
+                        <Alert severity="error">{status.message}</Alert>
+                      </div>
+                    )}
+                    {status?.success && (
+                      <div className="updateprofile-status-success">
+                        <Alert severity="success">{status.message}</Alert>
+                      </div>
+                    )}
 
-                    {/* Last Name Section */}
-                    <div className="updateprofile-section">
-                      <label htmlFor="lastName" className="updateprofile-label">
-                        Last Name
-                      </label>
-                      <Field
-                        name="lastName"
-                        type="text"
-                        className={`updateprofile-input ${
-                          errors.lastName ? "error" : ""
-                        }`}
-                        placeholder=""
+                    <div className="updateprofile-form-fields">
+                      {/* First Name Section */}
+                      <TextField
+                        fullWidth
+                        id="firstName"
+                        name="firstName"
+                        label="First Name"
+                        value={values.firstName}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={touched.firstName && Boolean(errors.firstName)}
+                        helperText={touched.firstName && errors.firstName}
+                        variant="outlined"
                       />
-                      <ErrorMessage
-                        className="error"
-                        name="lastName"
-                        component="div"
-                      />
-                    </div>
 
-                    {/* Email Section */}
-                    <div className="updateprofile-section">
-                      <label htmlFor="email" className="updateprofile-label">
-                        Email
-                      </label>
-                      <Field
+                      {/* Last Name Section */}
+                      <TextField
+                        fullWidth
+                        id="lastName"
+                        name="lastName"
+                        label="Last Name"
+                        value={values.lastName}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={touched.lastName && Boolean(errors.lastName)}
+                        helperText={touched.lastName && errors.lastName}
+                        variant="outlined"
+                      />
+
+                      {/* Email Section */}
+                      <TextField
+                        fullWidth
+                        id="email"
                         name="email"
+                        label="Email"
                         type="email"
-                        className={`updateprofile-input ${
-                          errors.email ? "error" : ""
-                        }`}
-                        placeholder=""
+                        value={values.email}
+                        onChange={handleChange}
+                        onBlur={handleBlur}
+                        error={touched.email && Boolean(errors.email)}
+                        helperText={touched.email && errors.email}
+                        variant="outlined"
                       />
-                      <ErrorMessage
-                        className="error"
-                        name="email"
-                        component="div"
-                      />
-                    </div>
 
-                    {/* Status Messages */}
-                    {status?.error && (
-                      <div className="error">{status.message}</div>
-                    )}
-                    {status?.success && (
-                      <div className="success">{status.message}</div>
-                    )}
-
-                    {/* Submit Button */}
-                    <button
-                      type="submit"
-                      className="updateprofile-save-btn"
-                      disabled={isSubmitting}
-                    >
-                      Update Profile {isSubmitting && "..."}
-                    </button>
-                  </Form>
-                )}
-              </Formik>
-            </div>
-
-            {/* Section 2: Password Change */}
-            <div className="updateprofile-section-container">
-              <h3>Change Password</h3>
-              <Formik
-                initialValues={passwordInitialValues}
-                validationSchema={passwordValidationSchema}
-                onSubmit={handlePasswordSubmit}
-              >
-                {({ isSubmitting, errors, status }) => (
-                  <Form className="updateprofile-form">
-                    {/* Password Section */}
-                    <div className="updateprofile-section">
-                      <label htmlFor="password" className="updateprofile-label">
-                        New Password
-                      </label>
-                      <Field
-                        name="password"
-                        type="password"
-                        className={`updateprofile-input ${
-                          errors.password ? "error" : ""
-                        }`}
-                        placeholder=""
-                      />
-                      <ErrorMessage
-                        className="error"
-                        name="password"
-                        component="div"
-                      />
-                    </div>
-
-                    {/* Confirm Password Section */}
-                    <div className="updateprofile-section">
-                      <label
-                        htmlFor="confirmPassword"
-                        className="updateprofile-label"
+                      {/* Submit Button */}
+                      <Button
+                        type="submit"
+                        variant="contained"
+                        disabled={isSubmitting}
+                        className="updateprofile-save-btn"
                       >
-                        Confirm New Password
-                      </label>
-                      <Field
-                        name="confirmPassword"
-                        type="password"
-                        className={`updateprofile-input ${
-                          errors.confirmPassword ? "error" : ""
-                        }`}
-                        placeholder=""
-                      />
-                      <ErrorMessage
-                        className="error"
-                        name="confirmPassword"
-                        component="div"
-                      />
+                        {isSubmitting ? "Updating..." : "Update Profile"}
+                      </Button>
                     </div>
-
-                    {/* Status Messages */}
-                    {status?.error && (
-                      <div className="error">{status.message}</div>
-                    )}
-                    {status?.success && (
-                      <div className="success">{status.message}</div>
-                    )}
-
-                    {/* Submit Button */}
-                    <button
-                      type="submit"
-                      className="updateprofile-save-btn"
-                      disabled={isSubmitting}
-                    >
-                      Change Password {isSubmitting && "..."}
-                    </button>
                   </Form>
                 )}
               </Formik>
             </div>
+
+            <ChangePassword accessToken={session?.accessToken} />
 
             {/* Action Buttons */}
             <div className="updateprofile-actions">
