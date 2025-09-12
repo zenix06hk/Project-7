@@ -254,57 +254,6 @@ exports.updateProfile = async (req, res) => {
       updateData = req.body;
     }
 
-    // Handle avatar update separately
-    if (req.body.updateAvatar) {
-      avatarData = req.body.updateAvatar;
-    }
-
-    const { first_name, last_name, email, password } = updateData;
-
-    // Build the update query dynamically based on provided fields
-    let updateFields = [];
-    let values = [];
-    let paramCount = 1;
-
-    if (first_name) {
-      updateFields.push(`first_name = $${paramCount}`);
-      values.push(first_name);
-      paramCount++;
-    }
-
-    if (last_name) {
-      updateFields.push(`last_name = $${paramCount}`);
-      values.push(last_name);
-      paramCount++;
-    }
-
-    if (email) {
-      updateFields.push(`email = $${paramCount}`);
-      values.push(email);
-      paramCount++;
-    }
-
-    if (password) {
-      const hashedPassword = await bcrypt.hash(password, saltRounds);
-      updateFields.push(`password = $${paramCount}`);
-      values.push(hashedPassword);
-      paramCount++;
-    }
-
-    // Add avatar if provided
-    if (avatarData) {
-      updateFields.push(`avatar = $${paramCount}`);
-      values.push(avatarData);
-      paramCount++;
-    }
-
-    if (updateFields.length === 0) {
-      return res.status(400).json({
-        error: "No fields provided for update",
-        success: false,
-      });
-    }
-
     // Add userId to values for WHERE clause
     values.push(userId);
 
@@ -331,11 +280,11 @@ exports.updateProfile = async (req, res) => {
       success: true,
       data: {
         id: updatedUser.userid,
-        username: updatedUser.username,
+        // username: updatedUser.username,
         first_name: updatedUser.first_name,
         last_name: updatedUser.last_name,
         email: updatedUser.email,
-        avatar: updatedUser.avatar,
+        // avatar: updatedUser.avatar,
       },
     });
   } catch (error) {

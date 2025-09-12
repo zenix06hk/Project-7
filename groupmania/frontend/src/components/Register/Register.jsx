@@ -15,7 +15,8 @@ import * as Yup from "yup";
 const validationSchema = Yup.object().shape({
   username: Yup.string()
     .min(3, "Username must be at least 3 characters")
-    .max(20, "Username must not be more than 20 characters"),
+    .max(20, "Username must not be more than 20 characters")
+    .required("Username is required"),
   first_name: Yup.string()
     .min(2, "First name must be at least 2 characters")
     .max(30, "First name must not be more than 30 characters")
@@ -62,6 +63,8 @@ const Register = () => {
     // Clear any previous status
     setStatus(null);
 
+    //async call
+    //this is a fetch call for the backend environment for api
     try {
       const requestBody = {
         username: values.username,
@@ -87,6 +90,7 @@ const Register = () => {
 
       const data = await res.json();
       // console.log("Response data:", data);
+
       setSubmitting(false);
       if (data?.success) {
         resetForm();

@@ -260,7 +260,7 @@ const UpdateProfile = () => {
       lastName: profileUpdate.lastName || "",
       email: profileUpdate.email || "",
     },
-    validationSchema: profileValidationSchema,
+    validationSchema: profcileValidationSchema,
     enableReinitialize: true, // This allows the form to update when profileUpdate changes
     onSubmit: async (values, { setSubmitting, setStatus }) => {
       setSubmitting(true);

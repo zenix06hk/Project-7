@@ -9,7 +9,6 @@ import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import { red } from "@mui/material/colors";
 import { Box, Alert } from "@mui/material";
 
 import "./updateProfile.scss";
@@ -18,14 +17,14 @@ import ChangePassword from "../ChangePassword/ChangePassword";
 import {
   Formik,
   Form,
-  Field,
-  ErrorMessage,
   FormikValues,
   FormikHelpers,
+  useFormikContext,
 } from "formik";
 import * as Yup from "yup";
 
 // Validation schemas for each section
+
 const profileValidationSchema = Yup.object().shape({
   firstName: Yup.string()
     .trim()
@@ -47,6 +46,113 @@ const passwordValidationSchema = Yup.object().shape({
     .oneOf([Yup.ref("password"), null], "Passwords must match")
     .required("Please confirm your password"),
 });
+
+// Styled Button component for minimized Material-UI styling
+const UpdateButton = styled(Button)({
+  alignSelf: "flex-end",
+  marginTop: "20px",
+  borderRadius: "8px",
+  padding: "20px 50px",
+  fontSize: "14px",
+  fontWeight: 500,
+  border: "1px solid #ffdbdb",
+  backgroundColor: "transparent",
+  color: "var(--text-color)",
+  minWidth: "120px",
+  textTransform: "none",
+  "&:hover:not(:disabled)": {
+    backgroundColor: "rgba(255, 255, 255, 0.1)",
+    border: "1px solid #ffdbdb",
+  },
+  "&:disabled": {
+    opacity: 0.6,
+    cursor: "not-allowed",
+  },
+});
+
+// Styled TextField component that adapts to light/dark mode
+const StyledTextField = styled(TextField)({
+  "& .MuiOutlinedInput-root": {
+    "& fieldset": {
+      borderColor: "var(--text-color, #000)",
+    },
+    "&:hover fieldset": {
+      borderColor: "var(--hover-color, #2196f3)",
+    },
+    "&.Mui-focused fieldset": {
+      borderColor: "var(--focus-color, #1976d2)",
+    },
+  },
+  "& .MuiInputLabel-root": {
+    color: "var(--text-color, #000)",
+  },
+  "& .MuiInputLabel-root.Mui-focused": {
+    color: "var(--focus-color, #1976d2)",
+  },
+  "& .MuiOutlinedInput-input": {
+    color: "var(--text-color, #000)",
+  },
+  "& .MuiFormHelperText-root": {
+    color: "var(--text-color, #000)",
+  },
+});
+
+// Custom hook to get field props for Material-UI TextField
+const useFieldProps = (fieldName, label, type = "text") => {
+  const { values, handleChange, handleBlur, touched, errors } =
+    useFormikContext();
+
+  return {
+    fullWidth: true,
+    id: fieldName,
+    name: fieldName,
+    label: label,
+    type: type,
+    variant: "outlined",
+    value: values[fieldName] || "",
+    onChange: handleChange,
+    onBlur: handleBlur,
+    error: touched[fieldName] && Boolean(errors[fieldName]),
+    helperText: touched[fieldName] && errors[fieldName],
+  };
+};
+
+// Component that uses Formik context - must be inside Formik
+const ProfileFormFields = () => {
+  const { isSubmitting, status } = useFormikContext();
+
+  return (
+    <Form className="updateprofile-form">
+      {/* Status Messages */}
+      {status?.error && (
+        <div className="updateprofile-status-error">
+          <Alert severity="error">{status.message}</Alert>
+        </div>
+      )}
+      {status?.success && (
+        <div className="updateprofile-status-success">
+          <Alert severity="success">{status.message}</Alert>
+        </div>
+      )}
+
+      <div className="updateprofile-form-fields">
+        {/* First Name Section */}
+        <StyledTextField {...useFieldProps("firstName", "First Name")} />
+
+        {/* Last Name Section */}
+        <StyledTextField {...useFieldProps("lastName", "Last Name")} />
+
+        {/* Email Section */}
+        <StyledTextField {...useFieldProps("email", "Email", "email")} />
+
+        {/* Submit Button */}
+        <UpdateButton type="submit" variant="contained" disabled={isSubmitting}>
+          {isSubmitting ? "Updating..." : "Update Profile"}
+        </UpdateButton>
+      </div>
+    </Form>
+  );
+};
 
 const UpdateProfile = () => {
   const { data: session, status } = useSession();
@@ -119,12 +225,6 @@ const UpdateProfile = () => {
   if (hasErrorFetching) {
     return <div>{hasErrorFetching}</div>;
   }
-
-  // if (status === "loading" || isLoading) {
-  //   return <>Loading</>;
-  // }
-
-  const RedColor = red[500];
 
   const VisuallyHiddenInput = styled("input")({
     clip: "rect(0 0 0 0)",
@@ -440,84 +540,7 @@ const UpdateProfile = () => {
                 enableReinitialize={true}
                 onSubmit={handleProfileSubmit}
               >
-                {({
-                  isSubmitting,
-                  errors,
-                  status,
-                  values,
-                  handleChange,
-                  handleBlur,
-                  touched,
-                }) => (
-                  <Form className="updateprofile-form">
-                    {/* Status Messages */}
-                    {status?.error && (
-                      <div className="updateprofile-status-error">
-                        <Alert severity="error">{status.message}</Alert>
-                      </div>
-                    )}
-                    {status?.success && (
-                      <div className="updateprofile-status-success">
-                        <Alert severity="success">{status.message}</Alert>
-                      </div>
-                    )}
-
-                    <div className="updateprofile-form-fields">
-                      {/* First Name Section */}
-                      <TextField
-                        fullWidth
-                        id="firstName"
-                        name="firstName"
-                        label="First Name"
-                        value={values.firstName}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={touched.firstName && Boolean(errors.firstName)}
-                        helperText={touched.firstName && errors.firstName}
-                        variant="outlined"
-                      />
-
-                      {/* Last Name Section */}
-                      <TextField
-                        fullWidth
-                        id="lastName"
-                        name="lastName"
-                        label="Last Name"
-                        value={values.lastName}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={touched.lastName && Boolean(errors.lastName)}
-                        helperText={touched.lastName && errors.lastName}
-                        variant="outlined"
-                      />
-
-                      {/* Email Section */}
-                      <TextField
-                        fullWidth
-                        id="email"
-                        name="email"
-                        label="Email"
-                        type="email"
-                        value={values.email}
-                        onChange={handleChange}
-                        onBlur={handleBlur}
-                        error={touched.email && Boolean(errors.email)}
-                        helperText={touched.email && errors.email}
-                        variant="outlined"
-                      />
-
-                      {/* Submit Button */}
-                      <Button
-                        type="submit"
-                        variant="contained"
-                        disabled={isSubmitting}
-                        className="updateprofile-save-btn"
-                      >
-                        {isSubmitting ? "Updating..." : "Update Profile"}
-                      </Button>
-                    </div>
-                  </Form>
-                )}
+                <ProfileFormFields />
               </Formik>
             </div>
 
