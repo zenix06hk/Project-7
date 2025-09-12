@@ -245,22 +245,30 @@ exports.updateProfile = async (req, res) => {
     const userId = req.user.userId; // From auth middleware
 
     // Handle the updateContent structure from frontend
-    let updateData;
-    let avatarData;
+    // let updateData;
+    // let avatarData;
 
-    if (req.body.updateContent) {
-      updateData = req.body.updateContent;
-    } else {
-      updateData = req.body;
-    }
+    // if (req.body.updateContent) {
+    //   updateData = req.body.updateContent;
+    // } else {
+    //   updateData = req.body;
+    // }
 
     // Add userId to values for WHERE clause
-    values.push(userId);
+    const updates = req.body.updateContent;
+    const values = [updates.email, updates.firstName, updates.lastName, userId];
+
+    // const query = `
+    //   UPDATE users
+    //   SET ${updateFields.join(", ")}
+    //   WHERE userid = $${paramCount}
+    //   RETURNING userid, username, first_name, last_name, email, avatar
+    // `;
 
     const query = `
-      UPDATE users 
-      SET ${updateFields.join(", ")} 
-      WHERE userid = $${paramCount} 
+      UPDATE users
+      SET email = $1, first_name = $2, last_name = $3
+      WHERE userid = $4
       RETURNING userid, username, first_name, last_name, email, avatar
     `;
 
@@ -280,11 +288,11 @@ exports.updateProfile = async (req, res) => {
       success: true,
       data: {
         id: updatedUser.userid,
-        // username: updatedUser.username,
-        first_name: updatedUser.first_name,
-        last_name: updatedUser.last_name,
+        username: updatedUser.username,
+        firstName: updatedUser.first_name ?? "",
+        lastName: updatedUser.last_name ?? "",
         email: updatedUser.email,
-        // avatar: updatedUser.avatar,
+        avatar: updatedUser.avatar ?? "",
       },
     });
   } catch (error) {
