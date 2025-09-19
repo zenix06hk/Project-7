@@ -342,7 +342,7 @@ const UpdateProfile = () => {
       setSubmitting(false);
 
       if (data?.success) {
-        resetForm();
+        // resetForm();
         setStatus({ success: true, message: "Profile updated successfully!" });
       } else {
         setStatus({
