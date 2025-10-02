@@ -13,6 +13,12 @@ router.delete("/delete-account", auth, authCtrl.deleteAccount);
 // router.post("/", auth, multer, saucesCtrl);
 router.get("/user-profile", auth, authCtrl.getUserProfile);
 router.put("/update-profile", auth, authCtrl.updateProfile);
+router.post(
+  "/update-profile-avatar",
+  auth,
+  multer,
+  authCtrl.updateProfileAvatar
+);
 
 // router.get("/update-profile", authCtrl.updateProfile);
 // router.get("/:id", authCtrl.post);

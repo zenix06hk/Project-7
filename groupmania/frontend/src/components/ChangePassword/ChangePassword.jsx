@@ -87,7 +87,7 @@ const changePassword = (accessToken) => {
   return (
     <div>
       {/* Section 2: Password Change */}
-      <div className="updateprofile-section-container">
+      <div className="updateprofile0-section-container">
         <h3>Change Password</h3>
         <Formik
           initialValues={passwordInitialValues}

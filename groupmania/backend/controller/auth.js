@@ -311,6 +311,54 @@ exports.updateProfile = async (req, res) => {
   }
 };
 
+exports.updateProfileAvatar = async (req, res) => {
+  try {
+    const userId = req.user.userId; // From auth middleware
+
+    console.log(req.file.filename);
+
+    // Add userId to values for WHERE clause
+    // const updates = req.body.updateContent;
+    // const values = [updates.email, updates.firstName, updates.lastName, userId];
+
+    // const query = `
+    //   UPDATE users
+    //   SET email = $1, first_name = $2, last_name = $3
+    //   WHERE userid = $4
+    //   RETURNING userid, username, first_name, last_name, email, avatar
+    // `;
+
+    // const result = await db.query(query, values);
+
+    // if (result.rows.length === 0) {
+    //   return res.status(404).json({
+    //     error: 'User not found',
+    //     success: false,
+    //   });
+    // }
+
+    // const updatedUser = result.rows[0];
+
+    // res.status(200).json({
+    //   message: 'Profile updated successfully',
+    //   success: true,
+    //   data: {
+    //     id: updatedUser.userid,
+    //     username: updatedUser.username,
+    //     firstName: updatedUser.first_name ?? '',
+    //     lastName: updatedUser.last_name ?? '',
+    //     email: updatedUser.email,
+    //     avatar: updatedUser.avatar ?? '',
+    //   },
+    // });
+  } catch (error) {
+    res.status(500).json({
+      error: "Avatar failed to upload exists",
+      success: false,
+    });
+  }
+};
+
 exports.getUserProfile = async (req, res) => {
   try {
     const userId = req.user.userId; // From auth middleware
