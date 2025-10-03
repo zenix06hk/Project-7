@@ -22,7 +22,6 @@ import {
   useFormikContext,
 } from "formik";
 import * as Yup from "yup";
-import ProfileAvatar from "../ProfileAvatar/ProfileAvatar";
 
 // Validation schemas for each section
 
@@ -358,70 +357,70 @@ const UpdateProfile = () => {
   };
 
   // Password section initial values and handler
-  // const passwordInitialValues = {
-  //   password: "",
-  //   confirmPassword: "",
-  // };
+  const passwordInitialValues = {
+    password: "",
+    confirmPassword: "",
+  };
 
-  // const handlePasswordSubmit = async (
-  //   values,
-  //   { setSubmitting, setStatus, resetForm }
-  // ) => {
-  //   setSubmitting(true);
-  //   setStatus(null);
+  const handlePasswordSubmit = async (
+    values,
+    { setSubmitting, setStatus, resetForm }
+  ) => {
+    setSubmitting(true);
+    setStatus(null);
 
-  //   try {
-  //     // Check if both password fields are provided and match
-  //     if (!values.password || !values.confirmPassword) {
-  //       setStatus({
-  //         error: true,
-  //         message: "Both password fields are required.",
-  //       });
-  //       setSubmitting(false);
-  //       return;
-  //     }
+    try {
+      // Check if both password fields are provided and match
+      if (!values.password || !values.confirmPassword) {
+        setStatus({
+          error: true,
+          message: "Both password fields are required.",
+        });
+        setSubmitting(false);
+        return;
+      }
 
-  //     if (values.password !== values.confirmPassword) {
-  //       setStatus({ error: true, message: "Passwords do not match." });
-  //       setSubmitting(false);
-  //       return;
-  //     }
+      if (values.password !== values.confirmPassword) {
+        setStatus({ error: true, message: "Passwords do not match." });
+        setSubmitting(false);
+        return;
+      }
 
-  //     const requestBody = {
-  //       password: values.password.trim(),
-  //     };
+      const requestBody = {
+        password: values.password.trim(),
+      };
 
-  //     const res = await fetch(
-  //       `${process.env.NEXT_PUBLIC_BACKEND_API}/api/auth/update-profile`,
-  //       {
-  //         method: "PUT",
-  //         body: JSON.stringify({
-  //           updateContent: requestBody,
-  //         }),
-  //         headers: {
-  //           "Content-type": "application/json; charset=UTF-8",
-  //           Authorization: `Bearer ${session?.accessToken}`,
-  //         },
-  //       }
-  //     );
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_API}/api/auth/update-profile`,
+        {
+          method: "PUT",
+          body: JSON.stringify({
+            updateContent: requestBody,
+          }),
+          headers: {
+            "Content-type": "application/json; charset=UTF-8",
+            Authorization: `Bearer ${session?.accessToken}`,
+          },
+        }
+      );
 
-  //     const data = await res.json();
-  //     setSubmitting(false);
+      const data = await res.json();
+      setSubmitting(false);
 
-  //     if (data?.success) {
-  //       // resetForm();
-  //       setStatus({ success: true, message: "Password changed successfully!" });
-  //     } else {
-  //       setStatus({
-  //         error: true,
-  //         message: data?.error ?? "Password change failed. Please try again.",
-  //       });
-  //     }
-  //   } catch (error) {
-  //     setSubmitting(false);
-  //     setStatus({ error: true, message: "Network error. Please try again." });
-  //   }
-  // };
+      if (data?.success) {
+        // resetForm();
+        setStatus({ success: true, message: "Password changed successfully!" });
+      } else {
+        setStatus({
+          error: true,
+          message: data?.error ?? "Password change failed. Please try again.",
+        });
+      }
+    } catch (error) {
+      setSubmitting(false);
+      setStatus({ error: true, message: "Network error. Please try again." });
+    }
+  };
 
   return (
     <div className="updateprofile-container">
@@ -434,7 +433,78 @@ const UpdateProfile = () => {
           {/* Left Side - Profile Picture Section */}
           <div className="updateprofile-left-panel">
             <div className="updateprofile-picture-section">
-              <ProfileAvatar session={session} />
+              <div className="updateprofile-section-container">
+                <h3>Profile Avatar</h3>
+
+                {/* Status Messages for Avatar */}
+                {avatarStatus && (
+                  <Box sx={{ mb: 2 }}>
+                    <Alert severity={avatarStatus.error ? "error" : "success"}>
+                      {avatarStatus.message}
+                    </Alert>
+                  </Box>
+                )}
+
+                <div className="updateprofile-avatar">
+                  <Image
+                    src={
+                      avatarPreview ||
+                      (session?.user?.image ??
+                        "/assets/annoymous_avatar.avif.jpg")
+                    }
+                    alt="Profile"
+                    width={150}
+                    height={150}
+                    className="updateprofile-avatar-img"
+                  />
+                </div>
+                <Button
+                  component="label"
+                  className="createPost__uploadImgBtn"
+                  role={undefined}
+                  variant="contained"
+                  tabIndex={-1}
+                  startIcon={<CloudUploadIcon />}
+                  style={{ width: "100%", marginBottom: "10px" }}
+                >
+                  Upload Avatar
+                  <VisuallyHiddenInput
+                    type="file"
+                    accept="image/*"
+                    onChange={(event) => postImage(event.target.files)}
+                    multiple={false}
+                  />
+                </Button>
+
+                {/* Update Avatar Button */}
+                <Button
+                  variant="outlined"
+                  onClick={handleAvatarUpdate}
+                  disabled={!selectedAvatar}
+                  sx={{
+                    width: "100%",
+                    borderRadius: "8px",
+                    padding: "12px 24px",
+                    fontSize: "16px",
+                    fontWeight: 500,
+                    border: "1px solid #ffdbdb",
+                    backgroundColor: "transparent",
+                    color: "var(--text-color)",
+                    minWidth: "160px",
+                    textTransform: "none",
+                    "&:hover": {
+                      backgroundColor: "rgba(255, 255, 255, 0.1)",
+                      border: "1px solid #ffdbdb",
+                    },
+                    "&:disabled": {
+                      opacity: 0.6,
+                      cursor: "not-allowed",
+                    },
+                  }}
+                >
+                  Update Avatar
+                </Button>
+              </div>
 
               {/* User Info Display */}
               <div className="updateprofile-user-info">

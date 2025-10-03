@@ -243,27 +243,47 @@ exports.deleteAccount = async (req, res) => {
 exports.updateProfile = async (req, res) => {
   try {
     const userId = req.user.userId; // From auth middleware
-
-    // Handle the updateContent structure from frontend
-    // let updateData;
-    // let avatarData;
-
-    // if (req.body.updateContent) {
-    //   updateData = req.body.updateContent;
-    // } else {
-    //   updateData = req.body;
-    // }
-
-    // Add userId to values for WHERE clause
     const updates = req.body.updateContent;
-    const values = [updates.email, updates.firstName, updates.lastName, userId];
 
-    // const query = `
-    //   UPDATE users
-    //   SET ${updateFields.join(", ")}
-    //   WHERE userid = $${paramCount}
-    //   RETURNING userid, username, first_name, last_name, email, avatar
-    // `;
+    console.log("Updates received:", updates); // Debug log
+
+    // Handle password update separately
+    if (updates.password) {
+      const hashedPassword = await bcrypt.hash(updates.password, saltRounds);
+
+      const passwordQuery = `
+        UPDATE users
+        SET password = $1
+        WHERE userid = $2
+        RETURNING userid, username, first_name, last_name, email, avatar
+      `;
+
+      const result = await db.query(passwordQuery, [hashedPassword, userId]);
+
+      if (result.rows.length === 0) {
+        return res.status(404).json({
+          error: "User not found",
+          success: false,
+        });
+      }
+
+      return res.status(200).json({
+        message: "Password updated successfully",
+        success: true,
+      });
+    }
+
+    // Handle profile information update (email, firstName, lastName)
+    // Check if required fields are present
+    if (!updates.email || !updates.firstName || !updates.lastName) {
+      return res.status(400).json({
+        error:
+          "Email, firstName, and lastName are required for profile updates",
+        success: false,
+      });
+    }
+
+    const values = [updates.email, updates.firstName, updates.lastName, userId];
 
     const query = `
       UPDATE users

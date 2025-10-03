@@ -18,7 +18,7 @@ const passwordValidationSchema = Yup.object().shape({
     .required("Please confirm your password"),
 });
 
-const changePassword = (accessToken) => {
+const ChangePassword = ({ accessToken }) => {
   const passwordInitialValues = {
     password: "",
     confirmPassword: "",
@@ -161,4 +161,4 @@ const changePassword = (accessToken) => {
   );
 };
 
-export default changePassword;
+export default ChangePassword;
