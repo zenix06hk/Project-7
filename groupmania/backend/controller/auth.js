@@ -335,45 +335,54 @@ exports.updateProfileAvatar = async (req, res) => {
   try {
     const userId = req.user.userId; // From auth middleware
 
-    console.log(req.file.filename);
+    if (!req.file) {
+      return res.status(400).json({
+        error: "No file uploaded",
+        success: false,
+      });
+    }
 
-    // Add userId to values for WHERE clause
-    // const updates = req.body.updateContent;
-    // const values = [updates.email, updates.firstName, updates.lastName, userId];
+    const avatarUrl = `${
+      process.env.NEXT_PUBLIC_BACKEND_API || "http://localhost:4000"
+    }/images/${req.file.filename}`;
+    console.log("New avatar URL:", avatarUrl);
 
-    // const query = `
-    //   UPDATE users
-    //   SET email = $1, first_name = $2, last_name = $3
-    //   WHERE userid = $4
-    //   RETURNING userid, username, first_name, last_name, email, avatar
-    // `;
+    // Update user avatar in database
+    const query = `
+      UPDATE users
+      SET avatar = $1
+      WHERE userid = $2
+      RETURNING userid, username, first_name, last_name, email, avatar
+    `;
 
-    // const result = await db.query(query, values);
+    const result = await db.query(query, [avatarUrl, userId]);
 
-    // if (result.rows.length === 0) {
-    //   return res.status(404).json({
-    //     error: 'User not found',
-    //     success: false,
-    //   });
-    // }
+    if (result.rows.length === 0) {
+      return res.status(404).json({
+        error: "User not found",
+        success: false,
+      });
+    }
 
-    // const updatedUser = result.rows[0];
+    const updatedUser = result.rows[0];
 
-    // res.status(200).json({
-    //   message: 'Profile updated successfully',
-    //   success: true,
-    //   data: {
-    //     id: updatedUser.userid,
-    //     username: updatedUser.username,
-    //     firstName: updatedUser.first_name ?? '',
-    //     lastName: updatedUser.last_name ?? '',
-    //     email: updatedUser.email,
-    //     avatar: updatedUser.avatar ?? '',
-    //   },
-    // });
+    res.status(200).json({
+      message: "Avatar updated successfully",
+      success: true,
+      avatar: updatedUser.avatar, // Return the new avatar URL
+      data: {
+        id: updatedUser.userid,
+        username: updatedUser.username,
+        firstName: updatedUser.first_name ?? "",
+        lastName: updatedUser.last_name ?? "",
+        email: updatedUser.email,
+        avatar: updatedUser.avatar ?? "",
+      },
+    });
   } catch (error) {
+    console.error("Avatar update error:", error);
     res.status(500).json({
-      error: "Avatar failed to upload exists",
+      error: "Avatar failed to upload",
       success: false,
     });
   }

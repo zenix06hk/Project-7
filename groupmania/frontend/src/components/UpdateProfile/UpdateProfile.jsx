@@ -2,26 +2,20 @@
 
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { useSession } from "next-auth/react";
 
 import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import { Box, Alert } from "@mui/material";
+
+import { Alert } from "@mui/material";
 
 import "./updateProfile.scss";
 import ChangePassword from "../ChangePassword/ChangePassword";
 
-import {
-  Formik,
-  Form,
-  FormikValues,
-  FormikHelpers,
-  useFormikContext,
-} from "formik";
+import { Formik, Form, useFormikContext } from "formik";
 import * as Yup from "yup";
+import ProfileAvatar from "../ProfileAvatar/ProfileAvatar";
 
 // Validation schemas for each section
 
@@ -156,9 +150,6 @@ const ProfileFormFields = () => {
 
 const UpdateProfile = () => {
   const { data: session, status } = useSession();
-  const [selectedAvatar, setSelectedAvatar] = useState(null);
-  const [avatarPreview, setAvatarPreview] = useState(null);
-  const [avatarStatus, setAvatarStatus] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [hasErrorFetching, setHasErrorFetching] = useState("");
   const [profileUpdate, setProfileUpdate] = useState({
@@ -166,6 +157,16 @@ const UpdateProfile = () => {
     lastName: "",
     email: "",
   });
+
+  // State for instant display updates
+  const [updateInfo, setUpdateInfo] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+  });
+
+  // State for avatar updates across all components
+  const [currentAvatar, setCurrentAvatar] = useState(null);
   useEffect(() => {
     // the method used to fetch my profile
     async function fetchUserProfile() {
@@ -178,8 +179,6 @@ const UpdateProfile = () => {
             headers: {
               "Content-type": "application/json; charset=UTF-8",
               Authorization: `Bearer ${session?.accessToken}`,
-              // dummy token to test unauthorized below
-              // Authorization: `Bearer 21321365`,
             },
           }
         );
@@ -194,9 +193,24 @@ const UpdateProfile = () => {
 
         setProfileUpdate({
           ...profileUpdate,
-          //controller auth.js line 327
           ...data.user,
         });
+
+        // Initialize display info
+        setUpdateInfo({
+          firstName: data.user?.firstName || "",
+          lastName: data.user?.lastName || "",
+          email: data.user?.email || "",
+        });
+
+        // Initialize current avatar - backend returns 'image' field for avatar
+        setCurrentAvatar(
+          data.user?.image ||
+            data.user?.avatar ||
+            session?.user?.image ||
+            "/assets/annoymous_avatar.avif.jpg"
+        );
+
         setIsLoading(false);
       } catch (error) {
         setIsLoading(false);
@@ -225,88 +239,6 @@ const UpdateProfile = () => {
   if (hasErrorFetching) {
     return <div>{hasErrorFetching}</div>;
   }
-
-  const VisuallyHiddenInput = styled("input")({
-    clip: "rect(0 0 0 0)",
-    clipPath: "inset(50%)",
-    height: 1,
-    overflow: "hidden",
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    whiteSpace: "nowrap",
-    width: 1,
-  });
-
-  // Handle avatar file selection - same functionality as CreatePost
-  const postImage = (files) => {
-    if (files && files[0]) {
-      const file = files[0];
-      setSelectedAvatar(file);
-
-      // Create preview URL
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setAvatarPreview(e.target.result);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  // Handle avatar update
-  const handleAvatarUpdate = async () => {
-    if (!selectedAvatar) return;
-
-    setAvatarStatus(null);
-
-    try {
-      const reader = new FileReader();
-      reader.onload = async (e) => {
-        const base64Avatar = e.target.result;
-
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_API}/api/auth/update-profile`,
-          {
-            method: "PUT",
-            body: JSON.stringify({
-              updateAvatar: base64Avatar,
-            }),
-            headers: {
-              "Content-type": "application/json; charset=UTF-8",
-              Authorization: `Bearer ${session?.accessToken}`,
-            },
-          }
-        );
-
-        const data = await res.json();
-
-        if (data?.success) {
-          setAvatarStatus({
-            success: true,
-            message: "Avatar updated successfully!",
-          });
-          setSelectedAvatar(null);
-          setAvatarPreview(null);
-
-          // Refresh the page to sync avatar with header
-          setTimeout(() => {
-            window.location.reload();
-          }, 1500);
-        } else {
-          setAvatarStatus({
-            error: true,
-            message: data?.error ?? "Avatar update failed. Please try again.",
-          });
-        }
-      };
-      reader.readAsDataURL(selectedAvatar);
-    } catch (error) {
-      setAvatarStatus({
-        error: true,
-        message: "Network error. Please try again.",
-      });
-    }
-  };
 
   // Profile section initial values and handler
 
@@ -342,7 +274,13 @@ const UpdateProfile = () => {
       setSubmitting(false);
 
       if (data?.success) {
-        // resetForm();
+        // Update display immediately with new values
+        setUpdateInfo({
+          firstName: values.firstName?.trim() || "",
+          lastName: values.lastName?.trim() || "",
+          email: values.email?.trim() || "",
+        });
+
         setStatus({ success: true, message: "Profile updated successfully!" });
       } else {
         setStatus({
@@ -356,70 +294,12 @@ const UpdateProfile = () => {
     }
   };
 
-  // Password section initial values and handler
-  const passwordInitialValues = {
-    password: "",
-    confirmPassword: "",
-  };
+  // Avatar update handler to be passed to ProfileAvatar
+  const handleAvatarSuccess = (newAvatarUrl) => {
+    setCurrentAvatar(newAvatarUrl);
 
-  const handlePasswordSubmit = async (
-    values,
-    { setSubmitting, setStatus, resetForm }
-  ) => {
-    setSubmitting(true);
-    setStatus(null);
-
-    try {
-      // Check if both password fields are provided and match
-      if (!values.password || !values.confirmPassword) {
-        setStatus({
-          error: true,
-          message: "Both password fields are required.",
-        });
-        setSubmitting(false);
-        return;
-      }
-
-      if (values.password !== values.confirmPassword) {
-        setStatus({ error: true, message: "Passwords do not match." });
-        setSubmitting(false);
-        return;
-      }
-
-      const requestBody = {
-        password: values.password.trim(),
-      };
-
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_API}/api/auth/update-profile`,
-        {
-          method: "PUT",
-          body: JSON.stringify({
-            updateContent: requestBody,
-          }),
-          headers: {
-            "Content-type": "application/json; charset=UTF-8",
-            Authorization: `Bearer ${session?.accessToken}`,
-          },
-        }
-      );
-
-      const data = await res.json();
-      setSubmitting(false);
-
-      if (data?.success) {
-        // resetForm();
-        setStatus({ success: true, message: "Password changed successfully!" });
-      } else {
-        setStatus({
-          error: true,
-          message: data?.error ?? "Password change failed. Please try again.",
-        });
-      }
-    } catch (error) {
-      setSubmitting(false);
-      setStatus({ error: true, message: "Network error. Please try again." });
-    }
+    // Optional: Also update the session if needed for other components
+    // This would require session refresh or manual update
   };
 
   return (
@@ -433,92 +313,25 @@ const UpdateProfile = () => {
           {/* Left Side - Profile Picture Section */}
           <div className="updateprofile-left-panel">
             <div className="updateprofile-picture-section">
-              <div className="updateprofile-section-container">
-                <h3>Profile Avatar</h3>
-
-                {/* Status Messages for Avatar */}
-                {avatarStatus && (
-                  <Box sx={{ mb: 2 }}>
-                    <Alert severity={avatarStatus.error ? "error" : "success"}>
-                      {avatarStatus.message}
-                    </Alert>
-                  </Box>
-                )}
-
-                <div className="updateprofile-avatar">
-                  <Image
-                    src={
-                      avatarPreview ||
-                      (session?.user?.image ??
-                        "/assets/annoymous_avatar.avif.jpg")
-                    }
-                    alt="Profile"
-                    width={150}
-                    height={150}
-                    className="updateprofile-avatar-img"
-                  />
-                </div>
-                <Button
-                  component="label"
-                  className="createPost__uploadImgBtn"
-                  role={undefined}
-                  variant="contained"
-                  tabIndex={-1}
-                  startIcon={<CloudUploadIcon />}
-                  style={{ width: "100%", marginBottom: "10px" }}
-                >
-                  Upload Avatar
-                  <VisuallyHiddenInput
-                    type="file"
-                    accept="image/*"
-                    onChange={(event) => postImage(event.target.files)}
-                    multiple={false}
-                  />
-                </Button>
-
-                {/* Update Avatar Button */}
-                <Button
-                  variant="outlined"
-                  onClick={handleAvatarUpdate}
-                  disabled={!selectedAvatar}
-                  sx={{
-                    width: "100%",
-                    borderRadius: "8px",
-                    padding: "12px 24px",
-                    fontSize: "16px",
-                    fontWeight: 500,
-                    border: "1px solid #ffdbdb",
-                    backgroundColor: "transparent",
-                    color: "var(--text-color)",
-                    minWidth: "160px",
-                    textTransform: "none",
-                    "&:hover": {
-                      backgroundColor: "rgba(255, 255, 255, 0.1)",
-                      border: "1px solid #ffdbdb",
-                    },
-                    "&:disabled": {
-                      opacity: 0.6,
-                      cursor: "not-allowed",
-                    },
-                  }}
-                >
-                  Update Avatar
-                </Button>
-              </div>
+              <ProfileAvatar
+                session={session}
+                currentAvatar={currentAvatar}
+                onAvatarUpdate={handleAvatarSuccess}
+              />
 
               {/* User Info Display */}
               <div className="updateprofile-user-info">
                 <div className="updateprofile-name-row">
                   <span className="updateprofile-current-name">
                     Name:{" "}
-                    {session?.user?.firstName && session?.user?.lastName
-                      ? `${session.user.firstName} ${session.user.lastName}`
-                      : session?.user?.name || "User Name"}
+                    {updateInfo?.firstName && updateInfo?.lastName
+                      ? `${updateInfo.firstName} ${updateInfo.lastName}`
+                      : "Loading..."}
                   </span>
                 </div>
                 <div className="updateprofile-email-row">
-                  <span className="updateprofile-current-email">
-                    Email: {session?.user?.email || "user@example.com"}
+                  <span className="updateprofile-current-name">
+                    Email: {updateInfo?.email || "Loading..."}
                   </span>
                 </div>
               </div>
