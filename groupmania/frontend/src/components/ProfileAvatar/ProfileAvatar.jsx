@@ -142,6 +142,7 @@ const ProfileAvatar = ({ session, currentAvatar, onAvatarUpdate }) => {
         )}
 
         <div className="updateprofile-avatar">
+          {console.log("Current Avatar Value:", currentAvatar)}
           {/* Use regular img for preview/uploaded images to avoid Next.js domain issues */}
           {avatarPreview ? (
             <img

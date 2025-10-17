@@ -342,9 +342,7 @@ exports.updateProfileAvatar = async (req, res) => {
       });
     }
 
-    const avatarUrl = `${
-      process.env.NEXT_PUBLIC_BACKEND_API || "http://localhost:4000"
-    }/images/${req.file.filename}`;
+    const avatarUrl = `${req.file.filename}`;
     console.log("New avatar URL:", avatarUrl);
 
     // Update user avatar in database
@@ -383,6 +381,32 @@ exports.updateProfileAvatar = async (req, res) => {
     console.error("Avatar update error:", error);
     res.status(500).json({
       error: "Avatar failed to upload",
+      success: false,
+    });
+  }
+};
+
+exports.cleanupAvatars = async (req, res) => {
+  try {
+    // Reset malformed avatar filenames to null
+    const query = `
+      UPDATE users 
+      SET avatar = NULL 
+      WHERE avatar LIKE '%.jpg%.jpg%' 
+         OR avatar LIKE '%.png%.png%' 
+         OR LENGTH(avatar) > 100
+    `;
+
+    const result = await db.query(query);
+
+    res.status(200).json({
+      message: `Cleaned up ${result.rowCount} malformed avatars`,
+      success: true,
+    });
+  } catch (error) {
+    console.error("Cleanup error:", error);
+    res.status(500).json({
+      error: "Failed to cleanup avatars",
       success: false,
     });
   }

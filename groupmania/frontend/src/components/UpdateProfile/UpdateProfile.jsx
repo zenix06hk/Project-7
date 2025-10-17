@@ -158,13 +158,6 @@ const UpdateProfile = () => {
     email: "",
   });
 
-  // State for instant display updates
-  const [updateInfo, setUpdateInfo] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-  });
-
   // State for avatar updates across all components
   const [currentAvatar, setCurrentAvatar] = useState(null);
   useEffect(() => {
@@ -197,7 +190,7 @@ const UpdateProfile = () => {
         });
 
         // Initialize display info
-        setUpdateInfo({
+        setProfileUpdate({
           firstName: data.user?.firstName || "",
           lastName: data.user?.lastName || "",
           email: data.user?.email || "",
@@ -275,7 +268,7 @@ const UpdateProfile = () => {
 
       if (data?.success) {
         // Update display immediately with new values
-        setUpdateInfo({
+        setProfileUpdate({
           firstName: values.firstName?.trim() || "",
           lastName: values.lastName?.trim() || "",
           email: values.email?.trim() || "",
@@ -324,14 +317,14 @@ const UpdateProfile = () => {
                 <div className="updateprofile-name-row">
                   <span className="updateprofile-current-name">
                     Name:{" "}
-                    {updateInfo?.firstName && updateInfo?.lastName
-                      ? `${updateInfo.firstName} ${updateInfo.lastName}`
+                    {profileUpdate?.firstName && profileUpdate?.lastName
+                      ? `${profileUpdate.firstName} ${profileUpdate.lastName}`
                       : "Loading..."}
                   </span>
                 </div>
                 <div className="updateprofile-email-row">
                   <span className="updateprofile-current-name">
-                    Email: {updateInfo?.email || "Loading..."}
+                    Email: {profileUpdate?.email || "Loading..."}
                   </span>
                 </div>
               </div>
