@@ -7,6 +7,8 @@ import * as Yup from "yup";
 // Changed import from Formik/Form/useFormikContext to useFormik
 import { useFormik } from "formik";
 
+import { getUserAvatarUrl } from "@/components/utility/getUserAvatarUrl.js";
+
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
   clipPath: "inset(50%)",
@@ -164,11 +166,7 @@ const ProfileAvatar = ({ session, currentAvatar, onAvatarUpdate }) => {
             />
           ) : (
             <Image
-              src={
-                currentAvatar ||
-                session?.user?.image ||
-                "/assets/annoymous_avatar.avif.jpg"
-              }
+              src={getUserAvatarUrl(session?.user?.image)}
               alt="Profile"
               width={150}
               height={150}

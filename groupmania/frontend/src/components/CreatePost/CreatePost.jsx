@@ -13,6 +13,7 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { red } from "@mui/material/colors";
 
 import "./createpost.scss";
+import { getUserAvatarUrl } from "@/components/utility/getUserAvatarUrl.js";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPhotoFilm } from "@fortawesome/free-solid-svg-icons";
@@ -87,7 +88,7 @@ const CreatePost = ({ userPost, postDescription, postImage, newPostItem }) => {
     <div className="createPost">
       <div className="createPost__container">
         <Image
-          src={session?.user?.image ?? "/assets/annoymous_avatar.avif.jpg"}
+          src={getUserAvatarUrl(session?.user?.image)}
           alt="icon"
           width={80}
           height={80}

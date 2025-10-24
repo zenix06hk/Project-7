@@ -7,6 +7,7 @@ import { useTheme } from "../../context/theme-context";
 
 import "./header.scss";
 import LoginBtn from "../LoginBtn/LoginBtn";
+import { getUserAvatarUrl } from "@/components/utility/getUserAvatarUrl.js";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "@fortawesome/fontawesome-svg-core/styles.css";
@@ -24,7 +25,7 @@ import {
 function Header() {
   const { theme } = useTheme();
   const [mounted, setMounted] = useState(false);
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
 
   // Ensure component is mounted before using theme
   useEffect(() => {
@@ -100,7 +101,7 @@ function Header() {
           {/* ))} */}
           <div className="dropdown">
             <Image
-              src={session?.user?.image ?? "/assets/annoymous_avatar.avif.jpg"}
+              src={getUserAvatarUrl(session?.user?.image)}
               alt="profile"
               width={80}
               height={80}

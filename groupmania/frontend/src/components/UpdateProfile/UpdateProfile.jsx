@@ -16,6 +16,7 @@ import ChangePassword from "../ChangePassword/ChangePassword";
 import { Formik, Form, useFormikContext } from "formik";
 import * as Yup from "yup";
 import ProfileAvatar from "../ProfileAvatar/ProfileAvatar";
+import { getUserAvatarUrl } from "../utility/getUserAvatarUrl";
 
 // Validation schemas for each section
 
@@ -197,12 +198,7 @@ const UpdateProfile = () => {
         });
 
         // Initialize current avatar - backend returns 'image' field for avatar
-        setCurrentAvatar(
-          data.user?.image ||
-            data.user?.avatar ||
-            session?.user?.image ||
-            "/assets/annoymous_avatar.avif.jpg"
-        );
+        setCurrentAvatar(getUserAvatarUrl(data.user?.image));
 
         setIsLoading(false);
       } catch (error) {
