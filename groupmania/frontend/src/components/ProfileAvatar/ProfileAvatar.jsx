@@ -67,7 +67,7 @@ const ProfileAvatar = ({ session, currentAvatar, onAvatarUpdate }) => {
       );
 
       const data = await result.json();
-
+      console.log(data);
       // Simple status update logic
       if (result.ok) {
         setAvatarStatus({
@@ -76,8 +76,8 @@ const ProfileAvatar = ({ session, currentAvatar, onAvatarUpdate }) => {
         });
 
         // Clear preview since we now have the updated avatar
+        onAvatarUpdate(data.user?.avatar);
         setAvatarPreview(null);
-        onAvatarUpdate(data.user?.image);
 
         // Reset form after successful upload
         formik.resetForm();

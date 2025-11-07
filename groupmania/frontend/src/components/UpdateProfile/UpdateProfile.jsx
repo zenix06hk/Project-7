@@ -150,7 +150,7 @@ const ProfileFormFields = () => {
 };
 
 const UpdateProfile = () => {
-  const { data: session, status } = useSession();
+  const { data: session, status, update } = useSession();
   const [isLoading, setIsLoading] = useState(true);
   const [hasErrorFetching, setHasErrorFetching] = useState('');
   const [profileUpdate, setProfileUpdate] = useState({
@@ -221,11 +221,7 @@ const UpdateProfile = () => {
     }
   }, [session]);
 
-  const updateAvatarImage = (newAvatarUrl) => {
-    setCurrentAvatar(getUserAvatarUrl(newAvatarUrl));
-  };
-
-  if (status === 'loading' || isLoading) {
+  if (isLoading) {
     return <>Loading...</>;
   }
 
@@ -287,9 +283,17 @@ const UpdateProfile = () => {
     }
   };
 
-  const onAvatarUpdate = (newAvatarUrl) => {
-    console.log('Avatar updated to:', newAvatarUrl);
+  const onAvatarUpdate = async (newAvatarUrl) => {
+    console.log('Avatar updated to URL:', newAvatarUrl);
     setCurrentAvatar(getUserAvatarUrl(newAvatarUrl));
+
+    try {
+      // Update the session with the new image
+      await update({ image: newAvatarUrl });
+      console.log('Session updated successfully with new avatar');
+    } catch (error) {
+      console.error('Failed to update session:', error);
+    }
   };
 
   // Avatar update handler to be passed to ProfileAvatar

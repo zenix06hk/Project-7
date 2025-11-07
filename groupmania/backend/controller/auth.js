@@ -368,14 +368,6 @@ exports.updateProfileAvatar = async (req, res) => {
       message: 'Avatar updated successfully',
       success: true,
       avatar: updatedUser.avatar, // Return the new avatar URL
-      data: {
-        id: updatedUser.userid,
-        username: updatedUser.username,
-        firstName: updatedUser.first_name ?? '',
-        lastName: updatedUser.last_name ?? '',
-        email: updatedUser.email,
-        avatar: updatedUser.avatar ?? '',
-      },
     });
   } catch (error) {
     console.error('Avatar update error:', error);
