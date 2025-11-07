@@ -1,99 +1,99 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState } from "react";
-import Link from "next/link";
-import { useSession } from "next-auth/react";
+import React, { useEffect, useState } from 'react';
+import Link from 'next/link';
+import { useSession } from 'next-auth/react';
 
-import { styled } from "@mui/material/styles";
-import Button from "@mui/material/Button";
-import TextField from "@mui/material/TextField";
+import { styled } from '@mui/material/styles';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
 
-import { Alert } from "@mui/material";
+import { Alert } from '@mui/material';
 
-import "./updateProfile.scss";
-import ChangePassword from "../ChangePassword/ChangePassword";
+import './updateProfile.scss';
+import ChangePassword from '../ChangePassword/ChangePassword';
 
-import { Formik, Form, useFormikContext } from "formik";
-import * as Yup from "yup";
-import ProfileAvatar from "../ProfileAvatar/ProfileAvatar";
-import { getUserAvatarUrl } from "../utility/getUserAvatarUrl";
+import { Formik, Form, useFormikContext } from 'formik';
+import * as Yup from 'yup';
+import ProfileAvatar from '../ProfileAvatar/ProfileAvatar';
+import { getUserAvatarUrl } from '../utility/getUserAvatarUrl';
 
 // Validation schemas for each section
 
 const profileValidationSchema = Yup.object().shape({
   firstName: Yup.string()
     .trim()
-    .min(2, "First name must be minimum 2 characters")
-    .max(30, "First name must not be more than 30 characters"),
+    .min(2, 'First name must be minimum 2 characters')
+    .max(30, 'First name must not be more than 30 characters'),
   lastName: Yup.string()
     .trim()
-    .min(2, "Last name must be minimum 2 characters")
-    .max(30, "Last name must not be more than 30 characters"),
-  email: Yup.string().trim().email("Invalid email format"),
+    .min(2, 'Last name must be minimum 2 characters')
+    .max(30, 'Last name must not be more than 30 characters'),
+  email: Yup.string().trim().email('Invalid email format'),
 });
 
 const passwordValidationSchema = Yup.object().shape({
   password: Yup.string()
-    .min(6, "Password must be at least 6 characters")
-    .required("Password is required"),
+    .min(6, 'Password must be at least 6 characters')
+    .required('Password is required'),
   confirmPassword: Yup.string()
     .trim()
-    .oneOf([Yup.ref("password"), null], "Passwords must match")
-    .required("Please confirm your password"),
+    .oneOf([Yup.ref('password'), null], 'Passwords must match')
+    .required('Please confirm your password'),
 });
 
 // Styled Button component for minimized Material-UI styling
 const UpdateButton = styled(Button)({
-  alignSelf: "flex-end",
-  marginTop: "20px",
-  borderRadius: "8px",
-  padding: "20px 50px",
-  fontSize: "14px",
+  alignSelf: 'flex-end',
+  marginTop: '20px',
+  borderRadius: '8px',
+  padding: '20px 50px',
+  fontSize: '14px',
   fontWeight: 500,
-  border: "1px solid #ffdbdb",
-  backgroundColor: "transparent",
-  color: "var(--text-color)",
-  minWidth: "120px",
-  textTransform: "none",
-  "&:hover:not(:disabled)": {
-    backgroundColor: "rgba(255, 255, 255, 0.1)",
-    border: "1px solid #ffdbdb",
+  border: '1px solid #ffdbdb',
+  backgroundColor: 'transparent',
+  color: 'var(--text-color)',
+  minWidth: '120px',
+  textTransform: 'none',
+  '&:hover:not(:disabled)': {
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    border: '1px solid #ffdbdb',
   },
-  "&:disabled": {
+  '&:disabled': {
     opacity: 0.6,
-    cursor: "not-allowed",
+    cursor: 'not-allowed',
   },
 });
 
 // Styled TextField component that adapts to light/dark mode
 const StyledTextField = styled(TextField)({
-  "& .MuiOutlinedInput-root": {
-    "& fieldset": {
-      borderColor: "var(--text-color, #000)",
+  '& .MuiOutlinedInput-root': {
+    '& fieldset': {
+      borderColor: 'var(--text-color, #000)',
     },
-    "&:hover fieldset": {
-      borderColor: "var(--hover-color, #2196f3)",
+    '&:hover fieldset': {
+      borderColor: 'var(--hover-color, #2196f3)',
     },
-    "&.Mui-focused fieldset": {
-      borderColor: "var(--focus-color, #1976d2)",
+    '&.Mui-focused fieldset': {
+      borderColor: 'var(--focus-color, #1976d2)',
     },
   },
-  "& .MuiInputLabel-root": {
-    color: "var(--text-color, #000)",
+  '& .MuiInputLabel-root': {
+    color: 'var(--text-color, #000)',
   },
-  "& .MuiInputLabel-root.Mui-focused": {
-    color: "var(--focus-color, #1976d2)",
+  '& .MuiInputLabel-root.Mui-focused': {
+    color: 'var(--focus-color, #1976d2)',
   },
-  "& .MuiOutlinedInput-input": {
-    color: "var(--text-color, #000)",
+  '& .MuiOutlinedInput-input': {
+    color: 'var(--text-color, #000)',
   },
-  "& .MuiFormHelperText-root": {
-    color: "var(--text-color, #000)",
+  '& .MuiFormHelperText-root': {
+    color: 'var(--text-color, #000)',
   },
 });
 
 // Custom hook to get field props for Material-UI TextField
-const useFieldProps = (fieldName, label, type = "text") => {
+const useFieldProps = (fieldName, label, type = 'text') => {
   const { values, handleChange, handleBlur, touched, errors } =
     useFormikContext();
 
@@ -103,8 +103,8 @@ const useFieldProps = (fieldName, label, type = "text") => {
     name: fieldName,
     label: label,
     type: type,
-    variant: "outlined",
-    value: values[fieldName] || "",
+    variant: 'outlined',
+    value: values[fieldName] || '',
     onChange: handleChange,
     onBlur: handleBlur,
     error: touched[fieldName] && Boolean(errors[fieldName]),
@@ -132,17 +132,17 @@ const ProfileFormFields = () => {
 
       <div className="updateprofile-form-fields">
         {/* First Name Section */}
-        <StyledTextField {...useFieldProps("firstName", "First Name")} />
+        <StyledTextField {...useFieldProps('firstName', 'First Name')} />
 
         {/* Last Name Section */}
-        <StyledTextField {...useFieldProps("lastName", "Last Name")} />
+        <StyledTextField {...useFieldProps('lastName', 'Last Name')} />
 
         {/* Email Section */}
-        <StyledTextField {...useFieldProps("email", "Email", "email")} />
+        <StyledTextField {...useFieldProps('email', 'Email', 'email')} />
 
         {/* Submit Button */}
         <UpdateButton type="submit" variant="contained" disabled={isSubmitting}>
-          {isSubmitting ? "Updating..." : "Update Profile"}
+          {isSubmitting ? 'Updating...' : 'Update Profile'}
         </UpdateButton>
       </div>
     </Form>
@@ -152,11 +152,11 @@ const ProfileFormFields = () => {
 const UpdateProfile = () => {
   const { data: session, status } = useSession();
   const [isLoading, setIsLoading] = useState(true);
-  const [hasErrorFetching, setHasErrorFetching] = useState("");
+  const [hasErrorFetching, setHasErrorFetching] = useState('');
   const [profileUpdate, setProfileUpdate] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
+    firstName: '',
+    lastName: '',
+    email: '',
   });
 
   // State for avatar updates across all components
@@ -169,9 +169,9 @@ const UpdateProfile = () => {
         const res = await fetch(
           `${process.env.NEXT_PUBLIC_BACKEND_API}/api/auth/user-profile`,
           {
-            method: "GET",
+            method: 'GET',
             headers: {
-              "Content-type": "application/json; charset=UTF-8",
+              'Content-type': 'application/json; charset=UTF-8',
               Authorization: `Bearer ${session?.accessToken}`,
             },
           }
@@ -181,7 +181,7 @@ const UpdateProfile = () => {
         const data = await res.json();
         if (!data.success) {
           setIsLoading(false);
-          setHasErrorFetching(data.error || "something has gone wrong.");
+          setHasErrorFetching(data.error || 'something has gone wrong.');
           return <></>;
         }
 
@@ -192,9 +192,9 @@ const UpdateProfile = () => {
 
         // Initialize display info
         setProfileUpdate({
-          firstName: data.user?.firstName || "",
-          lastName: data.user?.lastName || "",
-          email: data.user?.email || "",
+          firstName: data.user?.firstName || '',
+          lastName: data.user?.lastName || '',
+          email: data.user?.email || '',
         });
 
         // Initialize current avatar - backend returns 'image' field for avatar
@@ -204,20 +204,20 @@ const UpdateProfile = () => {
       } catch (error) {
         setIsLoading(false);
         console.log(error);
-        setHasErrorFetching("error has occurred");
+        setHasErrorFetching('error has occurred');
       }
     }
-    if (status == "loading") {
+    if (status == 'loading') {
       {
         //if status is loading, wait to loading
         return;
       }
     }
 
-    if (status === "authenticated") {
+    if (status === 'authenticated') {
       fetchUserProfile();
     } else {
-      console.log("user not authenticated");
+      console.log('user not authenticated');
     }
   }, [session]);
 
@@ -225,7 +225,7 @@ const UpdateProfile = () => {
     setCurrentAvatar(getUserAvatarUrl(newAvatarUrl));
   };
 
-  if (status === "loading" || isLoading) {
+  if (status === 'loading' || isLoading) {
     return <>Loading...</>;
   }
 
@@ -252,12 +252,12 @@ const UpdateProfile = () => {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_API}/api/auth/update-profile`,
         {
-          method: "PUT",
+          method: 'PUT',
           body: JSON.stringify({
             updateContent: requestBody,
           }),
           headers: {
-            "Content-type": "application/json; charset=UTF-8",
+            'Content-type': 'application/json; charset=UTF-8',
             Authorization: `Bearer ${session?.accessToken}`,
           },
         }
@@ -269,26 +269,26 @@ const UpdateProfile = () => {
       if (data?.success) {
         // Update display immediately with new values
         setProfileUpdate({
-          firstName: values.firstName?.trim() || "",
-          lastName: values.lastName?.trim() || "",
-          email: values.email?.trim() || "",
+          firstName: values.firstName?.trim() || '',
+          lastName: values.lastName?.trim() || '',
+          email: values.email?.trim() || '',
         });
 
-        setStatus({ success: true, message: "Profile updated successfully!" });
+        setStatus({ success: true, message: 'Profile updated successfully!' });
       } else {
         setStatus({
           error: true,
-          message: data?.error ?? "Profile update failed. Please try again.",
+          message: data?.error ?? 'Profile update failed. Please try again.',
         });
       }
     } catch (error) {
       setSubmitting(false);
-      setStatus({ error: true, message: "Network error. Please try again." });
+      setStatus({ error: true, message: 'Network error. Please try again.' });
     }
   };
 
   const onAvatarUpdate = (newAvatarUrl) => {
-    console.log("Avatar updated to:", newAvatarUrl);
+    console.log('Avatar updated to:', newAvatarUrl);
     setCurrentAvatar(getUserAvatarUrl(newAvatarUrl));
   };
 
@@ -315,15 +315,15 @@ const UpdateProfile = () => {
               <div className="updateprofile-user-info">
                 <div className="updateprofile-name-row">
                   <span className="updateprofile-current-name">
-                    Name:{" "}
+                    Name:{' '}
                     {profileUpdate?.firstName && profileUpdate?.lastName
                       ? `${profileUpdate.firstName} ${profileUpdate.lastName}`
-                      : "Loading..."}
+                      : 'Loading...'}
                   </span>
                 </div>
                 <div className="updateprofile-email-row">
                   <span className="updateprofile-current-name">
-                    Email: {profileUpdate?.email || "Loading..."}
+                    Email: {profileUpdate?.email || 'Loading...'}
                   </span>
                 </div>
               </div>
@@ -337,9 +337,9 @@ const UpdateProfile = () => {
               <h3>Profile Information</h3>
               <Formik
                 initialValues={{
-                  firstName: profileUpdate?.firstName || "",
-                  lastName: profileUpdate?.lastName || "",
-                  email: profileUpdate?.email || "",
+                  firstName: profileUpdate?.firstName || '',
+                  lastName: profileUpdate?.lastName || '',
+                  email: profileUpdate?.email || '',
                 }}
                 validationSchema={profileValidationSchema}
                 enableReinitialize={true}

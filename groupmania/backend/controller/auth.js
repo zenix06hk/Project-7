@@ -1,14 +1,14 @@
-const db = require("../db");
+const db = require('../db');
 
 //Password-hashing function
-const bcrypt = require("bcrypt");
+const bcrypt = require('bcrypt');
 
 //To securely transfer information over the web
-const jwt = require("jsonwebtoken");
+const jwt = require('jsonwebtoken');
 const saltRounds = 10;
 exports.test = async (req, res) => {
   res.status(201).json({
-    message: "test successfully",
+    message: 'test successfully',
     success: true,
   });
 };
@@ -22,14 +22,14 @@ exports.signUp = async (req, res) => {
     // console.log("hashedPassword", hashedPassword);
     try {
       const result = await db.query(
-        "INSERT INTO users (username, first_name, last_name, email, password, avatar)  VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
+        'INSERT INTO users (username, first_name, last_name, email, password, avatar)  VALUES ($1, $2, $3, $4, $5, $6) RETURNING *',
         [
           username,
           first_name,
           last_name,
           email,
           hashedPassword,
-          "/assets/annoymous_avatar.avif.jpg",
+          '/assets/annoymous_avatar.avif.jpg',
         ]
       );
       const username_data = result.rows[0].username;
@@ -42,24 +42,24 @@ exports.signUp = async (req, res) => {
       // console.log(result);
 
       res.status(201).json({
-        message: "User created successfully",
+        message: 'User created successfully',
         success: true,
         data: {
           username: username_data,
           first_name: firstName,
           last_name: lastName,
           email: email_data,
-          avatar: "/assets/annoymous_avatar.avif.jpg",
+          avatar: '/assets/annoymous_avatar.avif.jpg',
         },
       });
     } catch (error) {
-      if (error.code === "23505") {
+      if (error.code === '23505') {
         res.status(409).json({
-          error: "Duplicate key violation: User ID already exists",
+          error: 'Duplicate key violation: User ID already exists',
         });
       } else {
-        console.error("Database error:", error);
-        res.status(500).json({ error: "Internal server error" });
+        console.error('Database error:', error);
+        res.status(500).json({ error: 'Internal server error' });
       }
     }
     return;
@@ -85,7 +85,7 @@ exports.signUp = async (req, res) => {
     // );
   } catch (err) {
     console.error(err);
-    res.status(500).send("Internal Server Error");
+    res.status(500).send('Internal Server Error');
   }
 };
 
@@ -96,14 +96,14 @@ exports.login = async (req, res) => {
 
   try {
     const result = await db.query(
-      "SELECT email, username, avatar, first_name, last_name, userid, password FROM users WHERE email = $1",
+      'SELECT email, username, avatar, first_name, last_name, userid, password FROM users WHERE email = $1',
       [email]
     );
     // console.log(result?.rows?.length);
     if (result?.rows?.length !== 1) {
       // console.log("hello");
       return res.status(401).json({
-        error: "User not found!",
+        error: 'User not found!',
       });
     }
     // console.log(result.rows[0]);
@@ -114,7 +114,7 @@ exports.login = async (req, res) => {
     // console.log("comparePassword", comparePassword);
     if (!comparePassword) {
       return res.status(401).json({
-        error: "Password incorrect!",
+        error: 'Password incorrect!',
       });
     }
 
@@ -125,7 +125,7 @@ exports.login = async (req, res) => {
       },
       process.env.SECRET_KEY,
       {
-        expiresIn: "24h",
+        expiresIn: '24h',
       }
     );
 
@@ -153,13 +153,13 @@ exports.login = async (req, res) => {
       token: token,
     });
   } catch (error) {
-    if (error.code === "23505") {
+    if (error.code === '23505') {
       res.status(409).json({
-        error: "Duplicate key violation: User ID already exists",
+        error: 'Duplicate key violation: User ID already exists',
       });
     } else {
-      console.error("Database error:", error);
-      res.status(500).json({ error: "Internal server error" });
+      console.error('Database error:', error);
+      res.status(500).json({ error: 'Internal server error' });
     }
   }
 };
@@ -169,31 +169,31 @@ exports.deleteAccount = async (req, res) => {
     // Get user ID from JWT token (set by auth middleware)
     const userId = req.user.userId;
 
-    console.log("Attempting to delete user:", userId);
+    console.log('Attempting to delete user:', userId);
 
     if (!userId) {
       return res.status(400).json({
         success: false,
-        error: "User ID is required",
+        error: 'User ID is required',
       });
     }
 
     // Check if user exists
     const userCheck = await db.query(
-      "SELECT userid FROM users WHERE userid = $1",
+      'SELECT userid FROM users WHERE userid = $1',
       [userId]
     );
 
     if (userCheck.rows.length === 0) {
       return res.status(404).json({
         success: false,
-        error: "User not found",
+        error: 'User not found',
       });
     }
 
     // Delete user's posts first (if you have a posts table)
     try {
-      await db.query("DELETE FROM posts WHERE user_id = $1", [userId]);
+      await db.query('DELETE FROM posts WHERE user_id = $1', [userId]);
       // console.log("User posts deleted");
     } catch (error) {
       // console.log("No posts table or posts to delete");
@@ -201,7 +201,7 @@ exports.deleteAccount = async (req, res) => {
 
     // Delete user's comments (if you have a comments table)
     try {
-      await db.query("DELETE FROM comments WHERE user_id = $1", [userId]);
+      await db.query('DELETE FROM comments WHERE user_id = $1', [userId]);
       // console.log("User comments deleted");
     } catch (error) {
       // console.log("No comments table or comments to delete");
@@ -209,7 +209,7 @@ exports.deleteAccount = async (req, res) => {
 
     // Finally delete the user account
     const result = await db.query(
-      "DELETE FROM users WHERE userid = $1 RETURNING userid, username, email",
+      'DELETE FROM users WHERE userid = $1 RETURNING userid, username, email',
       [userId]
     );
 
@@ -218,7 +218,7 @@ exports.deleteAccount = async (req, res) => {
 
       res.status(200).json({
         success: true,
-        message: "Account deleted successfully",
+        message: 'Account deleted successfully',
         deletedUser: {
           userId: result.rows[0].userid,
           username: result.rows[0].username,
@@ -228,14 +228,14 @@ exports.deleteAccount = async (req, res) => {
     } else {
       res.status(404).json({
         success: false,
-        error: "Failed to delete user",
+        error: 'Failed to delete user',
       });
     }
   } catch (error) {
-    console.error("Delete account error:", error);
+    console.error('Delete account error:', error);
     res.status(500).json({
       success: false,
-      error: "Internal server error while deleting account",
+      error: 'Internal server error while deleting account',
     });
   }
 };
@@ -245,7 +245,7 @@ exports.updateProfile = async (req, res) => {
     const userId = req.user.userId; // From auth middleware
     const updates = req.body.updateContent;
 
-    console.log("Updates received:", updates); // Debug log
+    console.log('Updates received:', updates); // Debug log
 
     // Handle password update separately
     if (updates.password) {
@@ -262,13 +262,13 @@ exports.updateProfile = async (req, res) => {
 
       if (result.rows.length === 0) {
         return res.status(404).json({
-          error: "User not found",
+          error: 'User not found',
           success: false,
         });
       }
 
       return res.status(200).json({
-        message: "Password updated successfully",
+        message: 'Password updated successfully',
         success: true,
       });
     }
@@ -278,7 +278,7 @@ exports.updateProfile = async (req, res) => {
     if (!updates.email || !updates.firstName || !updates.lastName) {
       return res.status(400).json({
         error:
-          "Email, firstName, and lastName are required for profile updates",
+          'Email, firstName, and lastName are required for profile updates',
         success: false,
       });
     }
@@ -296,7 +296,7 @@ exports.updateProfile = async (req, res) => {
 
     if (result.rows.length === 0) {
       return res.status(404).json({
-        error: "User not found",
+        error: 'User not found',
         success: false,
       });
     }
@@ -304,27 +304,27 @@ exports.updateProfile = async (req, res) => {
     const updatedUser = result.rows[0];
 
     res.status(200).json({
-      message: "Profile updated successfully",
+      message: 'Profile updated successfully',
       success: true,
       data: {
         id: updatedUser.userid,
         username: updatedUser.username,
-        firstName: updatedUser.first_name ?? "",
-        lastName: updatedUser.last_name ?? "",
+        firstName: updatedUser.first_name ?? '',
+        lastName: updatedUser.last_name ?? '',
         email: updatedUser.email,
-        avatar: updatedUser.avatar ?? "",
+        avatar: updatedUser.avatar ?? '',
       },
     });
   } catch (error) {
-    if (error.code === "23505") {
+    if (error.code === '23505') {
       res.status(409).json({
-        error: "Email already exists",
+        error: 'Email already exists',
         success: false,
       });
     } else {
-      console.error("Database error:", error);
+      console.error('Database error:', error);
       res.status(500).json({
-        error: "Internal server error",
+        error: 'Internal server error',
         success: false,
       });
     }
@@ -337,13 +337,13 @@ exports.updateProfileAvatar = async (req, res) => {
 
     if (!req.file) {
       return res.status(400).json({
-        error: "No file uploaded",
+        error: 'No file uploaded',
         success: false,
       });
     }
 
     const avatarUrl = `${req.file.filename}`;
-    console.log("New avatar URL:", avatarUrl);
+    console.log('New avatar URL:', avatarUrl);
 
     // Update user avatar in database
     const query = `
@@ -357,7 +357,7 @@ exports.updateProfileAvatar = async (req, res) => {
 
     if (result.rows.length === 0) {
       return res.status(404).json({
-        error: "User not found",
+        error: 'User not found',
         success: false,
       });
     }
@@ -365,22 +365,22 @@ exports.updateProfileAvatar = async (req, res) => {
     const updatedUser = result.rows[0];
 
     res.status(200).json({
-      message: "Avatar updated successfully",
+      message: 'Avatar updated successfully',
       success: true,
       avatar: updatedUser.avatar, // Return the new avatar URL
       data: {
         id: updatedUser.userid,
         username: updatedUser.username,
-        firstName: updatedUser.first_name ?? "",
-        lastName: updatedUser.last_name ?? "",
+        firstName: updatedUser.first_name ?? '',
+        lastName: updatedUser.last_name ?? '',
         email: updatedUser.email,
-        avatar: updatedUser.avatar ?? "",
+        avatar: updatedUser.avatar ?? '',
       },
     });
   } catch (error) {
-    console.error("Avatar update error:", error);
+    console.error('Avatar update error:', error);
     res.status(500).json({
-      error: "Avatar failed to upload",
+      error: 'Avatar failed to upload',
       success: false,
     });
   }
@@ -404,9 +404,9 @@ exports.cleanupAvatars = async (req, res) => {
       success: true,
     });
   } catch (error) {
-    console.error("Cleanup error:", error);
+    console.error('Cleanup error:', error);
     res.status(500).json({
-      error: "Failed to cleanup avatars",
+      error: 'Failed to cleanup avatars',
       success: false,
     });
   }
@@ -417,13 +417,13 @@ exports.getUserProfile = async (req, res) => {
     const userId = req.user.userId; // From auth middleware
 
     const result = await db.query(
-      "SELECT userid, username, first_name, last_name, email, avatar FROM users WHERE userid = $1",
+      'SELECT userid, username, first_name, last_name, email, avatar FROM users WHERE userid = $1',
       [userId]
     );
 
     if (result.rows.length === 0) {
       return res.status(404).json({
-        error: "User not found",
+        error: 'User not found',
         success: false,
       });
     }
@@ -442,9 +442,9 @@ exports.getUserProfile = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error("Database error:", error);
+    console.error('Database error:', error);
     res.status(500).json({
-      error: "Internal server error",
+      error: 'Internal server error',
       success: false,
     });
   }
@@ -462,7 +462,7 @@ exports.createPost = async (req, res) => {
     // }
 
     const result = await db.query(
-      "INSERT INTO post (post, post_img, post_time, likes, dislikes) VALUES ($1, $2, $3, $4, $5) RETURNING *",
+      'INSERT INTO post (post, post_img, post_time, likes, dislikes) VALUES ($1, $2, $3, $4, $5) RETURNING *',
       [newPost, newImage, new Date(), 0, 0]
     );
 
@@ -476,7 +476,7 @@ exports.createPost = async (req, res) => {
     // console.log(result);
 
     res.status(201).json({
-      message: "Post created successfully",
+      message: 'Post created successfully',
       success: true,
       data: {
         // post_id: post_id,
@@ -488,9 +488,9 @@ exports.createPost = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error("Database error:", error);
+    console.error('Database error:', error);
     res.status(500).json({
-      error: "Internal server error",
+      error: 'Internal server error',
       success: false,
     });
   }

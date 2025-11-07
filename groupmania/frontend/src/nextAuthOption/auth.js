@@ -1,6 +1,6 @@
-import NextAuth from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
-import { getServerSession } from "next-auth"; // Used for server-side session access
+import NextAuth from 'next-auth';
+import CredentialsProvider from 'next-auth/providers/credentials';
+import { getServerSession } from 'next-auth'; // Used for server-side session access
 
 // Define your NextAuth options
 // This is where you configure your authentication providers, callbacks, etc.
@@ -10,14 +10,14 @@ export const authOptions = {
   // Here we use CredentialsProvider for username/password login
   providers: [
     CredentialsProvider({
-      name: "Credentials",
+      name: 'Credentials',
       credentials: {
         email: {
-          label: "Email",
-          type: "text",
-          placeholder: "jsmith@example.com",
+          label: 'Email',
+          type: 'text',
+          placeholder: 'jsmith@example.com',
         },
-        password: { label: "Password", type: "password" },
+        password: { label: 'Password', type: 'password' },
       },
 
       // This function is called when a user attempts to sign in
@@ -27,13 +27,13 @@ export const authOptions = {
           const res = await fetch(
             `${process.env.NEXT_PUBLIC_BACKEND_API}/api/auth/login`,
             {
-              method: "POST",
+              method: 'POST',
               body: JSON.stringify({
                 email: credentials.email,
                 password: credentials.password,
               }),
               headers: {
-                "Content-Type": "application/json",
+                'Content-Type': 'application/json',
               },
             }
           );
@@ -57,14 +57,14 @@ export const authOptions = {
             return null;
           }
         } catch (error) {
-          console.error("Error during authorization:", error);
+          console.error('Error during authorization:', error);
           return null;
         }
       },
     }),
   ],
   session: {
-    strategy: "jwt", // Crucial for CredentialsProvider
+    strategy: 'jwt', // Crucial for CredentialsProvider
   },
   callbacks: {
     async jwt({ token, user, trigger, session }) {
@@ -79,7 +79,7 @@ export const authOptions = {
         token.accessToken = user.accessToken; // Persist your custom token in the JWT
       }
 
-      if (trigger === "update" && session) {
+      if (trigger === 'update' && session) {
         if (session.image !== undefined) {
           token.image = session.image;
         }
@@ -101,9 +101,9 @@ export const authOptions = {
     },
   },
   pages: {
-    signIn: "/signin", // Redirect to your custom sign-in page
-    signOut: "/signin", // Redirect to sign-in page after sign out
-    error: "/error", // Custom error page
+    signIn: '/signin', // Redirect to your custom sign-in page
+    signOut: '/signin', // Redirect to sign-in page after sign out
+    error: '/error', // Custom error page
   },
   // Add your NEXTAUTH_SECRET from environment variables
   secret: process.env.NEXTAUTH_SECRET,

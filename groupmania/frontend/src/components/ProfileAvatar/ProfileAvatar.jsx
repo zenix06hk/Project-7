@@ -1,34 +1,34 @@
-import React, { useEffect, useState } from "react";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import Image from "next/image";
+import React, { useEffect, useState } from 'react';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import Image from 'next/image';
 // NOTE: Alert was missing in the original imports but is used in the JSX
-import { Box, Button, styled, Alert } from "@mui/material";
-import * as Yup from "yup";
+import { Box, Button, styled, Alert } from '@mui/material';
+import * as Yup from 'yup';
 // Changed import from Formik/Form/useFormikContext to useFormik
-import { useFormik } from "formik";
+import { useFormik } from 'formik';
 
-import { getUserAvatarUrl } from "@/components/utility/getUserAvatarUrl.js";
+import { getUserAvatarUrl } from '@/components/utility/getUserAvatarUrl.js';
 
-const VisuallyHiddenInput = styled("input")({
-  clip: "rect(0 0 0 0)",
-  clipPath: "inset(50%)",
+const VisuallyHiddenInput = styled('input')({
+  clip: 'rect(0 0 0 0)',
+  clipPath: 'inset(50%)',
   height: 1,
-  overflow: "hidden",
-  position: "absolute",
+  overflow: 'hidden',
+  position: 'absolute',
   bottom: 0,
   left: 0,
-  whiteSpace: "nowrap",
+  whiteSpace: 'nowrap',
   width: 1,
 });
 
 const initialValues = {
   // The 'file' field will hold the actual File object
-  file: "",
+  file: '',
 };
 
 const validationSchema = Yup.object().shape({
   // Adjusted validation to check if a file object is present
-  file: Yup.mixed().required("Image is required"),
+  file: Yup.mixed().required('Image is required'),
 });
 
 const ProfileAvatar = ({ session, currentAvatar, onAvatarUpdate }) => {
@@ -43,7 +43,7 @@ const ProfileAvatar = ({ session, currentAvatar, onAvatarUpdate }) => {
   const handleAvatarUpdate = async (values, { setSubmitting }) => {
     // Check if the file value is a File object before proceeding
     if (!(values.file instanceof File)) {
-      setAvatarStatus({ error: true, message: "Please select an image file." });
+      setAvatarStatus({ error: true, message: 'Please select an image file.' });
       setSubmitting(false);
       return;
     }
@@ -52,13 +52,13 @@ const ProfileAvatar = ({ session, currentAvatar, onAvatarUpdate }) => {
 
     // Create and populate FormData
     const formData = new FormData();
-    formData.append("file", values.file);
+    formData.append('file', values.file);
 
     try {
       const result = await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_API}/api/auth/update-profile-avatar`,
         {
-          method: "POST",
+          method: 'POST',
           body: formData,
           headers: {
             Authorization: `Bearer ${session?.accessToken}`,
@@ -72,7 +72,7 @@ const ProfileAvatar = ({ session, currentAvatar, onAvatarUpdate }) => {
       if (result.ok) {
         setAvatarStatus({
           error: false,
-          message: "Avatar updated successfully!",
+          message: 'Avatar updated successfully!',
         });
 
         // Clear preview since we now have the updated avatar
@@ -84,7 +84,7 @@ const ProfileAvatar = ({ session, currentAvatar, onAvatarUpdate }) => {
       } else {
         setAvatarStatus({
           error: true,
-          message: data.message || "Failed to update avatar.",
+          message: data.message || 'Failed to update avatar.',
         });
       }
 
@@ -93,7 +93,7 @@ const ProfileAvatar = ({ session, currentAvatar, onAvatarUpdate }) => {
       console.error(error);
       setAvatarStatus({
         error: true,
-        message: "An unexpected error occurred.",
+        message: 'An unexpected error occurred.',
       });
     } finally {
       setSubmitting(false);
@@ -117,7 +117,7 @@ const ProfileAvatar = ({ session, currentAvatar, onAvatarUpdate }) => {
       const file = files[0];
 
       // Update Formik state with the actual File object
-      setFieldValue("file", file);
+      setFieldValue('file', file);
 
       // Create preview URL
       const reader = new FileReader();
@@ -138,14 +138,14 @@ const ProfileAvatar = ({ session, currentAvatar, onAvatarUpdate }) => {
         {/* Status Messages for Avatar */}
         {avatarStatus && (
           <Box sx={{ mb: 2 }}>
-            <Alert severity={avatarStatus.error ? "error" : "success"}>
+            <Alert severity={avatarStatus.error ? 'error' : 'success'}>
               {avatarStatus.message}
             </Alert>
           </Box>
         )}
 
         <div className="updateprofile-avatar">
-          {console.log("Current Avatar Value:", currentAvatar)}
+          {console.log('Current Avatar Value:', currentAvatar)}
           {/* Use regular img for preview/uploaded images to avoid Next.js domain issues */}
           {avatarPreview ? (
             <img
@@ -154,7 +154,7 @@ const ProfileAvatar = ({ session, currentAvatar, onAvatarUpdate }) => {
               width={150}
               height={150}
               className="updateprofile-avatar-img"
-              style={{ borderRadius: "50%", objectFit: "cover" }}
+              style={{ borderRadius: '50%', objectFit: 'cover' }}
             />
           ) : (
             <Image
@@ -163,7 +163,7 @@ const ProfileAvatar = ({ session, currentAvatar, onAvatarUpdate }) => {
               width={150}
               height={150}
               className="updateprofile-avatar-img"
-              style={{ borderRadius: "50%", objectFit: "cover" }}
+              style={{ borderRadius: '50%', objectFit: 'cover' }}
             />
           )}
         </div>
@@ -174,7 +174,7 @@ const ProfileAvatar = ({ session, currentAvatar, onAvatarUpdate }) => {
           variant="contained"
           tabIndex={-1}
           startIcon={<CloudUploadIcon />}
-          style={{ width: "100%", marginBottom: "10px" }}
+          style={{ width: '100%', marginBottom: '10px' }}
         >
           Upload Avatar
           <VisuallyHiddenInput
@@ -196,27 +196,27 @@ const ProfileAvatar = ({ session, currentAvatar, onAvatarUpdate }) => {
           // Disable if submitting OR if 'file' value is not a File object (meaning no file selected yet)
           disabled={isSubmitting || !(values.file instanceof File)}
           sx={{
-            width: "100%",
-            borderRadius: "8px",
-            padding: "12px 24px",
-            fontSize: "16px",
+            width: '100%',
+            borderRadius: '8px',
+            padding: '12px 24px',
+            fontSize: '16px',
             fontWeight: 500,
-            border: "1px solid #ffdbdb",
-            backgroundColor: "transparent",
-            color: "var(--text-color)",
-            minWidth: "160px",
-            textTransform: "none",
-            "&:hover": {
-              backgroundColor: "rgba(255, 255, 255, 0.1)",
-              border: "1px solid #ffdbdb",
+            border: '1px solid #ffdbdb',
+            backgroundColor: 'transparent',
+            color: 'var(--text-color)',
+            minWidth: '160px',
+            textTransform: 'none',
+            '&:hover': {
+              backgroundColor: 'rgba(255, 255, 255, 0.1)',
+              border: '1px solid #ffdbdb',
             },
-            "&:disabled": {
+            '&:disabled': {
               opacity: 0.6,
-              cursor: "not-allowed",
+              cursor: 'not-allowed',
             },
           }}
         >
-          {isSubmitting ? "Updating..." : "Update Avatar"}
+          {isSubmitting ? 'Updating...' : 'Update Avatar'}
         </Button>
       </div>
     </form>
