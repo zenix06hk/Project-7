@@ -221,6 +221,10 @@ const UpdateProfile = () => {
     }
   }, [session]);
 
+  const updateAvatarImage = (newAvatarUrl) => {
+    setCurrentAvatar(getUserAvatarUrl(newAvatarUrl));
+  };
+
   if (status === "loading" || isLoading) {
     return <>Loading...</>;
   }
@@ -283,13 +287,12 @@ const UpdateProfile = () => {
     }
   };
 
-  // Avatar update handler to be passed to ProfileAvatar
-  const handleAvatarSuccess = (newAvatarUrl) => {
-    setCurrentAvatar(newAvatarUrl);
-
-    // Optional: Also update the session if needed for other components
-    // This would require session refresh or manual update
+  const onAvatarUpdate = (newAvatarUrl) => {
+    console.log("Avatar updated to:", newAvatarUrl);
+    setCurrentAvatar(getUserAvatarUrl(newAvatarUrl));
   };
+
+  // Avatar update handler to be passed to ProfileAvatar
 
   return (
     <div className="updateprofile-container">
@@ -305,7 +308,7 @@ const UpdateProfile = () => {
               <ProfileAvatar
                 session={session}
                 currentAvatar={currentAvatar}
-                onAvatarUpdate={handleAvatarSuccess}
+                onAvatarUpdate={onAvatarUpdate}
               />
 
               {/* User Info Display */}

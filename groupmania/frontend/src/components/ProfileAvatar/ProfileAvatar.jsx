@@ -77,6 +77,7 @@ const ProfileAvatar = ({ session, currentAvatar, onAvatarUpdate }) => {
 
         // Clear preview since we now have the updated avatar
         setAvatarPreview(null);
+        onAvatarUpdate(data.user?.image);
 
         // Reset form after successful upload
         formik.resetForm();
@@ -155,18 +156,9 @@ const ProfileAvatar = ({ session, currentAvatar, onAvatarUpdate }) => {
               className="updateprofile-avatar-img"
               style={{ borderRadius: "50%", objectFit: "cover" }}
             />
-          ) : currentAvatar && currentAvatar.startsWith("http") ? (
-            <img
-              src={currentAvatar}
-              alt="Profile"
-              width={150}
-              height={150}
-              className="updateprofile-avatar-img"
-              style={{ borderRadius: "50%", objectFit: "cover" }}
-            />
           ) : (
             <Image
-              src={getUserAvatarUrl(session?.user?.image)}
+              src={currentAvatar}
               alt="Profile"
               width={150}
               height={150}

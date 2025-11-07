@@ -67,7 +67,7 @@ export const authOptions = {
     strategy: "jwt", // Crucial for CredentialsProvider
   },
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, trigger, session }) {
       // The `user` object is what was returned from the `authorize` function.
       if (user) {
         token.id = user.id;
@@ -77,6 +77,12 @@ export const authOptions = {
         token.email = user.email;
         token.image = user.image; //
         token.accessToken = user.accessToken; // Persist your custom token in the JWT
+      }
+
+      if (trigger === "update" && session) {
+        if (session.image !== undefined) {
+          token.image = session.image;
+        }
       }
       return token;
     },
