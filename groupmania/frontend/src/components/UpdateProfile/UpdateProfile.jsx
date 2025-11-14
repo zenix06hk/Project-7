@@ -153,6 +153,7 @@ const UpdateProfile = () => {
   const { data: session, status, update } = useSession();
   const [isLoading, setIsLoading] = useState(true);
   const [hasErrorFetching, setHasErrorFetching] = useState('');
+  const [isComplete, setIsComplete] = useState(false);
   const [profileUpdate, setProfileUpdate] = useState({
     firstName: '',
     lastName: '',
@@ -189,6 +190,7 @@ const UpdateProfile = () => {
           ...profileUpdate,
           ...data.user,
         });
+        setIsComplete(true);
 
         // Initialize display info
         setProfileUpdate({
@@ -207,17 +209,19 @@ const UpdateProfile = () => {
         setHasErrorFetching('error has occurred');
       }
     }
-    if (status == 'loading') {
-      {
-        //if status is loading, wait to loading
-        return;
+    if (!isComplete) {
+      if (status == 'loading') {
+        {
+          //if status is loading, wait to loading
+          return;
+        }
       }
-    }
 
-    if (status === 'authenticated') {
-      fetchUserProfile();
-    } else {
-      console.log('user not authenticated');
+      if (status === 'authenticated') {
+        fetchUserProfile();
+      } else {
+        console.log('user not authenticated');
+      }
     }
   }, [session]);
 

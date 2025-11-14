@@ -15,8 +15,6 @@ exports.test = async (req, res) => {
 //Controller for creating a user account
 exports.signUp = async (req, res) => {
   try {
-    // console.log(req.body);
-
     const { username, first_name, last_name, email, password } = req.body;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
     // console.log("hashedPassword", hashedPassword);
@@ -63,26 +61,6 @@ exports.signUp = async (req, res) => {
       }
     }
     return;
-
-    // db.query(
-    //   "INSERT INTO users (username, first_name, last_name, email, password) VALUES ($1, $2, $3, $4, $5) RETURNING *",
-    //   [username, first_name, last_name, email, password],
-    //   (error, results) => {
-    //     if (error) {
-    //       throw error;
-    //       // res.status(403).send("User already exists");
-    //       // return;
-    //     }
-    //     res
-    //       .status(200)
-    //       // .send(`User added with ID: ${results.rows[0].id}`)
-    //       .json({
-    //         message: "Email has been sign up.",
-    //         success: true,
-    //         data: results.rows[0],
-    //       });
-    //   }
-    // );
   } catch (err) {
     console.error(err);
     res.status(500).send('Internal Server Error');
@@ -444,7 +422,7 @@ exports.getUserProfile = async (req, res) => {
 
 exports.createPost = async (req, res) => {
   try {
-    const { newPost, newImage } = req.body;
+    const { newPost } = req.body;
 
     // if (!content) {
     //   return res.status(400).json({
@@ -452,33 +430,45 @@ exports.createPost = async (req, res) => {
     //     success: false,
     //   });
     // }
+    try {
+      const result = await db.query(
+        'INSERT INTO post (post, post_img, post_time, likes, dislikes) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+        [post]
+        // [newPost, newImage, new Date(), 0, 0]
+      );
 
-    const result = await db.query(
-      'INSERT INTO post (post, post_img, post_time, likes, dislikes) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-      [newPost, newImage, new Date(), 0, 0]
-    );
+      // const post_id = result.rows[0].post_id;
+      const new_post = result.rows[0].post;
+      // const post_img = result.rows[0].newImage;
+      // const post_time = result.rows[0].post_time;
+      // const likes = result.rows[0].likes;
+      // const dislikes = result.rows[0].dislikes;
 
-    // const post_id = result.rows[0].post_id;
-    const new_post = result.rows[0].newPost;
-    const post_img = result.rows[0].newImage;
-    const post_time = result.rows[0].post_time;
-    const likes = result.rows[0].likes;
-    const dislikes = result.rows[0].dislikes;
+      // console.log(result);
 
-    // console.log(result);
-
-    res.status(201).json({
-      message: 'Post created successfully',
-      success: true,
-      data: {
-        // post_id: post_id,
-        new_Post: new_post,
-        post_img: post_img,
-        post_time: post_time,
-        likes: likes,
-        dislikes: dislikes,
-      },
-    });
+      res.status(201).json({
+        message: 'Post created successfully',
+        success: true,
+        data: {
+          // post_id: post_id,
+          new_Post: new_post,
+          // post_img: post_img,
+          // post_time: post_time,
+          // likes: likes,
+          // dislikes: dislikes,
+        },
+      });
+    } catch (error) {
+      if (error.code === '23505') {
+        res.status(409).json({
+          error: 'Duplicate key violation: User ID already exists',
+        });
+      } else {
+        console.error('Database error:', error);
+        res.status(500).json({ error: 'Internal server error' });
+      }
+    }
+    return;
   } catch (error) {
     console.error('Database error:', error);
     res.status(500).json({

@@ -1,25 +1,48 @@
-"use client";
+'use client';
 
-import React from "react";
-import ReactDOM from "react-dom";
-import Image from "next/image";
-import Form from "next/form";
-import { useState } from "react";
-import { useSession } from "next-auth/react";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Image from 'next/image';
+import Form from 'next/form';
+import { useState } from 'react';
+import { useSession } from 'next-auth/react';
 
-import { styled } from "@mui/material/styles";
-import Button from "@mui/material/Button";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import { red } from "@mui/material/colors";
+import { Formik, Field, ErrorMessage, useFormikContext } from 'formik';
+import { styled } from '@mui/material/styles';
+import Button from '@mui/material/Button';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import { red } from '@mui/material/colors';
 
-import "./createpost.scss";
-import { getUserAvatarUrl } from "@/components/utility/getUserAvatarUrl.js";
+import './createpost.scss';
+import { getUserAvatarUrl } from '@/components/utility/getUserAvatarUrl.js';
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPhotoFilm } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPhotoFilm } from '@fortawesome/free-solid-svg-icons';
 
 const initialValues = {
-  post: "",
+  post: '',
+};
+
+const CreatePostTextField = () => {
+  const { isSubmitting, status } = useFormikContext();
+
+  return (
+    <Form className="createPost_textfield">
+      {/* Status Messages */}
+      {status?.error && (
+        <div className="createPost-status-error">
+          <Alert severity="error">{status.message}</Alert>
+        </div>
+      )}
+      {status?.success && (
+        <div className="createPost-status-success">
+          <Alert severity="success">{status.message}</Alert>
+        </div>
+      )}
+
+      <div className="createPost-form-fields">{/* Text Field */}</div>
+    </Form>
+  );
 };
 
 const CreatePost = ({ userPost, postDescription, postImage, newPostItem }) => {
@@ -29,16 +52,64 @@ const CreatePost = ({ userPost, postDescription, postImage, newPostItem }) => {
 
   const RedColor = red[500];
 
+  const handleProfileSubmit = async (
+    values,
+    { setSubmitting, setStatus, resetForm }
+  ) => {
+    setSubmitting(true);
+    setStatus(null);
+
+    try {
+      const requestBody = {
+        postContent: values.post,
+      };
+
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_API}/api/auth/create-post`,
+        {
+          method: 'POST',
+          body: JSON.stringify({
+            updateContent: requestBody,
+          }),
+          headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+            Authorization: `Bearer ${session?.accessToken}`,
+          },
+        }
+      );
+
+      const data = await res.json();
+      setSubmitting(false);
+
+      if (data?.success) {
+        // Update display immediately with new values
+        // setProfileUpdate({
+        //   postContent: values.post,
+        // });
+
+        setStatus({ success: true, message: 'Post created successfully!' });
+      } else {
+        setStatus({
+          error: true,
+          message: data?.error ?? 'Post creation failed. Please try again.',
+        });
+      }
+    } catch (error) {
+      setSubmitting(false);
+      setStatus({ error: true, message: 'Network error. Please try again.' });
+    }
+  };
+
   //upload file component
-  const VisuallyHiddenInput = styled("input")({
-    clip: "rect(0 0 0 0)",
-    clipPath: "inset(50%)",
+  const VisuallyHiddenInput = styled('input')({
+    clip: 'rect(0 0 0 0)',
+    clipPath: 'inset(50%)',
     height: 1,
-    overflow: "hidden",
-    position: "absolute",
+    overflow: 'hidden',
+    position: 'absolute',
     bottom: 0,
     left: 0,
-    whiteSpace: "nowrap",
+    whiteSpace: 'nowrap',
     width: 1,
   });
 
@@ -60,10 +131,10 @@ const CreatePost = ({ userPost, postDescription, postImage, newPostItem }) => {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_API}/api/auth/create-post`,
         {
-          method: "POST",
+          method: 'POST',
           body: JSON.stringify(requestBody),
           headers: {
-            "Content-type": "application/json; charset=UTF-8",
+            'Content-type': 'application/json; charset=UTF-8',
           },
         }
       );
@@ -73,14 +144,14 @@ const CreatePost = ({ userPost, postDescription, postImage, newPostItem }) => {
       setSubmitting(false);
       if (data?.success) {
         resetForm();
-        setStatus({ success: true, message: "success" });
+        setStatus({ success: true, message: 'success' });
       } else {
-        setStatus({ error: true, message: data?.error ?? "Error has occur" });
+        setStatus({ error: true, message: data?.error ?? 'Error has occur' });
       }
     } catch (error) {
-      console.error("Create post error:", error);
+      console.error('Create post error:', error);
       setSubmitting(false);
-      setStatus({ error: true, message: "Network error. Please try again." });
+      setStatus({ error: true, message: 'Network error. Please try again.' });
     }
   };
 
@@ -129,6 +200,34 @@ const CreatePost = ({ userPost, postDescription, postImage, newPostItem }) => {
                 />
               </Button>
             </Form>
+            <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+              {({ isSubmitting, errors, status }) => (
+                <Form>
+                  <label htmlFor="createPostContent">
+                    <Field
+                      name="username"
+                      type="text"
+                      className={errors.username ? 'error' : ''}
+                      size="50"
+                    />
+                    <ErrorMessage
+                      className="error"
+                      name="username"
+                      component="div"
+                    />
+                  </label>
+
+                  {status?.error && (
+                    <div className="error">{status.message}</div>
+                  )}
+                  {status?.success && (
+                    <div className="success">{status.message}</div>
+                  )}
+                </Form>
+              )}
+            </Formik>
+
+            {/*Post button*/}
             <button
               type="submit"
               className="createPost__button submit"
@@ -140,7 +239,7 @@ const CreatePost = ({ userPost, postDescription, postImage, newPostItem }) => {
             </button>
           </div>
           <div className="createPost__bottomBlock">
-            {uploadedImage && uploadedImage !== "" && (
+            {uploadedImage && uploadedImage !== '' && (
               <Image
                 src={uploadedImage}
                 alt="icon"

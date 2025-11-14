@@ -76,7 +76,7 @@ const ProfileAvatar = ({ session, currentAvatar, onAvatarUpdate }) => {
         });
 
         // Clear preview since we now have the updated avatar
-        onAvatarUpdate(data.user?.avatar);
+        onAvatarUpdate(data?.avatar);
         setAvatarPreview(null);
 
         // Reset form after successful upload
