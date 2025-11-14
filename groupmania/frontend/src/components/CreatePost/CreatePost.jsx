@@ -1,7 +1,7 @@
 'use client';
 
 import React from 'react';
-import ReactDOM from 'react-dom';
+
 import Image from 'next/image';
 import Form from 'next/form';
 import { useState } from 'react';
