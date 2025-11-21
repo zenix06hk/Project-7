@@ -135,6 +135,7 @@ const CreatePost = ({ userPost, postDescription, postImage, newPostItem }) => {
           body: JSON.stringify(requestBody),
           headers: {
             'Content-type': 'application/json; charset=UTF-8',
+            Authorization: `Bearer ${session?.accessToken}`,
           },
         }
       );
@@ -167,7 +168,7 @@ const CreatePost = ({ userPost, postDescription, postImage, newPostItem }) => {
         />
         <div className="createPost__content">
           <div className="createPost__upperBlock">
-            <Form>
+            {/* <Form>
               <label htmlFor="fname"></label>
               <input
                 name="postContent"
@@ -179,40 +180,24 @@ const CreatePost = ({ userPost, postDescription, postImage, newPostItem }) => {
                 value={description}
                 onChange={(e) => postDescription(e.target.value)}
               />
-              <label htmlFor="image"></label>
-              <Button
-                component="label"
-                className="createPost__uploadImgBtn"
-                role={undefined}
-                variant="contained"
-                tabIndex={-1}
-                startIcon={<CloudUploadIcon />}
-                value=""
-                onChange={(e) => postImage(e.target.files)}
-              >
-                Upload files
-                <VisuallyHiddenInput
-                  type="file"
-                  color={RedColor}
-                  onChange={(event) => postImage(event.target.files)}
-                  label={'margin="none"'}
-                  multiple
-                />
-              </Button>
-            </Form>
+            </Form> */}
             <Formik initialValues={initialValues} onSubmit={handleSubmit}>
               {({ isSubmitting, errors, status }) => (
                 <Form>
                   <label htmlFor="createPostContent">
                     <Field
-                      name="username"
+                      name="postContent"
                       type="text"
-                      className={errors.username ? 'error' : ''}
-                      size="50"
+                      className={`createPost__textfield ${
+                        errors.postContent ? 'error' : ''
+                      }`}
+                      placeholder="How's going today?"
+                      value={description}
+                      onChange={(e) => postDescription(e.target.value)}
                     />
                     <ErrorMessage
                       className="error"
-                      name="username"
+                      name="postContent"
                       component="div"
                     />
                   </label>
@@ -223,28 +208,48 @@ const CreatePost = ({ userPost, postDescription, postImage, newPostItem }) => {
                   {status?.success && (
                     <div className="success">{status.message}</div>
                   )}
+                  <div className="createPost__buttons">
+                    <Button
+                      type="submit"
+                      className="createPost__button submit"
+                      onClick={newPostItem}
+                      height="30px"
+                      value=""
+                    >
+                      <p>Post</p>
+                    </Button>
+                    <Button
+                      component="label"
+                      className="createPost__uploadImgBtn"
+                      role={undefined}
+                      variant="contained"
+                      tabIndex={-1}
+                      startIcon={<CloudUploadIcon />}
+                      disabled={isSubmitting}
+                      value=""
+                      onChange={(e) => postImage(e.target.files)}
+                    >
+                      Upload files{isSubmitting}
+                      <VisuallyHiddenInput
+                        type="file"
+                        color={RedColor}
+                        onChange={(event) => postImage(event.target.files)}
+                        // label={'margin="none"'}
+                        multiple
+                      />
+                    </Button>
+                  </div>
                 </Form>
               )}
             </Formik>
-
-            {/*Post button*/}
-            <button
-              type="submit"
-              className="createPost__button submit"
-              onClick={newPostItem}
-              height="30px"
-              value=""
-            >
-              <p>Post</p>
-            </button>
           </div>
           <div className="createPost__bottomBlock">
             {uploadedImage && uploadedImage !== '' && (
               <Image
                 src={uploadedImage}
                 alt="icon"
-                width="300"
-                height="300"
+                width="200"
+                height="200"
                 className="createPost__uploadImg"
               />
             )}
