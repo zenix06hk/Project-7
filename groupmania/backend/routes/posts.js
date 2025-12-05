@@ -1,21 +1,16 @@
-const express = require("express");
-
-//Routes declare
+const express = require('express');
 const router = express.Router();
+
+const postCtrl = require('../controller/posts');
+const auth = require('../middleware/auth');
+
+const multer = require('../middleware/multer-config');
 
 //Import handling files upload
 // const multer = require("../middleware/multer-config");
 
-//Import sauce controller
-// const saucesCtrl = require("../controller/sauces");
-
-//Adding controllers to routes (including authentication middleware and file management)
-// router.get("/", auth, saucesCtrl.saucesList);
-// router.post("/", auth, multer, saucesCtrl.saucesSave);
-// router.get("/:id", auth, saucesCtrl.saucesListId);
-// router.put("/:id", auth, multer, saucesCtrl.saucesListUpdate);
-// router.delete("/:id", auth, saucesCtrl.saucesDelete);
-// router.post("/:id/like", auth, saucesCtrl.saucesListLike);
+router.post('/create-post', auth, postCtrl.createPost);
+router.get('/get-posts', auth, postCtrl.getPosts);
 
 //Export and exploitation of routes
 module.exports = router;

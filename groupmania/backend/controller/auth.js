@@ -69,9 +69,7 @@ exports.signUp = async (req, res) => {
 
 exports.login = async (req, res) => {
   const { email, password } = req.body;
-
   // console.log(req.body);
-
   try {
     const result = await db.query(
       'SELECT email, username, avatar, first_name, last_name, userid, password FROM users WHERE email = $1',
@@ -420,62 +418,62 @@ exports.getUserProfile = async (req, res) => {
   }
 };
 
-exports.createPost = async (req, res) => {
-  try {
-    const { newPost } = req.body;
+// exports.createPost = async (req, res) => {
+//   try {
+//     const { newPost } = req.body;
 
-    // if (!content) {
-    //   return res.status(400).json({
-    //     error: "Content is required",
-    //     success: false,
-    //   });
-    // }
-    try {
-      const result = await db.query(
-        'INSERT INTO post (post, post_img, post_time, likes, dislikes) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-        [post]
-        // [newPost, newImage, new Date(), 0, 0]
-      );
+//     // if (!content) {
+//     //   return res.status(400).json({
+//     //     error: "Content is required",
+//     //     success: false,
+//     //   });
+//     // }
+//     try {
+//       const result = await db.query(
+//         'INSERT INTO post (post, post_img, post_time, likes, dislikes) VALUES ($1, $2, $3, $4, $5) RETURNING *',
+//         [post]
+//         // [newPost, newImage, new Date(), 0, 0]
+//       );
 
-      // const post_id = result.rows[0].post_id;
-      const new_post = result.rows[0].post;
-      // const post_img = result.rows[0].newImage;
-      // const post_time = result.rows[0].post_time;
-      // const likes = result.rows[0].likes;
-      // const dislikes = result.rows[0].dislikes;
+//       // const post_id = result.rows[0].post_id;
+//       const new_post = result.rows[0].post;
+//       // const post_img = result.rows[0].newImage;
+//       // const post_time = result.rows[0].post_time;
+//       // const likes = result.rows[0].likes;
+//       // const dislikes = result.rows[0].dislikes;
 
-      // console.log(result);
+//       // console.log(result);
 
-      res.status(201).json({
-        message: 'Post created successfully',
-        success: true,
-        data: {
-          // post_id: post_id,
-          new_Post: new_post,
-          // post_img: post_img,
-          // post_time: post_time,
-          // likes: likes,
-          // dislikes: dislikes,
-        },
-      });
-    } catch (error) {
-      if (error.code === '23505') {
-        res.status(409).json({
-          error: 'Duplicate key violation: User ID already exists',
-        });
-      } else {
-        console.error('Database error:', error);
-        res.status(500).json({ error: 'Internal server error' });
-      }
-    }
-    return;
-  } catch (error) {
-    console.error('Database error:', error);
-    res.status(500).json({
-      error: 'Internal server error',
-      success: false,
-    });
-  }
-};
+//       res.status(201).json({
+//         message: 'Post created successfully',
+//         success: true,
+//         data: {
+//           // post_id: post_id,
+//           new_Post: new_post,
+//           // post_img: post_img,
+//           // post_time: post_time,
+//           // likes: likes,
+//           // dislikes: dislikes,
+//         },
+//       });
+//     } catch (error) {
+//       if (error.code === '23505') {
+//         res.status(409).json({
+//           error: 'Duplicate key violation: User ID already exists',
+//         });
+//       } else {
+//         console.error('Database error:', error);
+//         res.status(500).json({ error: 'Internal server error' });
+//       }
+//     }
+//     return;
+//   } catch (error) {
+//     console.error('Database error:', error);
+//     res.status(500).json({
+//       error: 'Internal server error',
+//       success: false,
+//     });
+//   }
+// };
 
-exports.postComment = async (req, res) => {};
+// exports.postComment = async (req, res) => {};

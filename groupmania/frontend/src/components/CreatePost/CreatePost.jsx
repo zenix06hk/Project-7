@@ -3,11 +3,10 @@
 import React from 'react';
 
 import Image from 'next/image';
-import Form from 'next/form';
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 
-import { Formik, Field, ErrorMessage, useFormikContext } from 'formik';
+import { Form, Formik, Field, ErrorMessage, useFormikContext } from 'formik';
 import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
@@ -20,7 +19,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPhotoFilm } from '@fortawesome/free-solid-svg-icons';
 
 const initialValues = {
-  post: '',
+  postContent: '',
 };
 
 const CreatePostTextField = () => {

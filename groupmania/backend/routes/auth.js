@@ -21,7 +21,7 @@ router.post(
 
 // router.get("/update-profile", authCtrl.updateProfile);
 // router.get("/:id", authCtrl.post);
-router.post('/create-post', auth, authCtrl.createPost);
+// router.post('/create-post', auth, authCtrl.createPost);
 // router.put("/:id", authCtrl.post);
 // router.delete("/:id", authCtrl.post);
 
