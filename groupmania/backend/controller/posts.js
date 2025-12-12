@@ -63,3 +63,17 @@ exports.getPosts = async (req, res) => {
     });
   }
 };
+
+exports.poststream = async (req, res) => {
+  try {
+    const result = await db.query(
+      'SELECT post FROM post ORDER BY post_id DESC'
+    );
+  } catch (error) {
+    console.error('Database error:', error);
+    res.status(500).json({
+      error: 'Internal server error',
+      success: false,
+    });
+  }
+};
