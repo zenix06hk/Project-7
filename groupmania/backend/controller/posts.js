@@ -45,14 +45,15 @@ exports.createPost = async (req, res) => {
 
 exports.getPosts = async (req, res) => {
   try {
-    const result = await db.query('SELECT post FROM post WHERE userid = $1', [
-      posts,
-    ]);
+    const result =
+      await db.query(`SELECT post.post_id, post.user_id, post.post_content, post.post_img, post.post_time, post.likes, post.dislikes, users.user_id, users.first_name, users.last_name
+FROM post
+INNER JOIN users ON post.user_id = users.user_id`);
     const posts = result.rows;
     res.status(200).json({
       success: true,
       data: {
-        post: user.post,
+        post: posts,
       },
     });
   } catch (error) {
@@ -69,6 +70,59 @@ exports.poststream = async (req, res) => {
     const result = await db.query(
       'SELECT post FROM post ORDER BY post_id DESC'
     );
+  } catch (error) {
+    console.error('Database error:', error);
+    res.status(500).json({
+      error: 'Internal server error',
+      success: false,
+    });
+  }
+};
+
+exports.createComment = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const { comment_content } = req.body;
+
+    // return;
+
+    const result = await db.query(
+      'INSERT INTO post (comment_content) VALUES ($1) RETURNING *',
+      [comment_content]
+    );
+
+    const comment = result.rows[0].comment_content;
+
+    console.log(result);
+
+    res.status(201).json({
+      message: 'Post created successfully',
+      success: true,
+      data: {
+        comment_content: comment,
+      },
+    });
+  } catch (error) {
+    console.error('Database error:', error);
+    res.status(500).json({
+      error: 'Internal server error',
+      success: false,
+    });
+  }
+};
+
+exports.getNames = async (req, res) => {
+  try {
+    const result = await db.query('SELECT * FROM post');
+    const firstName = result.rows;
+    const lastName = result.rows;
+    res.status(200).json({
+      success: true,
+      data: {
+        first_name: firstName,
+        last_name: lastName,
+      },
+    });
   } catch (error) {
     console.error('Database error:', error);
     res.status(500).json({

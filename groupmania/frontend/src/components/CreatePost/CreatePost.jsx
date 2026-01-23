@@ -22,32 +22,10 @@ const initialValues = {
   postContent: '',
 };
 
-const CreatePostTextField = () => {
-  const { isSubmitting, status } = useFormikContext();
-
-  return (
-    <Form className="createPost_textfield">
-      {/* Status Messages */}
-      {status?.error && (
-        <div className="createPost-status-error">
-          <Alert severity="error">{status.message}</Alert>
-        </div>
-      )}
-      {status?.success && (
-        <div className="createPost-status-success">
-          <Alert severity="success">{status.message}</Alert>
-        </div>
-      )}
-
-      <div className="createPost-form-fields">{/* Text Field */}</div>
-    </Form>
-  );
-};
-
 const CreatePost = ({ userPost, postDescription, postImage, newPostItem }) => {
   const { data: session } = useSession();
   const { description, uploadedImage } = userPost;
-  // console.log({ uploadedImage });
+  // console.log({ postDescription });
 
   const RedColor = red[500];
 
@@ -64,7 +42,7 @@ const CreatePost = ({ userPost, postDescription, postImage, newPostItem }) => {
       };
 
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_API}/api/auth/create-post`,
+        `${process.env.NEXT_PUBLIC_BACKEND_API}/api/posts/create-post`,
         {
           method: 'POST',
           body: JSON.stringify({
@@ -78,13 +56,11 @@ const CreatePost = ({ userPost, postDescription, postImage, newPostItem }) => {
       );
 
       const data = await res.json();
+      console.log(data);
       setSubmitting(false);
 
       if (data?.success) {
         // Update display immediately with new values
-        // setProfileUpdate({
-        //   postContent: values.post,
-        // });
 
         setStatus({ success: true, message: 'Post created successfully!' });
       } else {
@@ -124,11 +100,11 @@ const CreatePost = ({ userPost, postDescription, postImage, newPostItem }) => {
     //this is a fetch call for the backend environment for api
     try {
       const requestBody = {
-        postContent: values.post,
+        post_content: description,
       };
 
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_API}/api/auth/create-post`,
+        `${process.env.NEXT_PUBLIC_BACKEND_API}/api/posts/create-post`,
         {
           method: 'POST',
           body: JSON.stringify(requestBody),
@@ -144,6 +120,7 @@ const CreatePost = ({ userPost, postDescription, postImage, newPostItem }) => {
       setSubmitting(false);
       if (data?.success) {
         resetForm();
+        newPostItem();
         setStatus({ success: true, message: 'success' });
       } else {
         setStatus({ error: true, message: data?.error ?? 'Error has occur' });
@@ -211,7 +188,6 @@ const CreatePost = ({ userPost, postDescription, postImage, newPostItem }) => {
                     <Button
                       type="submit"
                       className="createPost__button submit"
-                      onClick={newPostItem}
                       height="30px"
                       value=""
                     >

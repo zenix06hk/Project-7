@@ -1,29 +1,29 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import { Formik, Field, ErrorMessage, Form } from "formik";
-import * as Yup from "yup";
-import { useRouter } from "next/navigation";
-import { useSession } from "next-auth/react";
-import { signIn } from "next-auth/react";
-import { useTheme } from "../../context/theme-context";
-import "bootstrap/dist/css/bootstrap.min.css";
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { Formik, Field, ErrorMessage, Form } from 'formik';
+import * as Yup from 'yup';
+import { useRouter } from 'next/navigation';
+import { useSession } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
+import { useTheme } from '../../context/theme-context';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-import "./login.scss";
+import './login.scss';
 
 const validationSchema = Yup.object().shape({
-  email: Yup.string().email("Invalid email").required("Email is required"),
+  email: Yup.string().email('Invalid email').required('Email is required'),
   password: Yup.string()
 
-    .min(6, "must be at least 6 characters long")
-    .required("Password is required"),
+    .min(6, 'must be at least 6 characters long')
+    .required('Password is required'),
 });
 
 const initialValues = {
-  email: "",
-  password: "",
+  email: '',
+  password: '',
 };
 
 const Login = () => {
@@ -32,7 +32,7 @@ const Login = () => {
   const { theme } = useTheme();
   const [mounted, setMounted] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [hasErrorFetching, setHasErrorFetching] = useState("");
+  const [hasErrorFetching, setHasErrorFetching] = useState('');
 
   // Ensure component is mounted before using theme
   useEffect(() => {
@@ -40,63 +40,63 @@ const Login = () => {
   }, []);
 
   // Only log session changes, not on every render
-  useEffect(() => {
-    async function fetchUserProfile() {
-      setIsLoading(true);
-      try {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND_API}/api/login`,
-          {
-            method: "GET",
-            headers: {
-              "Content-type": "application/json; charset=UTF-8",
-              Authorization: `Bearer ${session?.accessToken}`,
-              // dummy token to test unauthorized below
-              // Authorization: `Bearer 21321365`,
-            },
-          }
-        );
+  // useEffect(() => {
+  //   async function fetchUserProfile() {
+  //     setIsLoading(true);
+  //     try {
+  //       const res = await fetch(
+  //         `${process.env.NEXT_PUBLIC_BACKEND_API}/api/login`,
+  //         {
+  //           method: 'GET',
+  //           headers: {
+  //             'Content-type': 'application/json; charset=UTF-8',
+  //             Authorization: `Bearer ${session?.accessToken}`,
+  //             // dummy token to test unauthorized below
+  //             // Authorization: `Bearer 21321365`,
+  //           },
+  //         }
+  //       );
 
-        // Check if the response is actually JSON
-        const data = await res.json();
-        if (!data.success) {
-          setIsLoading(false);
-          setHasErrorFetching(data.error || "something has gone wrong.");
-          return <></>;
-        }
+  //       // Check if the response is actually JSON
+  //       const data = await res.json();
+  //       if (!data.success) {
+  //         setIsLoading(false);
+  //         setHasErrorFetching(data.error || 'something has gone wrong.');
+  //         return <></>;
+  //       }
 
-        setProfileUpdate({
-          ...profileUpdate,
-          //controller auth.js line 327
-          ...data.user,
-        });
-        setIsLoading(false);
-      } catch (error) {
-        setIsLoading(false);
-        console.log(error);
-        setHasErrorFetching("error has occurred");
-      }
-    }
-    if (status == "loading") {
-      {
-        //if status is loading, wait to loading
-        return;
-      }
-    }
+  //       setProfileUpdate({
+  //         ...profileUpdate,
+  //         //controller auth.js line 327
+  //         ...data.user,
+  //       });
+  //       setIsLoading(false);
+  //     } catch (error) {
+  //       setIsLoading(false);
+  //       console.log(error);
+  //       setHasErrorFetching('error has occurred');
+  //     }
+  //   }
+  //   if (status == 'loading') {
+  //     {
+  //       //if status is loading, wait to loading
+  //       return;
+  //     }
+  //   }
 
-    if (status === "authenticated") {
-      fetchUserProfile();
-    } else {
-      console.log("user not authenticated");
-    }
-  }, [session]);
+  //   if (status === 'authenticated') {
+  //     fetchUserProfile();
+  //   } else {
+  //     console.log('user not authenticated');
+  //   }
+  // }, [session]);
 
   //Submit the Login clicking
   const handleSubmit = async (values, { setStatus }) => {
     // console.log("Login attempt:", values.email);
     //async call
     try {
-      const response = await signIn("credentials", {
+      const response = await signIn('credentials', {
         redirect: false,
         email: values.email,
         password: values.password,
@@ -106,17 +106,17 @@ const Login = () => {
 
       if (response?.ok) {
         // console.log("Login successful, redirecting...");
-        router.push("/");
+        router.push('/');
       } else {
         // console.log("Login failed:", response?.error);
         setStatus({
-          message: "Invalid email or password",
+          message: 'Invalid email or password',
         });
       }
     } catch (error) {
-      console.error("Login error:", error); // Keep this for debugging errors
+      console.error('Login error:', error); // Keep this for debugging errors
       setStatus({
-        message: "An error occurred. Please try again.",
+        message: 'An error occurred. Please try again.',
       });
     }
   };
@@ -127,9 +127,9 @@ const Login = () => {
       <div className="loginPage-content">
         <Image
           src={
-            mounted && theme === "dark"
-              ? "/assets/icon_and_name_dark.png"
-              : "/assets/icon_and_name.png"
+            mounted && theme === 'dark'
+              ? '/assets/icon_and_name_dark.png'
+              : '/assets/icon_and_name.png'
           }
           alt="icon"
           width={500}
@@ -150,7 +150,7 @@ const Login = () => {
                 <Field
                   name="email"
                   type="text"
-                  className={errors.email ? "error" : ""}
+                  className={errors.email ? 'error' : ''}
                   size="50"
                 />
                 <br></br>
@@ -163,7 +163,7 @@ const Login = () => {
                 <Field
                   name="password"
                   type="password"
-                  className={errors.password ? "error" : ""}
+                  className={errors.password ? 'error' : ''}
                   size="50"
                 />
                 <br></br>
@@ -189,7 +189,7 @@ const Login = () => {
                         Authenticating....
                       </>
                     ) : (
-                      "Log in"
+                      'Log in'
                     )}
                   </button>
                 </div>

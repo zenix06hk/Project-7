@@ -1,3 +1,26 @@
-button {
-  align-items: center;
+.createComment {
+  display: flex;
+  align-items: stretch;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.createComment__label {
+  flex: 1;
+}
+
+.createComment__textfield {
+  width: 100%;
+  height: 40px;
+  border-radius: 8px;
+  border: 1px solid grey;
+  padding: 10px 15px;
+}
+
+button.createComment__button,
+.MuiButton-root.createComment__button {
+  min-width: 96px;
+  height: 40px;
+  padding: 0 16px;
+  text-transform: none;
 }

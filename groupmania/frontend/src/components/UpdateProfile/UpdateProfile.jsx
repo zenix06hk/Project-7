@@ -165,6 +165,7 @@ const UpdateProfile = () => {
   useEffect(() => {
     // the method used to fetch my profile
     async function fetchUserProfile() {
+      console.log(session);
       setIsLoading(true);
       try {
         const res = await fetch(
@@ -303,6 +304,7 @@ const UpdateProfile = () => {
   // Avatar update handler to be passed to ProfileAvatar
 
   return (
+    // <h1>Update Profile Component function +ve</h1>
     <div className="updateprofile-container">
       <div className="updateprofile-header">
         <h1>Edit your profile</h1>

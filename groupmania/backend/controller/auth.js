@@ -69,17 +69,19 @@ exports.signUp = async (req, res) => {
 
 exports.login = async (req, res) => {
   const { email, password } = req.body;
-  // console.log(req.body);
+  console.log(req.body);
   try {
     const result = await db.query(
-      'SELECT email, username, avatar, first_name, last_name, userid, password FROM users WHERE email = $1',
+      'SELECT email, username, avatar, first_name, last_name, user_id, password FROM users WHERE email = $1',
       [email]
     );
     // console.log(result?.rows?.length);
+    console.log(result.rows.length, 'hit here 2nd time!');
+    console.log(result?.rows?.length !== 1, 'hit here 3rd time!');
     if (result?.rows?.length !== 1) {
-      // console.log("hello");
+      console.log('hit here 4th time');
       return res.status(401).json({
-        error: 'User not found!',
+        error: 'User not found 12354567890!',
       });
     }
     // console.log(result.rows[0]);
@@ -94,10 +96,12 @@ exports.login = async (req, res) => {
       });
     }
 
+    console.log(result.rows[0], 'hit here!');
+
     //Creation of the authentication token
     const token = jwt.sign(
       {
-        userId: result.rows[0].userid,
+        user_Id: result.rows[0].userid,
       },
       process.env.SECRET_KEY,
       {
@@ -119,7 +123,7 @@ exports.login = async (req, res) => {
 
     res.status(200).json({
       user: {
-        userId: userId,
+        user_Id: userId,
         username: username,
         first_name: first_name,
         last_name: last_name,
@@ -156,14 +160,14 @@ exports.deleteAccount = async (req, res) => {
 
     // Check if user exists
     const userCheck = await db.query(
-      'SELECT userid FROM users WHERE userid = $1',
+      'SELECT user_id FROM users WHERE user_id = $1',
       [userId]
     );
 
     if (userCheck.rows.length === 0) {
       return res.status(404).json({
         success: false,
-        error: 'User not found',
+        error: 'User not found 1',
       });
     }
 
@@ -185,7 +189,7 @@ exports.deleteAccount = async (req, res) => {
 
     // Finally delete the user account
     const result = await db.query(
-      'DELETE FROM users WHERE userid = $1 RETURNING userid, username, email',
+      'DELETE FROM users WHERE user_id = $1 RETURNING user_id, username, email',
       [userId]
     );
 
@@ -196,7 +200,7 @@ exports.deleteAccount = async (req, res) => {
         success: true,
         message: 'Account deleted successfully',
         deletedUser: {
-          userId: result.rows[0].userid,
+          user_Id: result.rows[0].user_id,
           username: result.rows[0].username,
           email: result.rows[0].email,
         },
@@ -222,6 +226,7 @@ exports.updateProfile = async (req, res) => {
     const updates = req.body.updateContent;
 
     console.log('Updates received:', updates); // Debug log
+    console.log('User ID:', userId); // Debug log
 
     // Handle password update separately
     if (updates.password) {
@@ -230,15 +235,15 @@ exports.updateProfile = async (req, res) => {
       const passwordQuery = `
         UPDATE users
         SET password = $1
-        WHERE userid = $2
-        RETURNING userid, username, first_name, last_name, email, avatar
+        WHERE user_id = $2
+        RETURNING user_id, username, first_name, last_name, email, avatar
       `;
 
       const result = await db.query(passwordQuery, [hashedPassword, userId]);
 
       if (result.rows.length === 0) {
         return res.status(404).json({
-          error: 'User not found',
+          error: 'User not found 2',
           success: false,
         });
       }
@@ -264,15 +269,15 @@ exports.updateProfile = async (req, res) => {
     const query = `
       UPDATE users
       SET email = $1, first_name = $2, last_name = $3
-      WHERE userid = $4
-      RETURNING userid, username, first_name, last_name, email, avatar
+      WHERE user_id = $4
+      RETURNING user_id, username, first_name, last_name, email, avatar
     `;
 
     const result = await db.query(query, values);
 
     if (result.rows.length === 0) {
       return res.status(404).json({
-        error: 'User not found',
+        error: 'User not found 3',
         success: false,
       });
     }
@@ -283,7 +288,7 @@ exports.updateProfile = async (req, res) => {
       message: 'Profile updated successfully',
       success: true,
       data: {
-        id: updatedUser.userid,
+        id: updatedUser.user_id,
         username: updatedUser.username,
         firstName: updatedUser.first_name ?? '',
         lastName: updatedUser.last_name ?? '',
@@ -325,15 +330,15 @@ exports.updateProfileAvatar = async (req, res) => {
     const query = `
       UPDATE users
       SET avatar = $1
-      WHERE userid = $2
-      RETURNING userid, username, first_name, last_name, email, avatar
+      WHERE user_id = $2
+      RETURNING user_id, username, first_name, last_name, email, avatar
     `;
 
     const result = await db.query(query, [avatarUrl, userId]);
 
     if (result.rows.length === 0) {
       return res.status(404).json({
-        error: 'User not found',
+        error: 'User not found 4',
         success: false,
       });
     }
@@ -382,16 +387,21 @@ exports.cleanupAvatars = async (req, res) => {
 
 exports.getUserProfile = async (req, res) => {
   try {
-    const userId = req.user.userId; // From auth middleware
+    const user_id = req.user.user_id; // From auth middleware
+
+    console.log(req.user);
+    console.log('Fetching profile for user ID:', user_id);
 
     const result = await db.query(
-      'SELECT userid, username, first_name, last_name, email, avatar FROM users WHERE userid = $1',
-      [userId]
+      'SELECT user_id, username, first_name, last_name, email, avatar FROM users WHERE user_id = $1',
+      [user_id]
     );
+
+    // console.log('Database query result:', result);
 
     if (result.rows.length === 0) {
       return res.status(404).json({
-        error: 'User not found',
+        error: 'User not found 5',
         success: false,
       });
     }
@@ -401,7 +411,7 @@ exports.getUserProfile = async (req, res) => {
     res.status(200).json({
       success: true,
       user: {
-        userId: user.userid,
+        user_id: user.user_id,
         username: user.username,
         firstName: user.first_name,
         lastName: user.last_name,

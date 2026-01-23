@@ -40,10 +40,11 @@ export const authOptions = {
 
           if (res.ok) {
             const data = await res.json();
+            console.log(data);
             // Return the user object, which will be passed to the jwt callback.
             // IMPORTANT: Include your custom token here!
             return {
-              id: data.user.userId,
+              id: data.user.user_id,
               name: data.user.username,
               firstName: data.user.first_name, // Now correct: backend sends 'first_name'
               lastName: data.user.last_name, // Now correct: backend sends 'last_name'
