@@ -178,7 +178,7 @@ const UpdateProfile = () => {
             },
           }
         );
-
+        console.log(res);
         // Check if the response is actually JSON
         const data = await res.json();
         if (!data.success) {
