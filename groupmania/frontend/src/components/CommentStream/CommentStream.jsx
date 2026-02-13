@@ -91,7 +91,7 @@ const CommentStream = ({ comments, postComment }) => {
                 <div className="commentStream__comments">
                   {comments.map((commentItem, commentIndex) => (
                     <div key={commentIndex} className="commentStream__comment">
-                      <p>{commentItem.comment}</p>
+                      <p>{commentItem.comment}test</p>
                     </div>
                   ))}
                 </div>
