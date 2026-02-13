@@ -7,11 +7,11 @@ import { useSession } from 'next-auth/react';
 import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-
 import { Alert } from '@mui/material';
 
 import './updateProfile.scss';
 import ChangePassword from '../ChangePassword/ChangePassword';
+import CustomizeButton from '../CustomizeButton/CustomizeButton';
 
 import { Formik, Form, useFormikContext } from 'formik';
 import * as Yup from 'yup';
@@ -144,6 +144,15 @@ const ProfileFormFields = () => {
         <UpdateButton type="submit" variant="contained" disabled={isSubmitting}>
           {isSubmitting ? 'Updating...' : 'Update Profile'}
         </UpdateButton>
+        <div className="test-button">
+          {/* <CustomizeButton
+            type="submit"
+            variant="contained"
+            disabled={isSubmitting}
+          >
+            {isSubmitting ? 'Updating...' : 'test Update Profile'}
+          </CustomizeButton> */}
+        </div>
       </div>
     </Form>
   );
@@ -165,7 +174,7 @@ const UpdateProfile = () => {
   useEffect(() => {
     // the method used to fetch my profile
     async function fetchUserProfile() {
-      console.log(session);
+      // console.log(session);
       setIsLoading(true);
       try {
         const res = await fetch(
@@ -186,6 +195,7 @@ const UpdateProfile = () => {
           setHasErrorFetching(data.error || 'something has gone wrong.');
           return <></>;
         }
+        // console.log(data, 'fetched user profile data');
 
         setProfileUpdate({
           ...profileUpdate,

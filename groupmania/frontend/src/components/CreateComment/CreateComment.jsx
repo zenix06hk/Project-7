@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import './comments.scss';
+import './createcomments.scss';
 
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
@@ -17,81 +17,15 @@ const initialValues = {
   commentContent: '',
 };
 
-function Comments({ id, postComment }) {
+const CreateComment = ({
+  postId,
+  userComment,
+  commentDescription,
+  commentImage,
+  newCommentItem,
+}) => {
   const { data: session } = useSession();
   const [comment, setComment] = useState('');
-
-  const RedColor = red[500];
-
-  const handleProfileSubmit = async (
-    values,
-    { setSubmitting, setStatus, resetForm }
-  ) => {
-    setSubmitting(true);
-    setStatus(null);
-
-    try {
-      const requestBody = {
-        commentContent: values.comment,
-      };
-
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_API}/api/posts/create-comment`,
-        {
-          method: 'POST',
-          body: JSON.stringify({
-            updateContent: requestBody,
-          }),
-          headers: {
-            'Content-type': 'application/json; charset=UTF-8',
-            Authorization: `Bearer ${session?.accessToken}`,
-          },
-        }
-      );
-
-      const data = await res.json();
-      console.log(data);
-      setSubmitting(false);
-
-      if (data?.success) {
-        // Update display immediately with new values
-
-        setStatus({ success: true, message: 'Comment created successfully!' });
-      } else {
-        setStatus({
-          error: true,
-          message: data?.error ?? 'Comment creation failed. Please try again.',
-        });
-      }
-    } catch (error) {
-      setSubmitting(false);
-      setStatus({ error: true, message: 'Network error. Please try again.' });
-    }
-  };
-
-  const VisuallyHiddenInput = styled('input')({
-    clip: 'rect(0 0 0 0)',
-    clipPath: 'inset(50%)',
-    height: 1,
-    overflow: 'hidden',
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    whiteSpace: 'nowrap',
-    width: 1,
-  });
-
-  // const handleInputChange = (e) => {
-  //   setComment(e.target.value);
-  // };
-
-  // const handleSubmit = (e) => {
-  //   e.preventDefault();
-  //   if (comment.trim()) {
-  //     postComment(comment, id);
-  //     setComment('');
-  //   }
-  // };
 
   const handleSubmit = async (
     values,
@@ -105,7 +39,8 @@ function Comments({ id, postComment }) {
     //this is a fetch call for the backend environment for api
     try {
       const requestBody = {
-        // comment_content: description,
+        comment_content: values.commentContent,
+        post_id: postId,
       };
 
       const res = await fetch(
@@ -125,7 +60,7 @@ function Comments({ id, postComment }) {
       setSubmitting(false);
       if (data?.success) {
         resetForm();
-        newPostItem();
+        // newPostItem();
         setStatus({ success: true, message: 'success' });
       } else {
         setStatus({ error: true, message: data?.error ?? 'Error has occur' });
@@ -159,15 +94,6 @@ function Comments({ id, postComment }) {
               component="div"
             />
           </label>
-          {/* <input
-            type="text"
-            id="comment"
-            placeholder="Comment here..."
-            size="100"
-            className="createPost__textfield"
-            value={comment}
-            onChange={handleInputChange}
-          /> */}
           <Button
             type="submit"
             className="createComment__button submit"
@@ -181,5 +107,5 @@ function Comments({ id, postComment }) {
       )}
     </Formik>
   );
-}
-export default Comments;
+};
+export default CreateComment;

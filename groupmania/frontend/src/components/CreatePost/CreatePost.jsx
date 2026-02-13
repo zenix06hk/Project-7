@@ -144,19 +144,6 @@ const CreatePost = ({ userPost, postDescription, postImage, newPostItem }) => {
         />
         <div className="createPost__content">
           <div className="createPost__upperBlock">
-            {/* <Form>
-              <label htmlFor="fname"></label>
-              <input
-                name="postContent"
-                type="text"
-                id="description"
-                placeholder="How's going today?"
-                size="100"
-                className="createPost__textfield"
-                value={description}
-                onChange={(e) => postDescription(e.target.value)}
-              />
-            </Form> */}
             <Formik initialValues={initialValues} onSubmit={handleSubmit}>
               {({ isSubmitting, errors, status }) => (
                 <Form>

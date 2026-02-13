@@ -14,7 +14,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 import './Poststream.scss';
-import Comments from '../Comments/Comments';
+import CreateComment from '../CreateComment/CreateComment';
 // import CommentStream from '../CommentStream/CommentStream';
 
 // function PostStream({ posts, postComment }) {
@@ -35,11 +35,6 @@ const PostStream = ({ posts, postComment }) => {
 
   // State to track comment input visibility per post
   const [openComments, setOpenComments] = useState({});
-
-  const [username, setUsername] = useState({
-    firstName: '',
-    lastName: '',
-  });
 
   // Handle thumbs up click
   const handleThumbsUp = (postId) => {
@@ -76,18 +71,21 @@ const PostStream = ({ posts, postComment }) => {
     <div className="poststream">
       {posts.map((item, index) => {
         const {
+          first_name,
+          last_name,
           description,
           post_content,
           uploadedImage,
           post_img,
           comment: itemComment,
-          id,
           post_id,
           comments,
           timestamp,
         } = item;
 
-        const postId = id ?? post_id;
+        const userFullName =
+          first_name && last_name ? `${first_name} ${last_name}` : 'Username';
+        const postId = post_id;
         const descriptionText = description ?? post_content ?? '';
         const imageSrc = uploadedImage ?? post_img;
         return (
@@ -101,7 +99,7 @@ const PostStream = ({ posts, postComment }) => {
             />
             <div className="poststream__content">
               <div className="poststream__name">
-                <h4>Username</h4>
+                <h4>{userFullName}</h4>
               </div>
               <div className="poststream__upperBlock">
                 <p>{descriptionText}</p>
@@ -184,10 +182,11 @@ const PostStream = ({ posts, postComment }) => {
                   ))}
                 </div>
               )}
+              {/* <CommentStream comments={comments} /> */}
+              <h1>here is the comment display</h1>
               {openComments[postId] && (
-                <Comments postComment={postComment} id={postId} />
+                <CreateComment postComment={postComment} postId={postId} />
               )}
-              {/* <CommentStream /> */}
             </div>
           </div>
         );

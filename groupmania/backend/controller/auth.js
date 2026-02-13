@@ -101,7 +101,7 @@ exports.login = async (req, res) => {
     //Creation of the authentication token
     const token = jwt.sign(
       {
-        user_Id: result.rows[0].userid,
+        user_id: result.rows[0].user_id,
       },
       process.env.SECRET_KEY,
       {
@@ -389,8 +389,8 @@ exports.getUserProfile = async (req, res) => {
   try {
     const user_id = req.user.user_id; // From auth middleware
 
-    console.log(req.user);
-    console.log('Fetching profile for user ID:', user_id);
+    console.log(user_id);
+    // console.log('Fetching profile for user ID:', user_id);
 
     const result = await db.query(
       'SELECT user_id, username, first_name, last_name, email, avatar FROM users WHERE user_id = $1',
@@ -407,6 +407,7 @@ exports.getUserProfile = async (req, res) => {
     }
 
     const user = result.rows[0];
+    console.log(('user profile fetched:', user));
 
     res.status(200).json({
       success: true,
