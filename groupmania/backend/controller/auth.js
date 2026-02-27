@@ -314,7 +314,7 @@ exports.updateProfile = async (req, res) => {
 
 exports.updateProfileAvatar = async (req, res) => {
   try {
-    const userId = req.user.userId; // From auth middleware
+    const userId = req.user.user_id; // From auth middleware
 
     if (!req.file) {
       return res.status(400).json({

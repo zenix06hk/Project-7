@@ -1,0 +1,10 @@
+.commentStream {
+  &__profileImg {
+    border: 3px solid red;
+    object-fit: cover;
+    width: 40px;
+    height: 40px;
+    border-radius: 50px;
+    margin: 20px;
+  }
+}

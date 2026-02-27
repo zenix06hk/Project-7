@@ -47,26 +47,22 @@ exports.createPost = async (req, res) => {
 
 exports.getPosts = async (req, res) => {
   try {
-    // const result = await db.query(`
-    //   SELECT post.post_id, post.user_id, post.post_content, post.post_img, post.post_time, post.likes, post.dislikes, users.user_id, users.first_name, users.last_name
-    //   FROM post
-    //   INNER JOIN users ON post.user_id = users.user_id`);
     const result = await db.query(
-      `SELECT post.user_id, post.post_id, post.post_content, users.first_name, users.last_name,
-COALESCE(json_agg(
+      `SELECT post.user_id, post.post_id, post.post_content, users.first_name, users.last_name, users.avatar,
+        COALESCE(json_agg(
 		      json_build_object(
-			  	'comment_name',commenter.first_name, 
+			  	'comment_name',concat_ws(' ', commenter.first_name, commenter.last_name),
 			    'comment_content', comment.comment_content,
 			    'comment_id', comment.comment_id
 		    )
 	  ) FILTER (WHERE comment.comment_id IS NOT NULL), '[]') AS comments
       FROM post
       LEFT JOIN comment 
-      ON post.post_id = comment.comment_id
+      ON post.post_id = comment.post_id
       INNER JOIN users
       ON post.user_id = users.user_id
 	  LEFT JOIN users AS commenter ON comment.user_id = commenter.user_id
-      GROUP BY post.post_id, post.user_id, post.post_content, users.user_id, users.first_name, users.last_name`
+      GROUP BY post.post_id, post.user_id, post.post_content, users.user_id, users.first_name, users.last_name, users.avatar`
     );
     console.log(result);
     const posts = result.rows;

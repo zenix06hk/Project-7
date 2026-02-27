@@ -19,6 +19,7 @@ const initialValues = {
 
 const CreateComment = ({
   postId,
+  submitComment,
   userComment,
   commentDescription,
   commentImage,
@@ -99,9 +100,8 @@ const CreateComment = ({
             className="createComment__button submit"
             height="30px"
             value=""
-            disabled={isSubmitting}
           >
-            Send
+            Send{isSubmitting}
           </Button>
         </Form>
       )}

@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import Form from 'next/form';
 import { useSession } from 'next-auth/react';
 import { useTheme } from '../../context/theme-context';
 
@@ -15,6 +14,8 @@ import {
 
 import './Poststream.scss';
 import CreateComment from '../CreateComment/CreateComment';
+import CommentStream from '../CommentStream/CommentStream';
+import { getUserAvatarUrl } from '@/components/utility/getUserAvatarUrl.js';
 // import CommentStream from '../CommentStream/CommentStream';
 
 // function PostStream({ posts, postComment }) {
@@ -91,7 +92,7 @@ const PostStream = ({ posts, postComment }) => {
         return (
           <div key={index} className="poststream__container">
             <Image
-              src="/assets/profile_image.jpg"
+              src={getUserAvatarUrl(session?.user?.image)}
               alt="icon"
               width={80}
               height={80}
@@ -172,20 +173,73 @@ const PostStream = ({ posts, postComment }) => {
               </div>
               <label htmlFor="fname"></label>
               {/* Display submitted comments */}
-              {Array.isArray(comments) && comments.length > 0 && (
-                <div className="poststream__comments">
+              {/* <CommentStream comments={comments} postId={postId} /> */}
+              {/* {Array.isArray(comments) && comments.length > 0 && (
+                <div className="poststream__comments_container">
                   <h4>Comments:</h4>
                   {comments.map((commentItem, commentIndex) => (
-                    <div key={commentIndex} className="poststream__comment">
-                      <p>{commentItem.comment}</p>
+                    <div
+                      key={commentIndex}
+                      className="poststream__comments_list"
+                    >
+                      <Image
+                        src={getUserAvatarUrl(session?.user?.image)}
+                        alt="profile"
+                        width={80}
+                        height={80}
+                        className="poststream__comments_profileImg"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                        style={{ cursor: 'pointer' }}
+                      />
+                      <div className="poststream__comments_content">
+                        <div className="poststream__comments_name">
+                          <h4>{commentItem.comment_name}</h4>
+                        </div>
+                        <div className="poststream__comments_description">
+                          <p>{commentItem.comment_content}</p>
+                        </div>
+                      </div>
                     </div>
                   ))}
                 </div>
-              )}
-              {/* <CommentStream comments={comments} /> */}
-              <h1>here is the comment display</h1>
+              )} */}
               {openComments[postId] && (
-                <CreateComment postComment={postComment} postId={postId} />
+                <CreateComment
+                  postComment={postComment}
+                  postId={postId}
+                  submitComment={submitComment}
+                />
+              )}
+              {Array.isArray(comments) && comments.length > 0 && (
+                <div className="poststream__comments_container">
+                  <h4>Comments:</h4>
+                  {comments.map((commentItem, commentIndex) => (
+                    <div
+                      key={commentIndex}
+                      className="poststream__comments_list"
+                    >
+                      <Image
+                        src={getUserAvatarUrl(session?.user?.image)}
+                        alt="profile"
+                        width={80}
+                        height={80}
+                        className="poststream__comments_profileImg"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                        style={{ cursor: 'pointer' }}
+                      />
+                      <div className="poststream__comments_content">
+                        <div className="poststream__comments_name">
+                          <h4>{commentItem.comment_name}</h4>
+                        </div>
+                        <div className="poststream__comments_description">
+                          <p>{commentItem.comment_content}</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               )}
             </div>
           </div>

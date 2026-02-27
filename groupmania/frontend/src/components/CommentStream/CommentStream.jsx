@@ -34,6 +34,7 @@ const CommentStream = ({ comments, postComment }) => {
           id,
           first_name,
           last_name,
+          description,
           comment_id,
           comment_content,
           timestamp,
@@ -42,7 +43,7 @@ const CommentStream = ({ comments, postComment }) => {
         const userFullName =
           first_name && last_name ? `${first_name} ${last_name}` : 'Username';
         const commentId = id ?? comment_id;
-        const descriptionText = description ?? post_content ?? '';
+        const descriptionText = description ?? comment_content ?? '';
 
         return (
           <div key={index} className="commentStream__container">
@@ -54,44 +55,17 @@ const CommentStream = ({ comments, postComment }) => {
               className="commentStream__profileImg"
             />
             <div className="commentStream__content">
-              <div className="commentStream__name">
-                <h4>{userFullName}</h4>
-              </div>
-              <div className="commentStream__upperBlock">
-                <p>{descriptionText}</p>
-              </div>
-              {/* <span>
-                {imageSrc && (
-                  <Image
-                    src={imageSrc}
-                    alt="icon"
-                    width={500}
-                    height={500}
-                    className="commentStream__uploadedImg"
-                  />
-                )}
-              </span> */}
-              {/* {timestamp && (
-                <div
-                  className="commentStream__timestamp"
-                  style={{
-                    color: mounted && theme === 'dark' ? 'white' : 'black',
-                  }}
-                >
-                  <span>{timestamp}</span>
-                </div>
-              )} */}
-              <span>
-                {/* <p>{itemComment}</p> */}
-                <h1>here is the comment</h1>
-              </span>
+              <div className="commentStream__name"></div>
+              <div className="commentStream__upperBlock"></div>
               <label htmlFor="fname"></label>
               {/* Display submitted comments */}
               {Array.isArray(comments) && comments.length > 0 && (
-                <div className="commentStream__comments">
+                <div className="commentStream__comments_list">
+                  <h4>Comments:</h4>
                   {comments.map((commentItem, commentIndex) => (
-                    <div key={commentIndex} className="commentStream__comment">
-                      <p>{commentItem.comment}test</p>
+                    <div key={commentIndex} className="poststream__comment">
+                      <div>{commentItem.comment_name}</div>
+                      <p>{commentItem.comment_content}</p>
                     </div>
                   ))}
                 </div>
