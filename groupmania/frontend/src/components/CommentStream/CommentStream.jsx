@@ -46,7 +46,13 @@ const CommentStream = ({ comments, postComment }) => {
         const descriptionText = description ?? comment_content ?? '';
 
         return (
-          <div key={index} className="commentStream__container">
+          <div
+            key={index}
+            style={{
+              color: mounted && theme === 'dark' ? 'white' : 'black',
+            }}
+            className="commentStream__container"
+          >
             <Image
               src="/assets/profile_image.jpg"
               alt="icon"

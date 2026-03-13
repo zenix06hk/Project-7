@@ -17,7 +17,6 @@ import DarkModeToggle from '@/components/DarkModeToggle/DarkModeToggle.jsx';
 // config.autoAddCss = false;
 import {
   faHome,
-  faUserGroup,
   faPeopleGroup,
   faGear,
 } from '@fortawesome/free-solid-svg-icons';
@@ -36,7 +35,6 @@ function Header() {
 
   const navList = [
     { name: faHome, url: '/' },
-    { name: faUserGroup, url: '/friends' },
     { name: faPeopleGroup, url: '/community' },
     { name: faGear, url: '/settings' },
   ];
@@ -77,15 +75,6 @@ function Header() {
                 }}
               >
                 Home
-              </div>
-            </Link>
-            <Link href="/friends">
-              <div
-                style={{
-                  color: mounted && theme === 'dark' ? 'white' : 'black',
-                }}
-              >
-                Friends
               </div>
             </Link>
             <Link href="/settings">

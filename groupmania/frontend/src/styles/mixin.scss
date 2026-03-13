@@ -4,3 +4,19 @@ $grey: #e3e3e3;
 $red: #fd2d01;
 $dark-grey: #505050;
 $black: #000000;
+
+@mixin tablet-only {
+  @media (min-width: 768px) and (max-width: 1023px) {
+    @content;
+  }
+}
+@mixin desktop-only {
+  @media (min-width: 1024px) {
+    @content;
+  }
+}
+@mixin mobile-only {
+  @media (max-width: 767px) {
+    @content;
+  }
+}

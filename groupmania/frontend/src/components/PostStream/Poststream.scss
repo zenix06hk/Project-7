@@ -30,16 +30,16 @@
 
   &__name {
     // border: 5px solid orange;
-    padding-top: 25px;
+    padding: 18px 0 0 12px;
   }
 
-  &__upperBlock {
-    border: 1px solid green;
-    display: flex;
-    flex-direction: column;
-    // padding: 10px 0;
+  &__description {
+    // border: 1px solid green;
+    // display: flex;
+    // flex-direction: column;
+    padding: 0 0 0 15px;
     p {
-      border: 1px solid red;
+      // border: 1px solid red;
     }
   }
 
@@ -55,10 +55,9 @@
   }
 
   &__bottom {
-    border: 1px solid purple;
+    // border: 1px solid purple;
     display: flex;
     // justify-content: space-around;
-    width: 100%;
     // padding: 20px;
   }
   &__icon {
@@ -104,7 +103,7 @@
   }
 
   &__comments_container {
-    border: 5px solid orange;
+    // border: 5px solid orange;
     margin-top: 15px;
     padding: 15px;
     margin-bottom: 10px;
@@ -115,7 +114,6 @@
     h4 {
       margin: 0 0 10px 0;
       font-size: 16px;
-      color: #ffffff;
       font-weight: 600;
     }
   }
@@ -123,8 +121,8 @@
   &__comments_profileImg {
     // border: 3px solid red;
     object-fit: cover;
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
     border-radius: 50px;
     margin-right: 10px;
   }
@@ -145,16 +143,12 @@
     p {
       margin: 0;
       font-size: 14px;
-      color: #ffffff;
       line-height: 1.4;
     }
   }
   &__comments_name {
     // border: 1px solid orange;
     padding-top: 8px;
-  }
-  &__comments_description {
-    // border: 1px solid orange;
   }
 }
 

@@ -31,35 +31,92 @@ const PostStream = ({ posts, postComment }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [mounted, setMounted] = useState(false);
 
+  // text color based on theme
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   // State to track like/dislike status for each post
   const [postReactions, setPostReactions] = useState({});
+
+  useEffect(() => {
+    if (!Array.isArray(posts) || posts.length === 0) return;
+
+    setPostReactions((prev) => {
+      const additions = posts.reduce((acc, post) => {
+        const postId = post?.post_id;
+        if (!postId) return acc;
+        if (prev[postId]) return acc; // don't overwrite local changes
+
+        acc[postId] = {
+          likes: Number(post?.user_likes) === 1 ? 1 : 0,
+          dislikes: Number(post?.user_dislikes) === 1 ? 1 : 0,
+        };
+        return acc;
+      }, {});
+
+      return { ...prev, ...additions };
+    });
+  }, [posts]);
 
   // State to track comment input visibility per post
   const [openComments, setOpenComments] = useState({});
 
-  // Handle thumbs up click
-  const handleThumbsUp = (postId) => {
+  const setReactionState = (postId, likes, dislikes) => {
     setPostReactions((prev) => ({
       ...prev,
       [postId]: {
-        ...prev[postId],
-        thumbsUp: !prev[postId]?.thumbsUp,
-        thumbsDown: false, // Reset thumbs down when thumbs up is clicked
+        likes: Number(likes) === 1 ? 1 : 0,
+        dislikes: Number(dislikes) === 1 ? 1 : 0,
       },
     }));
   };
 
-  // Handle thumbs down click
-  const handleThumbsDown = (postId) => {
-    setPostReactions((prev) => ({
-      ...prev,
-      [postId]: {
-        ...prev[postId],
-        thumbsDown: !prev[postId]?.thumbsDown,
-        thumbsUp: false, // Reset thumbs up when thumbs down is clicked
-      },
-    }));
+  const handlePopularity = async (postId, reactionType) => {
+    try {
+      if (!session?.accessToken) {
+        throw new Error('Not authenticated');
+      }
+
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BACKEND_API}/api/posts/create-popularity`,
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${session?.accessToken}`,
+          },
+          body: JSON.stringify({
+            post_id: postId,
+            reactionType,
+          }),
+        }
+      );
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to update popularity');
+      }
+      const nextLikes = data?.data?.likes;
+      const nextDislikes = data?.data?.dislikes;
+
+      console.log('popularity updated:', {
+        userId: session?.user?.id ?? session?.user?.user_id,
+        postId,
+        likes: Number(nextLikes) === 1 ? 1 : 0,
+        dislikes: Number(nextDislikes) === 1 ? 1 : 0,
+      });
+
+      setReactionState(postId, nextLikes, nextDislikes);
+    } catch (error) {
+      console.log('Error updating popularity:', error);
+    }
   };
+
+  // Handle thumbs up click (neutral <-> like, and dislike -> like)
+  const handleThumbsUp = (postId) => handlePopularity(postId, 'thumbsUp');
+
+  // Handle thumbs down click (neutral <-> dislike, and like -> dislike)
+  const handleThumbsDown = (postId) => handlePopularity(postId, 'thumbsDown');
 
   const handleToggleComments = (postId) => {
     setOpenComments((prev) => ({
@@ -100,9 +157,9 @@ const PostStream = ({ posts, postComment }) => {
             />
             <div className="poststream__content">
               <div className="poststream__name">
-                <h4>{userFullName}</h4>
+                <h2>{userFullName}</h2>
               </div>
-              <div className="poststream__upperBlock">
+              <div className="poststream__description">
                 <p>{descriptionText}</p>
               </div>
               <span>
@@ -133,31 +190,33 @@ const PostStream = ({ posts, postComment }) => {
                 <FontAwesomeIcon
                   icon={faThumbsUp}
                   className={`poststream__icon poststream__icon--thumbs-up ${
-                    postReactions[postId]?.thumbsUp ? 'active' : ''
+                    postReactions[postId]?.likes === 1 ? 'active' : ''
                   }`}
                   width="30px"
                   height="30px"
                   onClick={() => handleThumbsUp(postId)}
                   style={{
                     cursor: 'pointer',
-                    color: postReactions[postId]?.thumbsUp
-                      ? '#007bff'
-                      : 'inherit',
+                    color:
+                      postReactions[postId]?.likes === 1
+                        ? '#007bff'
+                        : 'inherit',
                   }}
                 />
                 <FontAwesomeIcon
                   icon={faThumbsDown}
                   className={`poststream__icon poststream__icon--thumbs-down ${
-                    postReactions[postId]?.thumbsDown ? 'active' : ''
+                    postReactions[postId]?.dislikes === 1 ? 'active' : ''
                   }`}
                   width="30px"
                   height="30px"
                   onClick={() => handleThumbsDown(postId)}
                   style={{
                     cursor: 'pointer',
-                    color: postReactions[postId]?.thumbsDown
-                      ? '#dc3545'
-                      : 'inherit',
+                    color:
+                      postReactions[postId]?.dislikes === 1
+                        ? '#dc3545'
+                        : 'inherit',
                   }}
                 />
                 <FontAwesomeIcon
@@ -229,7 +288,13 @@ const PostStream = ({ posts, postComment }) => {
                         aria-expanded="false"
                         style={{ cursor: 'pointer' }}
                       />
-                      <div className="poststream__comments_content">
+                      <div
+                        className="poststream__comments_content"
+                        style={{
+                          color:
+                            mounted && theme === 'dark' ? 'white' : 'black',
+                        }}
+                      >
                         <div className="poststream__comments_name">
                           <h4>{commentItem.comment_name}</h4>
                         </div>

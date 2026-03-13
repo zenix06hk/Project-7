@@ -12,6 +12,7 @@ const multer = require('../middleware/multer-config');
 router.post('/create-post', auth, postCtrl.createPost);
 router.get('/get-posts', auth, postCtrl.getPosts);
 router.post('/create-comment', auth, postCtrl.createComment);
+router.post('/create-popularity', auth, postCtrl.createPopularity);
 
 //Export and exploitation of routes
 module.exports = router;
