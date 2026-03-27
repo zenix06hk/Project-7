@@ -1,19 +1,19 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import { useSession } from "next-auth/react";
+import React, { useEffect, useState } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { useSession } from 'next-auth/react';
 
-import { styled } from "@mui/material/styles";
-import Button from "@mui/material/Button";
-import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import { red } from "@mui/material/colors";
-import { Box, Alert } from "@mui/material";
-import TextField from "@mui/material/TextField";
+import { styled } from '@mui/material/styles';
+import Button from '@mui/material/Button';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import { red } from '@mui/material/colors';
+import { Box, Alert } from '@mui/material';
+import TextField from '@mui/material/TextField';
 
-import "./updateProfile.scss";
-import ChangePassword from "../ChangePassword/ChangePassword";
+import './updateProfile.scss';
+import ChangePassword from '../ChangePassword/ChangePassword';
 
 import {
   Formik,
@@ -23,20 +23,20 @@ import {
   FormikValues,
   FormikHelpers,
   useFormik,
-} from "formik";
-import * as Yup from "yup";
+} from 'formik';
+import * as Yup from 'yup';
 
 // Validation schemas for each section
 const profileValidationSchema = Yup.object().shape({
   firstName: Yup.string()
     .trim()
-    .min(2, "First name must be minimum 2 characters")
-    .max(30, "First name must not be more than 30 characters"),
+    .min(2, 'First name must be minimum 2 characters')
+    .max(30, 'First name must not be more than 30 characters'),
   lastName: Yup.string()
     .trim()
-    .min(2, "Last name must be minimum 2 characters")
-    .max(30, "Last name must not be more than 30 characters"),
-  email: Yup.string().trim().email("Invalid email format"),
+    .min(2, 'Last name must be minimum 2 characters')
+    .max(30, 'Last name must not be more than 30 characters'),
+  email: Yup.string().trim().email('Invalid email format'),
 });
 
 // const passwordValidationSchema = Yup.object().shape({
@@ -55,11 +55,11 @@ const UpdateProfile = () => {
   const [avatarPreview, setAvatarPreview] = useState(null);
   const [avatarStatus, setAvatarStatus] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [hasErrorFetching, setHasErrorFetching] = useState("");
+  const [hasErrorFetching, setHasErrorFetching] = useState('');
   const [profileUpdate, setProfileUpdate] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
+    firstName: '',
+    lastName: '',
+    email: '',
   });
   useEffect(() => {
     // the method used to fetch my profile
@@ -69,9 +69,9 @@ const UpdateProfile = () => {
         const res = await fetch(
           `${process.env.NEXT_PUBLIC_BACKEND_API}/api/auth/user-profile`,
           {
-            method: "GET",
+            method: 'GET',
             headers: {
-              "Content-type": "application/json; charset=UTF-8",
+              'Content-type': 'application/json; charset=UTF-8',
               Authorization: `Bearer ${session?.accessToken}`,
               // dummy token to test unauthorized below
               // Authorization: `Bearer 21321365`,
@@ -83,7 +83,7 @@ const UpdateProfile = () => {
         const data = await res.json();
         if (!data.success) {
           setIsLoading(false);
-          setHasErrorFetching(data.error || "something has gone wrong.");
+          setHasErrorFetching(data.error || 'something has gone wrong.');
           return <></>;
         }
 
@@ -96,24 +96,24 @@ const UpdateProfile = () => {
       } catch (error) {
         setIsLoading(false);
         console.log(error);
-        setHasErrorFetching("error has occurred");
+        setHasErrorFetching('error has occurred');
       }
     }
-    if (status == "loading") {
+    if (status == 'loading') {
       {
         //if status is loading, wait to loading
         return;
       }
     }
 
-    if (status === "authenticated") {
+    if (status === 'authenticated') {
       fetchUserProfile();
     } else {
-      console.log("user not authenticated");
+      console.log('user not authenticated');
     }
   }, [session]);
 
-  if (status === "loading" || isLoading) {
+  if (status === 'loading' || isLoading) {
     return <>Loading...</>;
   }
 
@@ -127,15 +127,15 @@ const UpdateProfile = () => {
 
   const RedColor = red[500];
 
-  const VisuallyHiddenInput = styled("input")({
-    clip: "rect(0 0 0 0)",
-    clipPath: "inset(50%)",
+  const VisuallyHiddenInput = styled('input')({
+    clip: 'rect(0 0 0 0)',
+    clipPath: 'inset(50%)',
     height: 1,
-    overflow: "hidden",
-    position: "absolute",
+    overflow: 'hidden',
+    position: 'absolute',
     bottom: 0,
     left: 0,
-    whiteSpace: "nowrap",
+    whiteSpace: 'nowrap',
     width: 1,
   });
 
@@ -168,7 +168,7 @@ const UpdateProfile = () => {
         const res = await fetch(
           `${process.env.NEXT_PUBLIC_BACKEND_API}/api/auth/update-profile`,
           {
-            method: "PUT",
+            method: 'PUT',
             body: JSON.stringify({
               updateContent: {
                 first_name: value.firstName,
@@ -177,7 +177,7 @@ const UpdateProfile = () => {
               },
             }),
             headers: {
-              "Content-type": "application/json; charset=UTF-8",
+              'Content-type': 'application/json; charset=UTF-8',
               Authorization: `Bearer ${session?.accessToken}`,
             },
           }
@@ -188,7 +188,7 @@ const UpdateProfile = () => {
         if (data?.success) {
           setAvatarStatus({
             success: true,
-            message: "Avatar updated successfully!",
+            message: 'Avatar updated successfully!',
           });
           setSelectedAvatar(null);
           setAvatarPreview(null);
@@ -200,7 +200,7 @@ const UpdateProfile = () => {
         } else {
           setAvatarStatus({
             error: true,
-            message: data?.error ?? "Avatar update failed. Please try again.",
+            message: data?.error ?? 'Avatar update failed. Please try again.',
           });
         }
       };
@@ -208,7 +208,7 @@ const UpdateProfile = () => {
     } catch (error) {
       setAvatarStatus({
         error: true,
-        message: "Network error. Please try again.",
+        message: 'Network error. Please try again.',
       });
     }
   };
@@ -226,12 +226,12 @@ const UpdateProfile = () => {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_API}/api/auth/update-profile`,
         {
-          method: "PUT",
+          method: 'PUT',
           body: JSON.stringify({
             updateContent: values,
           }),
           headers: {
-            "Content-type": "application/json; charset=UTF-8",
+            'Content-type': 'application/json; charset=UTF-8',
             Authorization: `Bearer ${session?.accessToken}`,
           },
         }
@@ -241,24 +241,24 @@ const UpdateProfile = () => {
       setSubmitting(false);
 
       if (data?.success) {
-        setStatus({ success: true, message: "Profile updated successfully!" });
+        setStatus({ success: true, message: 'Profile updated successfully!' });
       } else {
         setStatus({
           error: true,
-          message: data?.error ?? "Profile update failed. Please try again.",
+          message: data?.error ?? 'Profile update failed. Please try again.',
         });
       }
     } catch (error) {
       setSubmitting(false);
-      setStatus({ error: true, message: "Network error. Please try again." });
+      setStatus({ error: true, message: 'Network error. Please try again.' });
     }
   };
 
   const formik = useFormik({
     initialValues: {
-      firstName: profileUpdate.firstName || "",
-      lastName: profileUpdate.lastName || "",
-      email: profileUpdate.email || "",
+      firstName: profileUpdate.firstName || '',
+      lastName: profileUpdate.lastName || '',
+      email: profileUpdate.email || '',
     },
     validationSchema: profcileValidationSchema,
     enableReinitialize: true, // This allows the form to update when profileUpdate changes
@@ -268,12 +268,12 @@ const UpdateProfile = () => {
         const res = await fetch(
           `${process.env.NEXT_PUBLIC_BACKEND_API}/api/auth/update-profile`,
           {
-            method: "PUT",
+            method: 'PUT',
             body: JSON.stringify({
               updateContent: values,
             }),
             headers: {
-              "Content-type": "application/json; charset=UTF-8",
+              'Content-type': 'application/json; charset=UTF-8',
               Authorization: `Bearer ${session?.accessToken}`,
             },
           }
@@ -285,17 +285,17 @@ const UpdateProfile = () => {
         if (data?.success) {
           setStatus({
             success: true,
-            message: "Profile updated successfully!",
+            message: 'Profile updated successfully!',
           });
         } else {
           setStatus({
             error: true,
-            message: data?.error ?? "Profile update failed. Please try again.",
+            message: data?.error ?? 'Profile update failed. Please try again.',
           });
         }
       } catch (error) {
         setSubmitting(false);
-        setStatus({ error: true, message: "Network error. Please try again." });
+        setStatus({ error: true, message: 'Network error. Please try again.' });
       }
     },
   });
@@ -383,7 +383,7 @@ const UpdateProfile = () => {
                 {/* Status Messages for Avatar */}
                 {avatarStatus && (
                   <Box sx={{ mb: 2 }}>
-                    <Alert severity={avatarStatus.error ? "error" : "success"}>
+                    <Alert severity={avatarStatus.error ? 'error' : 'success'}>
                       {avatarStatus.message}
                     </Alert>
                   </Box>
@@ -393,8 +393,7 @@ const UpdateProfile = () => {
                   <Image
                     src={
                       avatarPreview ||
-                      (session?.user?.image ??
-                        "/assets/annoymous_avatar.avif.jpg")
+                      (session?.user?.image ?? '/assets/annoymous_avatar.jpg')
                     }
                     alt="Profile"
                     width={150}
@@ -409,7 +408,7 @@ const UpdateProfile = () => {
                   variant="contained"
                   tabIndex={-1}
                   startIcon={<CloudUploadIcon />}
-                  style={{ width: "100%", marginBottom: "10px" }}
+                  style={{ width: '100%', marginBottom: '10px' }}
                 >
                   Upload Avatar
                   <VisuallyHiddenInput
@@ -426,23 +425,23 @@ const UpdateProfile = () => {
                   onClick={handleAvatarUpdate}
                   disabled={!selectedAvatar}
                   sx={{
-                    width: "100%",
-                    borderRadius: "8px",
-                    padding: "12px 24px",
-                    fontSize: "16px",
+                    width: '100%',
+                    borderRadius: '8px',
+                    padding: '12px 24px',
+                    fontSize: '16px',
                     fontWeight: 500,
-                    border: "1px solid #ffdbdb",
-                    backgroundColor: "transparent",
-                    color: "var(--text-color)",
-                    minWidth: "160px",
-                    textTransform: "none",
-                    "&:hover": {
-                      backgroundColor: "rgba(255, 255, 255, 0.1)",
-                      border: "1px solid #ffdbdb",
+                    border: '1px solid #ffdbdb',
+                    backgroundColor: 'transparent',
+                    color: 'var(--text-color)',
+                    minWidth: '160px',
+                    textTransform: 'none',
+                    '&:hover': {
+                      backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                      border: '1px solid #ffdbdb',
                     },
-                    "&:disabled": {
+                    '&:disabled': {
                       opacity: 0.6,
-                      cursor: "not-allowed",
+                      cursor: 'not-allowed',
                     },
                   }}
                 >
@@ -456,12 +455,12 @@ const UpdateProfile = () => {
                   <span className="updateprofile-current-name">
                     {session?.user?.firstName && session?.user?.lastName
                       ? `Name: ${session.user.firstName} ${session.user.lastName}`
-                      : `Username: ${session?.user?.name || "User Name"}`}
+                      : `Username: ${session?.user?.name || 'User Name'}`}
                   </span>
                 </div>
                 <div className="updateprofile-email-row">
                   <span className="updateprofile-current-email">
-                    Email: {session?.user?.email || "user@example.com"}
+                    Email: {session?.user?.email || 'user@example.com'}
                   </span>
                 </div>
               </div>

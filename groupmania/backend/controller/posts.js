@@ -49,7 +49,7 @@ exports.getPosts = async (req, res) => {
   try {
     const userId = req.user.user_id;
     const result = await db.query(
-      `SELECT post.user_id, post.post_id, post.post_content, post.likes, post.dislikes,
+      `SELECT post.user_id, post.post_id, post.post_content, post.likes, post.dislikes,post.post_img,
         users.first_name, users.last_name, users.avatar,
         COALESCE(popularity.likes, 0) AS user_likes,
         COALESCE(popularity.dislikes, 0) AS user_dislikes,
@@ -57,7 +57,8 @@ exports.getPosts = async (req, res) => {
 		      json_build_object(
 			  	'comment_name',concat_ws(' ', commenter.first_name, commenter.last_name),
 			    'comment_content', comment.comment_content,
-			    'comment_id', comment.comment_id
+			    'comment_id', comment.comment_id,
+			    'comment_avatar', commenter.avatar
 		    )
 	  ) FILTER (WHERE comment.comment_id IS NOT NULL), '[]') AS comments
       FROM post
@@ -69,7 +70,7 @@ exports.getPosts = async (req, res) => {
       ON post.user_id = users.user_id
 	  LEFT JOIN users AS commenter ON comment.user_id = commenter.user_id
       GROUP BY post.post_id, post.user_id, post.post_content, post.likes, post.dislikes,
-        users.user_id, users.first_name, users.last_name, users.avatar,
+        users.user_id, users.first_name, users.last_name, users.avatar,post.post_img,
         popularity.likes, popularity.dislikes`,
       [userId]
     );
@@ -140,8 +141,7 @@ exports.createComment = async (req, res) => {
 exports.createPopularity = async (req, res) => {
   try {
     const userId = req.user.user_id;
-    const { post_id } = req.body;
-    const reactionTypeRaw = req.body.reactionType;
+    const { post_id, likes, dislike } = req.body;
 
     if (!post_id) {
       return res.status(400).json({
@@ -150,64 +150,38 @@ exports.createPopularity = async (req, res) => {
       });
     }
 
-    //First time input likes/dislikes reactionType
-
-    const likesFlag = Number(req.body.likes) === 1 ? 1 : 0;
-    const dislikesFlag = Number(req.body.dislikes) === 1 ? 1 : 0;
-
-    let reactionType = reactionTypeRaw;
-    if (!reactionType) {
-      if (likesFlag === 1 && dislikesFlag === 0) reactionType = 'thumbsUp';
-      else if (dislikesFlag === 1 && likesFlag === 0)
-        reactionType = 'thumbsDown';
-    }
-
-    if (reactionType !== 'thumbsUp' && reactionType !== 'thumbsDown') {
+    if (likes === dislike) {
       return res.status(400).json({
-        error: 'reactionType must be "thumbsUp" or "thumbsDown"',
+        error: 'likes and dislikes cannot be the same',
         success: false,
       });
     }
-    //db logic of checking if the user has already liked/disliked and neutral functionality
 
+    // Determine the reaction type for response
     const existing = await db.query(
       'SELECT likes, dislikes FROM popularity WHERE user_id = $1 AND post_id = $2 LIMIT 1',
       [userId, post_id]
     );
 
-    const currentLikes = existing.rowCount
-      ? Number(existing.rows[0].likes) === 1
-        ? 1
-        : 0
-      : 0;
-    const currentDislikes = existing.rowCount
-      ? Number(existing.rows[0].dislikes) === 1
-        ? 1
-        : 0
-      : 0;
+    let currentLikes = 0;
+    let currentDislikes = 0;
 
-    let likesChange = currentLikes;
-    let dislikesChange = currentDislikes;
-
-    //thumbs up logic
-    if (reactionType === 'thumbsUp') {
-      if (currentLikes === 1) {
-        likesChange = 0;
-        dislikesChange = 0;
-      } else {
-        likesChange = 1;
-        dislikesChange = 0;
-      }
+    if (
+      (Number(existing.rows[0].likes) === 1 && likes === 1) ||
+      (Number(existing.rows[0].dislikes) === 1 && dislike === 1)
+    ) {
+      currentLikes = 0;
+      currentDislikes = 0;
     }
-    //thumbs down logic
-    else {
-      if (currentDislikes === 1) {
-        likesChange = 0;
-        dislikesChange = 0;
-      } else {
-        likesChange = 0;
-        dislikesChange = 1;
-      }
+
+    if (Number(existing.rows[0].likes) === 0 && likes === 1) {
+      currentLikes = 1;
+      currentDislikes = 0;
+    }
+
+    if (Number(existing.rows[0].dislike) === 0 && dislike === 1) {
+      currentLikes = 0;
+      currentDislikes = 1;
     }
 
     // Ensure only one row exists per user+post even if the DB schema doesn't enforce it.
@@ -219,27 +193,18 @@ exports.createPopularity = async (req, res) => {
     // Insert the new reaction, or neutral if both likesChange and dislikesChange are 0
     const result = await db.query(
       'INSERT INTO popularity (user_id, post_id, likes, dislikes) VALUES ($1, $2, $3, $4) RETURNING *',
-      [userId, post_id, likesChange, dislikesChange]
+      [userId, post_id, currentLikes, currentDislikes]
     );
 
-    // Calculation of difference
-    const likesDiff = likesChange - currentLikes;
-    const dislikesDiff = dislikesChange - currentDislikes;
-
-    // Update post's total likes and dislikes based on the difference
-    await db.query(
-      'UPDATE post SET likes = GREATEST(likes + $1, 0), dislikes = GREATEST(dislikes + $2, 0) WHERE post_id = $3',
-      [likesDiff, dislikesDiff, post_id]
-    );
+    console.log(result.rows[0]);
 
     res.status(200).json({
       message: 'Popularity updated successfully',
       success: true,
       data: {
         post_id: post_id,
-        likes: likesChange,
-        dislikes: dislikesChange,
-        reactionType,
+        likes: result.rows[0].likes,
+        dislikes: result.rows[0].dislikes,
       },
     });
   } catch (error) {

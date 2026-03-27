@@ -100,51 +100,11 @@ function HomePage() {
 
   //create new post item
   const newPostItem = (e) => {
-    e?.preventDefault?.();
-    if (!canPost) return;
-
-    // Create timestamp in DD/MM/YYYY T HH:MM:SS format
-    const now = new Date();
-    const timestamp =
-      now.toLocaleDateString('en-GB') +
-      ' T ' +
-      now.toLocaleTimeString('en-GB', { hour12: false });
-
-    const newPost = {
-      ...userPost,
-      timestamp: timestamp,
-      id: id,
-    };
-
-    setPosts([...posts, newPost]);
-    //reset the user form
-    setUserPost({
-      username: '',
-      img: '',
-      description: '',
-      uploadedImage: '',
-      comments: [],
-    });
-    setId(id + 1);
+    fetchPost();
   };
 
   const postComment = (value, id) => {
-    console.log(value);
-    const updatePostWithComment = posts.map((item) => {
-      if (item.id === id) {
-        console.log(item);
-        // Ensure comments array exists, if not create it
-        const currentComments = item.comments || [];
-        const newComments = [...currentComments, { comment: value, id: id }];
-        return {
-          ...item,
-          comments: newComments,
-        };
-      }
-
-      return item;
-    });
-    setPosts(updatePostWithComment);
+    fetchPost();pgad
   };
 
   return (

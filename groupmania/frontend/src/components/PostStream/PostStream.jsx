@@ -72,7 +72,7 @@ const PostStream = ({ posts, postComment }) => {
     }));
   };
 
-  const handlePopularity = async (postId, reactionType) => {
+  const handlePopularity = async (postId, likes, dislikes) => {
     try {
       if (!session?.accessToken) {
         throw new Error('Not authenticated');
@@ -88,7 +88,8 @@ const PostStream = ({ posts, postComment }) => {
           },
           body: JSON.stringify({
             post_id: postId,
-            reactionType,
+            likes,
+            dislikes,
           }),
         }
       );
@@ -113,10 +114,12 @@ const PostStream = ({ posts, postComment }) => {
   };
 
   // Handle thumbs up click (neutral <-> like, and dislike -> like)
-  const handleThumbsUp = (postId) => handlePopularity(postId, 'thumbsUp');
+  const handleThumbsUp = (postId) =>
+    handlePopularity(postId, { likes: 1, dislikes: 0 });
 
   // Handle thumbs down click (neutral <-> dislike, and like -> dislike)
-  const handleThumbsDown = (postId) => handlePopularity(postId, 'thumbsDown');
+  const handleThumbsDown = (postId) =>
+    handlePopularity(postId, { likes: 0, dislikes: 1 });
 
   const handleToggleComments = (postId) => {
     setOpenComments((prev) => ({
@@ -149,7 +152,7 @@ const PostStream = ({ posts, postComment }) => {
         return (
           <div key={index} className="poststream__container">
             <Image
-              src={getUserAvatarUrl(session?.user?.image)}
+              src={getUserAvatarUrl(item?.avatar)}
               alt="icon"
               width={80}
               height={80}
@@ -279,7 +282,7 @@ const PostStream = ({ posts, postComment }) => {
                       className="poststream__comments_list"
                     >
                       <Image
-                        src={getUserAvatarUrl(session?.user?.image)}
+                        src={getUserAvatarUrl(commentItem?.comment_avatar)}
                         alt="profile"
                         width={80}
                         height={80}

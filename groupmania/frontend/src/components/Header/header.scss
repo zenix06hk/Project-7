@@ -10,6 +10,7 @@
     align-items: center;
     height: 30%;
     border-bottom: 1px solid grey;
+    gap: 12px;
   }
   &__tablist {
     // border: 5px solid red;
@@ -17,6 +18,7 @@
     align-items: center;
     padding: 0 5px;
     margin-left: -80px;
+    gap: 12px;
     &_icon {
       // border: 5px solid blue;
       margin: 0 25px;
@@ -95,4 +97,73 @@
 }
 .dropdown-item-darkModeBtn {
   display: flex;
+}
+
+@media (max-width: 768px) {
+  .header {
+    &__container {
+      padding: 8px 16px;
+    }
+
+    &__tablist {
+      margin-left: 0;
+      padding: 0;
+      flex: 1;
+      justify-content: flex-end;
+    }
+
+    &__tablist_link {
+      gap: 12px;
+
+      a {
+        padding: 10px 12px;
+        border-width: 2px;
+      }
+    }
+
+    &__profileImg {
+      width: 56px;
+      height: 56px;
+    }
+  }
+
+  .dropdown {
+    padding-left: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    &__container {
+      padding: 8px 12px;
+      gap: 8px;
+    }
+
+    &__tablist {
+      gap: 8px;
+    }
+
+    &__tablist_link {
+      gap: 8px;
+
+      a {
+        padding: 8px 10px;
+        border-width: 2px;
+      }
+
+      a div {
+        font-size: 14px;
+      }
+    }
+
+    &__profileImg {
+      width: 44px;
+      height: 44px;
+    }
+
+    &__container a img {
+      width: 44px !important;
+      height: 44px !important;
+    }
+  }
 }

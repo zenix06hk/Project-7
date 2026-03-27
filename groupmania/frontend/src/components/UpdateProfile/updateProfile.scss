@@ -35,6 +35,14 @@
     border-radius: 8px;
     border: 1px solid var(--border-color);
 
+    // ProfileAvatar.jsx renders the avatar + buttons inside a section container.
+    // Add a little breathing room between the avatar and the upload button.
+    .updateprofile-avatar {
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: center;
+    }
+
     h3 {
       font-size: 18px;
       font-weight: 600;

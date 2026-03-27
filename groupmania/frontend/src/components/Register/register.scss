@@ -1,9 +1,15 @@
 .registerPage {
   height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
   &-content {
+    display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-items: center;
-    padding: 0 50px;
+    width: 100%;
+    max-width: 520px;
+    padding: 0 24px;
 
     // Form styling
     form {
@@ -16,15 +22,18 @@
     }
 
     // Input field styling
-    input[type="text"],
-    input[type="email"],
-    input[type="password"] {
+    input[type='text'],
+    input[type='email'],
+    input[type='password'] {
       padding: 10px;
       border: 2px solid #ddd;
       border-radius: 4px;
       transition: border-color 0.3s ease;
       outline: none;
       margin-top: 5px; // Reduced from 8px to 5px
+      width: 100%;
+      max-width: 100%;
+      box-sizing: border-box;
 
       // Hover and focus effects
       &:hover,
@@ -47,7 +56,8 @@
 
     &-companyLogo {
       display: block;
-      width: auto;
+      max-width: 100%;
+      height: auto;
       align-items: center;
       margin: 15px 0; // Reduced from 20px to 15px
       // padding: 180px 10px 50px;
@@ -66,6 +76,18 @@
       align-items: center;
       // margin: 20px 0;
     }
+  }
+}
+
+@media (max-width: 480px) {
+  .registerPage {
+    &-content {
+      padding: 0 16px;
+    }
+  }
+
+  .formField {
+    padding: 0 16px;
   }
 }
 

@@ -170,7 +170,7 @@ const UpdateProfile = () => {
   });
 
   // State for avatar updates across all components
-  const [currentAvatar, setCurrentAvatar] = useState(null);
+  const [currentAvatar, setCurrentAvatar] = useState(getUserAvatarUrl());
   useEffect(() => {
     // the method used to fetch my profile
     async function fetchUserProfile() {

@@ -1,23 +1,23 @@
-"use client";
+'use client';
 
-import React from "react";
-import Link from "next/link";
-import { useSession, signOut } from "next-auth/react";
-import { useTheme } from "@/context/theme-context.js";
-import DarkModeToggle from "@/components/DarkModeToggle/DarkModeToggle.jsx";
+import React from 'react';
+import Link from 'next/link';
+import { useSession, signOut } from 'next-auth/react';
+import { useTheme } from '@/context/theme-context.js';
+import DarkModeToggle from '@/components/DarkModeToggle/DarkModeToggle.jsx';
 
-import "./settings.scss";
+import './settings.scss';
 
-import Button from "@mui/material/Button";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
 // import ThemeSwitcher from "@/components/DarkModeTheme/ThemeSwitcher";
 
-function Setting() {
+const Setting = () => {
   const [open, setOpen] = React.useState(false);
   const [isDeleting, setIsDeleting] = React.useState(false);
   const [mounted, setMounted] = React.useState(false);
@@ -44,7 +44,7 @@ function Setting() {
       const token = session?.accessToken;
 
       if (!token) {
-        alert("Please log in first");
+        alert('Please log in first');
         return;
       }
 
@@ -54,10 +54,10 @@ function Setting() {
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_API}/api/auth/delete-account`,
         {
-          method: "DELETE",
+          method: 'DELETE',
           headers: {
-            "Content-type": "application/json; charset=UTF-8",
-            Authorization: `Bearer ${token}0`,
+            'Content-type': 'application/json; charset=UTF-8',
+            Authorization: `Bearer ${token}`,
           },
         }
       );
@@ -67,18 +67,18 @@ function Setting() {
       // console.log("Delete account response data:", data);
 
       if (data?.success) {
-        alert("Account deleted successfully!");
+        alert('Account deleted successfully!');
         // Sign out from NextAuth and redirect to sign-in page
-        await signOut({ callbackUrl: "/signin" });
+        await signOut({ callbackUrl: '/signin' });
       } else {
-        console.error("Failed to delete account:", data?.error);
+        console.error('Failed to delete account:', data?.error);
         alert(
-          `Failed to delete account: ${data?.error || "Please try again."}`
+          `Failed to delete account: ${data?.error || 'Please try again.'}`
         );
       }
     } catch (error) {
-      console.error("Error deleting account:", error);
-      alert("An error occurred while deleting account.");
+      console.error('Error deleting account:', error);
+      alert('An error occurred while deleting account.');
     } finally {
       setIsDeleting(false);
       setOpen(false);
@@ -108,7 +108,7 @@ function Setting() {
               aria-describedby="alert-dialog-description"
             >
               <DialogTitle id="alert-dialog-title">
-                {"Delete account"}
+                {'Delete account'}
               </DialogTitle>
               <DialogContent>
                 <DialogContentText id="alert-dialog-description">
@@ -123,7 +123,7 @@ function Setting() {
                   disabled={isDeleting}
                   color="error"
                 >
-                  {isDeleting ? "Deleting..." : "Confirm delete account"}
+                  {isDeleting ? 'Deleting...' : 'Confirm delete account'}
                 </Button>
               </DialogActions>
             </Dialog>
@@ -133,6 +133,6 @@ function Setting() {
       </div>
     </div>
   );
-}
+};
 
 export default Setting;

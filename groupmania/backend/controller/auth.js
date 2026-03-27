@@ -27,7 +27,7 @@ exports.signUp = async (req, res) => {
           last_name,
           email,
           hashedPassword,
-          '/assets/annoymous_avatar.avif.jpg',
+          '/assets/annoymous_avatar.jpg',
         ]
       );
       const username_data = result.rows[0].username;
@@ -47,7 +47,7 @@ exports.signUp = async (req, res) => {
           first_name: firstName,
           last_name: lastName,
           email: email_data,
-          avatar: '/assets/annoymous_avatar.avif.jpg',
+          avatar: '/assets/annoymous_avatar.jpg',
         },
       });
     } catch (error) {
@@ -145,75 +145,62 @@ exports.login = async (req, res) => {
 };
 
 exports.deleteAccount = async (req, res) => {
+  const userId = req?.user?.user_id;
+
+  if (!userId) {
+    return res.status(400).json({
+      success: false,
+      error: 'User ID is required',
+    });
+  }
+
   try {
-    // Get user ID from JWT token (set by auth middleware)
-    const userId = req.user.userId;
-
-    console.log('Attempting to delete user:', userId);
-
-    if (!userId) {
-      return res.status(400).json({
-        success: false,
-        error: 'User ID is required',
-      });
-    }
-
-    // Check if user exists
-    const userCheck = await db.query(
-      'SELECT user_id FROM users WHERE user_id = $1',
+    // Single atomic statement (no explicit BEGIN/COMMIT needed)
+    const deletedUserResult = await db.query(
+      `WITH
+        deleted_popularity AS (
+          DELETE FROM popularity
+          WHERE user_id = $1
+             OR post_id IN (SELECT post_id FROM post WHERE user_id = $1)
+        ),
+        deleted_comments AS (
+          DELETE FROM comment
+          WHERE user_id = $1
+             OR post_id IN (SELECT post_id FROM post WHERE user_id = $1)
+        ),
+        deleted_posts AS (
+          DELETE FROM post
+          WHERE user_id = $1
+        ),
+        deleted_user AS (
+          DELETE FROM users
+          WHERE user_id = $1
+          RETURNING user_id, username, email
+        )
+      SELECT * FROM deleted_user;`,
       [userId]
     );
 
-    if (userCheck.rows.length === 0) {
+    if (deletedUserResult.rows.length === 0) {
       return res.status(404).json({
         success: false,
-        error: 'User not found 1',
+        error: 'User not found',
       });
     }
 
-    // Delete user's posts first (if you have a posts table)
-    try {
-      await db.query('DELETE FROM posts WHERE user_id = $1', [userId]);
-      // console.log("User posts deleted");
-    } catch (error) {
-      // console.log("No posts table or posts to delete");
-    }
-
-    // Delete user's comments (if you have a comments table)
-    try {
-      await db.query('DELETE FROM comments WHERE user_id = $1', [userId]);
-      // console.log("User comments deleted");
-    } catch (error) {
-      // console.log("No comments table or comments to delete");
-    }
-
-    // Finally delete the user account
-    const result = await db.query(
-      'DELETE FROM users WHERE user_id = $1 RETURNING user_id, username, email',
-      [userId]
-    );
-
-    if (result.rows.length > 0) {
-      // console.log("User deleted successfully:", result.rows[0]);
-
-      res.status(200).json({
-        success: true,
-        message: 'Account deleted successfully',
-        deletedUser: {
-          user_Id: result.rows[0].user_id,
-          username: result.rows[0].username,
-          email: result.rows[0].email,
-        },
-      });
-    } else {
-      res.status(404).json({
-        success: false,
-        error: 'Failed to delete user',
-      });
-    }
+    const deletedUser = deletedUserResult.rows[0];
+    return res.status(200).json({
+      success: true,
+      message: 'Account deleted successfully',
+      deletedUser: {
+        user_Id: deletedUser.user_id,
+        username: deletedUser.username,
+        email: deletedUser.email,
+      },
+    });
   } catch (error) {
     console.error('Delete account error:', error);
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       error: 'Internal server error while deleting account',
     });
