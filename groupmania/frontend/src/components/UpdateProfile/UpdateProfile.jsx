@@ -236,13 +236,8 @@ const UpdateProfile = () => {
     }
   }, [session]);
 
-  if (isLoading) {
-    return <>Loading...</>;
-  }
-
-  if (hasErrorFetching) {
-    return <div>{hasErrorFetching}</div>;
-  }
+  const showLoadingState = isLoading || status === 'loading';
+  const showErrorState = Boolean(hasErrorFetching);
 
   // Profile section initial values and handler
 
@@ -321,66 +316,80 @@ const UpdateProfile = () => {
       </div>
 
       <div className="updateprofile-content">
-        <div className="updateprofile-layout">
-          {/* Left Side - Profile Picture Section */}
-          <div className="updateprofile-left-panel">
-            <div className="updateprofile-picture-section">
-              <ProfileAvatar
-                session={session}
-                currentAvatar={currentAvatar}
-                onAvatarUpdate={onAvatarUpdate}
-              />
+        {showLoadingState && (
+          <div className="updateprofile-section-container">
+            <Alert severity="info">Loading...</Alert>
+          </div>
+        )}
 
-              {/* User Info Display */}
-              <div className="updateprofile-user-info">
-                <div className="updateprofile-name-row">
-                  <span className="updateprofile-current-name">
-                    Name:{' '}
-                    {profileUpdate?.firstName && profileUpdate?.lastName
-                      ? `${profileUpdate.firstName} ${profileUpdate.lastName}`
-                      : 'Loading...'}
-                  </span>
-                </div>
-                <div className="updateprofile-email-row">
-                  <span className="updateprofile-current-name">
-                    Email: {profileUpdate?.email || 'Loading...'}
-                  </span>
+        {showErrorState && (
+          <div className="updateprofile-section-container">
+            <Alert severity="error">{hasErrorFetching}</Alert>
+          </div>
+        )}
+
+        {!showLoadingState && !showErrorState && (
+          <div className="updateprofile-layout">
+            {/* Left Side - Profile Picture Section */}
+            <div className="updateprofile-left-panel">
+              <div className="updateprofile-picture-section">
+                <ProfileAvatar
+                  session={session}
+                  currentAvatar={currentAvatar}
+                  onAvatarUpdate={onAvatarUpdate}
+                />
+
+                {/* User Info Display */}
+                <div className="updateprofile-user-info">
+                  <div className="updateprofile-name-row">
+                    <span className="updateprofile-current-name">
+                      Name:{' '}
+                      {profileUpdate?.firstName && profileUpdate?.lastName
+                        ? `${profileUpdate.firstName} ${profileUpdate.lastName}`
+                        : 'Loading...'}
+                    </span>
+                  </div>
+                  <div className="updateprofile-email-row">
+                    <span className="updateprofile-current-name">
+                      Email: {profileUpdate?.email || 'Loading...'}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* Right Side - Form Fields */}
-          <div className="updateprofile-right-panel">
-            {/* Section 1: Profile Information */}
-            <div className="updateprofile-section-container">
-              <h3>Profile Information</h3>
-              <Formik
-                initialValues={{
-                  firstName: profileUpdate?.firstName || '',
-                  lastName: profileUpdate?.lastName || '',
-                  email: profileUpdate?.email || '',
-                }}
-                validationSchema={profileValidationSchema}
-                enableReinitialize={true}
-                onSubmit={handleProfileSubmit}
-              >
-                <ProfileFormFields />
-              </Formik>
+            {/* Right Side - Form Fields */}
+            <div className="updateprofile-right-panel">
+              {/* Section 1: Profile Information */}
+              <div className="updateprofile-section-container">
+                <h3>Profile Information</h3>
+                <Formik
+                  initialValues={{
+                    firstName: profileUpdate?.firstName || '',
+                    lastName: profileUpdate?.lastName || '',
+                    email: profileUpdate?.email || '',
+                  }}
+                  validationSchema={profileValidationSchema}
+                  enableReinitialize={true}
+                  onSubmit={handleProfileSubmit}
+                >
+                  <ProfileFormFields />
+                </Formik>
+              </div>
+
+              <ChangePassword accessToken={session?.accessToken} />
+
+              {/* Action Buttons */}
+              <div className="updateprofile-actions">
+                <Link href="/">
+                  <button type="button" className="updateprofile-cancel-btn">
+                    Cancel
+                  </button>
+                </Link>
+              </div>
             </div>
-
-            <ChangePassword accessToken={session?.accessToken} />
-
-            {/* Action Buttons */}
-            <div className="updateprofile-actions">
-              <Link href="/">
-                <button type="button" className="updateprofile-cancel-btn">
-                  Cancel
-                </button>
-              </Link>
-            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
