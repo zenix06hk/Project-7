@@ -5,17 +5,18 @@ const db = require('../db');
 exports.createPost = async (req, res) => {
   try {
     const userId = req.user.user_id;
-    const { post_content } = req.body;
-
+    const imageUrl = req?.file?.filename ? `${req.file.filename}` : null;
+    const description = req.body.description;
     // console.log('post');
     // console.log(req.user);
-
+    // const postImgUrl = `${req.file.filename}`;
+    console.log(imageUrl, 'post image');
+    console.log(description, 'post description');
     // return;
 
     const result = await db.query(
       'INSERT INTO post (user_id, post_content, post_img, likes, dislikes) VALUES ($1, $2, $3, $4, $5) RETURNING *',
-      [userId, post_content, null, 0, 0]
-      // [postContent]
+      [userId, description, imageUrl, 0, 0]
     );
 
     const post_id = result.rows[0].post_id;

@@ -1,12 +1,12 @@
 'use client';
 
-import React from 'react';
+import React, { use } from 'react';
 
 import Image from 'next/image';
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 
-import { Form, Formik, Field, ErrorMessage, useFormikContext } from 'formik';
+import { Form, Formik, Field, ErrorMessage } from 'formik';
 import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
@@ -22,10 +22,10 @@ const initialValues = {
   postContent: '',
 };
 
-const CreatePost = ({ userPost, postDescription, postImage, newPostItem }) => {
+const CreatePost = ({ userPost, newPostItem }) => {
   const { data: session } = useSession();
-  const { description, uploadedImage } = userPost;
-  // console.log({ postDescription });
+  const [description, setDescription] = useState('');
+  const [imagePreview, setImagePreview] = useState(null);
 
   const RedColor = red[500];
 
@@ -99,17 +99,23 @@ const CreatePost = ({ userPost, postDescription, postImage, newPostItem }) => {
     //async call
     //this is a fetch call for the backend environment for api
     try {
-      const requestBody = {
-        post_content: description,
-      };
+      // if (!(values.file instanceof File)) {
+      //   console.log('No file selected or invalid file type.');
+      //   return;
+      // }
+
+      const formData = new FormData();
+      console.log(formData, 'form data');
+      formData.append('file', values.file);
+      formData.append('description', values.description);
 
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_API}/api/posts/create-post`,
         {
           method: 'POST',
-          body: JSON.stringify(requestBody),
+          body: formData,
           headers: {
-            'Content-type': 'application/json; charset=UTF-8',
+            // 'Content-type': 'application/json; charset=UTF-8',
             Authorization: `Bearer ${session?.accessToken}`,
           },
         }
@@ -132,6 +138,24 @@ const CreatePost = ({ userPost, postDescription, postImage, newPostItem }) => {
     }
   };
 
+  const handleImageChange = (files, setFieldValue) => {
+    if (files && files[0]) {
+      const file = files[0];
+
+      setFieldValue('file', file);
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setImagePreview(e.target.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleDescriptionChange = (value, setFieldValue) => {
+    setDescription(value);
+    setFieldValue('description', value);
+  };
+
   return (
     <div className="createPost">
       <div className="createPost__container">
@@ -145,7 +169,7 @@ const CreatePost = ({ userPost, postDescription, postImage, newPostItem }) => {
         <div className="createPost__content">
           <div className="createPost__upperBlock">
             <Formik initialValues={initialValues} onSubmit={handleSubmit}>
-              {({ isSubmitting, errors, status }) => (
+              {({ isSubmitting, errors, status, setFieldValue }) => (
                 <Form>
                   <label htmlFor="createPostContent">
                     <Field
@@ -156,7 +180,9 @@ const CreatePost = ({ userPost, postDescription, postImage, newPostItem }) => {
                       }`}
                       placeholder="How's going today?"
                       value={description}
-                      onChange={(e) => postDescription(e.target.value)}
+                      onChange={(e) =>
+                        handleDescriptionChange(e.target.value, setFieldValue)
+                      }
                     />
                     <ErrorMessage
                       className="error"
@@ -189,13 +215,20 @@ const CreatePost = ({ userPost, postDescription, postImage, newPostItem }) => {
                       startIcon={<CloudUploadIcon />}
                       disabled={isSubmitting}
                       value=""
-                      onChange={(e) => postImage(e.target.files)}
+                      onChange={(e) =>
+                        handleImageChange(e.target.files, setFieldValue)
+                      }
                     >
                       Upload files{isSubmitting}
                       <VisuallyHiddenInput
+                        id="file"
+                        name="file"
                         type="file"
+                        accept="image/*"
                         color={RedColor}
-                        onChange={(event) => postImage(event.target.files)}
+                        onChange={(event) =>
+                          handleImageChange(event.target.files, setFieldValue)
+                        }
                         multiple
                       />
                     </Button>
@@ -205,9 +238,9 @@ const CreatePost = ({ userPost, postDescription, postImage, newPostItem }) => {
             </Formik>
           </div>
           <div className="createPost__bottomBlock">
-            {uploadedImage && uploadedImage !== '' && (
+            {imagePreview && imagePreview !== '' && (
               <Image
-                src={uploadedImage}
+                src={imagePreview}
                 alt="icon"
                 width="200"
                 height="200"

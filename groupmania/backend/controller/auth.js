@@ -34,8 +34,8 @@ exports.signUp = async (req, res) => {
       const firstName = result.rows[0].first_name;
       const lastName = result.rows[0].last_name;
       const email_data = result.rows[0].email;
-      const password = result.rows[0].password;
-      const avatar = result.rows[0].avatar;
+      // const password = result.rows[0].password;
+      // const avatar = result.rows[0].avatar;
 
       // console.log(result);
 

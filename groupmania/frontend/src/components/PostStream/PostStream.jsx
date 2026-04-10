@@ -168,7 +168,7 @@ const PostStream = ({ posts, postComment, submitComment }) => {
               <span>
                 {imageSrc && (
                   <Image
-                    src={imageSrc}
+                    src={`${process.env.NEXT_PUBLIC_BACKEND_API}/images/${imageSrc}`}
                     alt="icon"
                     width={500}
                     height={500}

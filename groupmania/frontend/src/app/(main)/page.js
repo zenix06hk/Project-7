@@ -75,23 +75,6 @@ function HomePage() {
   };
 
   //update description to post stream content
-  const postDescription = (value) => {
-    // console.log(value);
-    setUserPost({
-      ...userPost,
-      description: value,
-      uploadedImage: userPost.uploadedImage ?? '',
-    });
-  };
-
-  //update image to post stream content
-  const postImage = (files) => {
-    setUserPost({
-      ...userPost,
-      id: id,
-      uploadedImage: files.length > 0 ? URL.createObjectURL(files[0]) : null,
-    });
-  };
 
   // Prevent posting if both uploadedImage and description are empty
   const canPost =
@@ -105,17 +88,11 @@ function HomePage() {
 
   const postComment = (value, id) => {
     fetchPost();
-    pgad;
   };
 
   return (
     <div className="homePage_content">
-      <CreatePost
-        userPost={userPost}
-        postDescription={postDescription}
-        postImage={postImage}
-        newPostItem={newPostItem}
-      />
+      <CreatePost userPost={userPost} newPostItem={newPostItem} />
       <PostStream posts={posts} postComment={postComment} />
     </div>
   );
