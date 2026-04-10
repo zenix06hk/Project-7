@@ -63,6 +63,7 @@ const CreateComment = ({
         resetForm();
         // newPostItem();
         setStatus({ success: true, message: 'success' });
+        submitComment();
       } else {
         setStatus({ error: true, message: data?.error ?? 'Error has occur' });
       }

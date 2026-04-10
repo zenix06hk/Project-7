@@ -1,27 +1,23 @@
-import {
-  Formik,
-  Form,
-  Field,
-  ErrorMessage,
-  FormikValues,
-  FormikHelpers,
-} from "formik";
-import * as Yup from "yup";
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
+import Button from '@mui/material/Button';
+
+import './changepassword.scss';
 
 const passwordValidationSchema = Yup.object().shape({
   password: Yup.string()
-    .min(6, "Password must be at least 6 characters")
-    .required("Password is required"),
+    .min(6, 'Password must be at least 6 characters')
+    .required('Password is required'),
   confirmPassword: Yup.string()
     .trim()
-    .oneOf([Yup.ref("password"), null], "Passwords must match")
-    .required("Please confirm your password"),
+    .oneOf([Yup.ref('password'), null], 'Passwords must match')
+    .required('Please confirm your password'),
 });
 
 const ChangePassword = ({ accessToken }) => {
   const passwordInitialValues = {
-    password: "",
-    confirmPassword: "",
+    password: '',
+    confirmPassword: '',
   };
 
   const handlePasswordSubmit = async (
@@ -36,14 +32,14 @@ const ChangePassword = ({ accessToken }) => {
       if (!values.password || !values.confirmPassword) {
         setStatus({
           error: true,
-          message: "Both password fields are required.",
+          message: 'Both password fields are required.',
         });
         setSubmitting(false);
         return;
       }
 
       if (values.password !== values.confirmPassword) {
-        setStatus({ error: true, message: "Passwords do not match." });
+        setStatus({ error: true, message: 'Passwords do not match.' });
         setSubmitting(false);
         return;
       }
@@ -55,12 +51,12 @@ const ChangePassword = ({ accessToken }) => {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_API}/api/auth/update-profile`,
         {
-          method: "PUT",
+          method: 'PUT',
           body: JSON.stringify({
             updateContent: requestBody,
           }),
           headers: {
-            "Content-type": "application/json; charset=UTF-8",
+            'Content-type': 'application/json; charset=UTF-8',
             Authorization: `Bearer ${accessToken}`,
           },
         }
@@ -71,16 +67,16 @@ const ChangePassword = ({ accessToken }) => {
 
       if (data?.success) {
         resetForm();
-        setStatus({ success: true, message: "Password changed successfully!" });
+        setStatus({ success: true, message: 'Password changed successfully!' });
       } else {
         setStatus({
           error: true,
-          message: data?.error ?? "Password change failed. Please try again.",
+          message: data?.error ?? 'Password change failed. Please try again.',
         });
       }
     } catch (error) {
       setSubmitting(false);
-      setStatus({ error: true, message: "Network error. Please try again." });
+      setStatus({ error: true, message: 'Network error. Please try again.' });
     }
   };
 
@@ -105,7 +101,7 @@ const ChangePassword = ({ accessToken }) => {
                   name="password"
                   type="password"
                   className={`updateprofile-input ${
-                    errors.password ? "error" : ""
+                    errors.password ? 'error' : ''
                   }`}
                   placeholder=""
                 />
@@ -128,7 +124,7 @@ const ChangePassword = ({ accessToken }) => {
                   name="confirmPassword"
                   type="password"
                   className={`updateprofile-input ${
-                    errors.confirmPassword ? "error" : ""
+                    errors.confirmPassword ? 'error' : ''
                   }`}
                   placeholder=""
                 />
@@ -146,13 +142,14 @@ const ChangePassword = ({ accessToken }) => {
               )}
 
               {/* Submit Button */}
-              <button
+              <Button
                 type="submit"
-                className="updateprofile-save-btn"
+                variant="contained"
+                className="changepassword-submit"
                 disabled={isSubmitting}
               >
-                Change Password {isSubmitting && "..."}
-              </button>
+                {isSubmitting ? 'Changing...' : 'Change Password'}
+              </Button>
             </Form>
           )}
         </Formik>

@@ -187,7 +187,7 @@ const UpdateProfile = () => {
             },
           }
         );
-        console.log(res);
+        // console.log(res);
         // Check if the response is actually JSON
         const data = await res.json();
         if (!data.success) {
@@ -216,7 +216,7 @@ const UpdateProfile = () => {
         setIsLoading(false);
       } catch (error) {
         setIsLoading(false);
-        console.log(error);
+        // console.log(error);
         setHasErrorFetching('error has occurred');
       }
     }
@@ -231,7 +231,7 @@ const UpdateProfile = () => {
       if (status === 'authenticated') {
         fetchUserProfile();
       } else {
-        console.log('user not authenticated');
+        // console.log('user not authenticated');
       }
     }
   }, [session]);
@@ -294,13 +294,13 @@ const UpdateProfile = () => {
   };
 
   const onAvatarUpdate = async (newAvatarUrl) => {
-    console.log('Avatar updated to URL:', newAvatarUrl);
+    // console.log('Avatar updated to URL:', newAvatarUrl);
     setCurrentAvatar(getUserAvatarUrl(newAvatarUrl));
 
     try {
       // Update the session with the new image
       await update({ image: newAvatarUrl });
-      console.log('Session updated successfully with new avatar');
+      // console.log('Session updated successfully with new avatar');
     } catch (error) {
       console.error('Failed to update session:', error);
     }

@@ -92,9 +92,11 @@
   &__button {
     // border: 1px solid purple;
     background-color: $white;
-    display: inline-block;
+    display: inline-flex;
     align-items: center;
-    margin: 10px 20px 10px 0;
+    justify-content: center;
+    height: 40px;
+    margin: 0;
     padding: 8px 30px;
     border: 1px solid grey;
     border-radius: 5px;
@@ -113,8 +115,9 @@
     padding-bottom: 10px;
   }
   &__uploadImgBtn {
+    height: 40px;
     padding: 8px 16px;
-    color: $white;
+    margin: 0;
     display: inline-flex;
     width: auto;
     min-width: auto;
@@ -137,6 +140,15 @@
     gap: 10px;
     align-items: center;
     margin-top: 10px;
+
+    // When a MUI <Button> uses component="label", it becomes a <label> element.
+    // This prevents the `.createPost__upperBlock label { width: 100% }` rule from
+    // making the buttons stretch full width.
+    .MuiButton-root {
+      width: auto;
+      display: inline-flex;
+      margin-bottom: 0;
+    }
   }
 
   &__comment {
@@ -144,9 +156,61 @@
   }
 }
 
+// Shared style used by both the "Post" and "Send" buttons.
 .submit {
-  background-color: $pink;
   height: 40px;
+}
+
+body.light .submit,
+body.light .MuiButton-root.submit {
+  border: 2px solid $pink;
+  background-color: transparent;
+  color: $dark-grey;
+
+  &:hover {
+    background-color: rgba($pink, 0.35);
+    border-color: $pink;
+  }
+}
+
+body.dark .submit,
+body.dark .MuiButton-root.submit {
+  border: 2px solid $pink;
+  background-color: transparent;
+  color: $white;
+
+  &:hover {
+    background-color: rgba($pink, 0.18);
+    border-color: $pink;
+  }
+}
+
+// Make the Upload button match the Post button style (no blue background),
+// without changing the MUI <Button> usage.
+body.light .createPost__uploadImgBtn,
+body.light .MuiButton-root.createPost__uploadImgBtn {
+  border: 2px solid $pink;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  color: $dark-grey;
+}
+
+body.light .createPost__uploadImgBtn:hover,
+body.light .MuiButton-root.createPost__uploadImgBtn:hover {
+  background-color: rgba($pink, 0.35) !important;
+}
+
+body.dark .createPost__uploadImgBtn,
+body.dark .MuiButton-root.createPost__uploadImgBtn {
+  border: 2px solid $pink;
+  background-color: transparent !important;
+  box-shadow: none !important;
+  color: $white;
+}
+
+body.dark .createPost__uploadImgBtn:hover,
+body.dark .MuiButton-root.createPost__uploadImgBtn:hover {
+  background-color: rgba($pink, 0.18) !important;
 }
 
 // Responsive design for different screen sizes

@@ -1,3 +1,5 @@
+@import '@/styles/mixin.scss';
+
 .registerPage {
   height: 100%;
   width: 100%;
@@ -100,10 +102,32 @@
     text-decoration: none; // Remove underline from links
   }
   &-signUp {
-    border: 1px solid pink;
-    background-color: pink;
+    border: 2px solid $pink;
+    background-color: transparent;
     border-radius: 5px;
     // Removed margin-left: 240px to allow auto centering
+  }
+}
+
+// Ensure this overrides the global `button { border: none; background-color: ... }`
+button.btn-signUp {
+  border: 2px solid $pink;
+  background-color: transparent;
+}
+
+body.light .btn-signUp {
+  color: $dark-grey;
+
+  &:hover {
+    background-color: rgba($pink, 0.35);
+  }
+}
+
+body.dark .btn-signUp {
+  color: $white;
+
+  &:hover {
+    background-color: rgba($pink, 0.18);
   }
 }
 

@@ -19,19 +19,6 @@ router.post(
   authCtrl.updateProfileAvatar
 );
 
-// router.get("/update-profile", authCtrl.updateProfile);
-// router.get("/:id", authCtrl.post);
-// router.post('/create-post', auth, authCtrl.createPost);
-// router.put("/:id", authCtrl.post);
-// router.delete("/:id", authCtrl.post);
-
-// router.get("/:id", authCtrl.comment);
-// router.post("/:id", authCtrl.comment);
-// router.put("/:id", authCtrl.comment);
-// router.delete("/:id", authCtrl.comment);
-
-// router.post("/:id/like", authCtrl.likePost);
-
 router.get('/test', authCtrl.test);
 
 module.exports = router;

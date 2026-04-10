@@ -9,7 +9,7 @@ const multer = require('../middleware/multer-config');
 //Import handling files upload
 // const multer = require("../middleware/multer-config");
 
-router.post('/create-post', auth, postCtrl.createPost);
+router.post('/create-post', auth, multer, postCtrl.createPost);
 router.get('/get-posts', auth, postCtrl.getPosts);
 router.post('/create-comment', auth, postCtrl.createComment);
 router.post('/create-popularity', auth, postCtrl.createPopularity);

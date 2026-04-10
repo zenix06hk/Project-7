@@ -6,8 +6,9 @@ exports.createPost = async (req, res) => {
   try {
     const userId = req.user.user_id;
     const { post_content } = req.body;
-    console.log('post');
-    console.log(req.user);
+
+    // console.log('post');
+    // console.log(req.user);
 
     // return;
 
@@ -22,8 +23,8 @@ exports.createPost = async (req, res) => {
     const postImg = result.rows[0].post_img;
     const likes = result.rows[0].likes;
     const dislikes = result.rows[0].dislikes;
-
-    console.log(result);
+    console.log(postImg);
+    // console.log(result);
 
     res.status(201).json({
       message: 'Post created successfully',
@@ -71,10 +72,11 @@ exports.getPosts = async (req, res) => {
 	  LEFT JOIN users AS commenter ON comment.user_id = commenter.user_id
       GROUP BY post.post_id, post.user_id, post.post_content, post.likes, post.dislikes,
         users.user_id, users.first_name, users.last_name, users.avatar,post.post_img,
-        popularity.likes, popularity.dislikes`,
+        popularity.likes, popularity.dislikes
+      ORDER BY post.post_id DESC`,
       [userId]
     );
-    console.log(result);
+    // console.log(result);
     const posts = result.rows;
     res.status(200).json({
       success: true,
@@ -109,8 +111,8 @@ exports.createComment = async (req, res) => {
   try {
     const userId = req.user.user_id;
     const { post_id, comment_content } = req.body;
-    console.log('comment');
-    console.log(req.body);
+    // console.log('comment');
+    // console.log(req.body);
 
     const result = await db.query(
       // 'INSERT INTO post (comment_content) VALUES ($1) RETURNING *',
@@ -120,7 +122,7 @@ exports.createComment = async (req, res) => {
 
     const comment = result.rows[0].comment_content;
 
-    console.log(comment);
+    // console.log(comment);
 
     res.status(201).json({
       message: 'Comment created successfully',
@@ -141,7 +143,7 @@ exports.createComment = async (req, res) => {
 exports.createPopularity = async (req, res) => {
   try {
     const userId = req.user.user_id;
-    const { post_id, likes, dislike } = req.body;
+    const { post_id, likes, dislikes } = req.body;
 
     if (!post_id) {
       return res.status(400).json({
@@ -150,7 +152,7 @@ exports.createPopularity = async (req, res) => {
       });
     }
 
-    if (likes === dislike) {
+    if (likes === dislikes) {
       return res.status(400).json({
         error: 'likes and dislikes cannot be the same',
         success: false,
@@ -166,22 +168,26 @@ exports.createPopularity = async (req, res) => {
     let currentLikes = 0;
     let currentDislikes = 0;
 
-    if (
-      (Number(existing.rows[0].likes) === 1 && likes === 1) ||
-      (Number(existing.rows[0].dislikes) === 1 && dislike === 1)
-    ) {
-      currentLikes = 0;
-      currentDislikes = 0;
-    }
+    if (existing.rows.length > 0) {
+      if (
+        (Number(existing.rows[0].likes) === 1 && likes === 1) ||
+        (Number(existing.rows[0].dislikes) === 1 && dislikes === 1)
+      ) {
+        currentLikes = 0;
+        currentDislikes = 0;
+      }
+      if (Number(existing.rows[0].likes) === 0 && likes === 1) {
+        currentLikes = 1;
+        currentDislikes = 0;
+      }
 
-    if (Number(existing.rows[0].likes) === 0 && likes === 1) {
-      currentLikes = 1;
-      currentDislikes = 0;
-    }
-
-    if (Number(existing.rows[0].dislike) === 0 && dislike === 1) {
-      currentLikes = 0;
-      currentDislikes = 1;
+      if (Number(existing.rows[0].dislikes) === 0 && dislikes === 1) {
+        currentLikes = 0;
+        currentDislikes = 1;
+      }
+    } else {
+      currentLikes = Number(likes);
+      currentDislikes = Number(dislikes);
     }
 
     // Ensure only one row exists per user+post even if the DB schema doesn't enforce it.
@@ -196,7 +202,7 @@ exports.createPopularity = async (req, res) => {
       [userId, post_id, currentLikes, currentDislikes]
     );
 
-    console.log(result.rows[0]);
+    // console.log(result.rows[0]);
 
     res.status(200).json({
       message: 'Popularity updated successfully',

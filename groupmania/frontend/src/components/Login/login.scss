@@ -1,3 +1,5 @@
+@import '@/styles/mixin.scss';
+
 .loginPage {
   height: 100%;
   width: 100%;
@@ -104,7 +106,9 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  min-width: 150px;
+  width: 260px;
+  max-width: 100%;
+  box-sizing: border-box;
 
   a {
     text-decoration: none; // Remove underline from links
@@ -112,8 +116,27 @@
 }
 
 .signIn {
-  border: 1px solid #ffdbdb;
-  background-color: #ffdbdb;
+  background-color: transparent;
+}
+
+body.light .signIn {
+  border: 2px solid $pink;
+  color: $dark-grey;
+
+  // &:hover {
+  //   background-color: rgba($pink, 0.35);
+  //   border-color: $pink;
+  // }
+}
+
+body.dark .signIn {
+  border: 2px solid $pink;
+  color: $white;
+
+  // &:hover {
+  //   background-color: rgba($pink, 0.18);
+  //   border-color: $pink;
+  // }
 }
 
 .register {
@@ -131,13 +154,38 @@ a {
   margin-top: 15px;
 
   a {
-    color: #007bff;
-    text-decoration: underline;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 260px;
+    max-width: 100%;
+    padding: 10px 50px;
+    border-radius: 5px;
+    box-sizing: border-box;
+    text-decoration: none;
 
     &:hover {
-      color: #0056b3;
+      text-decoration: none;
     }
   }
+}
+
+body.light .register-link a {
+  border: 2px solid $pink;
+  color: $dark-grey;
+
+  // &:hover {
+  //   background-color: rgba($pink, 0.35);
+  // }
+}
+
+body.dark .register-link a {
+  border: 2px solid $pink;
+  color: $white;
+
+  // &:hover {
+  //   background-color: rgba($pink, 0.18);
+  // }
 }
 
 .spinner-border {

@@ -29,51 +29,51 @@ const CreatePost = ({ userPost, postDescription, postImage, newPostItem }) => {
 
   const RedColor = red[500];
 
-  const handleProfileSubmit = async (
-    values,
-    { setSubmitting, setStatus, resetForm }
-  ) => {
-    setSubmitting(true);
-    setStatus(null);
+  // const handleProfileSubmit = async (
+  //   values,
+  //   { setSubmitting, setStatus, resetForm }
+  // ) => {
+  //   setSubmitting(true);
+  //   setStatus(null);
 
-    try {
-      const requestBody = {
-        postContent: values.post,
-      };
+  //   try {
+  //     const requestBody = {
+  //       postContent: values.post,
+  //     };
 
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_API}/api/posts/create-post`,
-        {
-          method: 'POST',
-          body: JSON.stringify({
-            updateContent: requestBody,
-          }),
-          headers: {
-            'Content-type': 'application/json; charset=UTF-8',
-            Authorization: `Bearer ${session?.accessToken}`,
-          },
-        }
-      );
+  //     const res = await fetch(
+  //       `${process.env.NEXT_PUBLIC_BACKEND_API}/api/posts/create-post`,
+  //       {
+  //         method: 'POST',
+  //         body: JSON.stringify({
+  //           updateContent: requestBody,
+  //         }),
+  //         headers: {
+  //           'Content-type': 'application/json; charset=UTF-8',
+  //           Authorization: `Bearer ${session?.accessToken}`,
+  //         },
+  //       }
+  //     );
 
-      const data = await res.json();
-      console.log(data);
-      setSubmitting(false);
+  //     const data = await res.json();
+  //     // console.log(data);
+  //     setSubmitting(false);
 
-      if (data?.success) {
-        // Update display immediately with new values
-
-        setStatus({ success: true, message: 'Post created successfully!' });
-      } else {
-        setStatus({
-          error: true,
-          message: data?.error ?? 'Post creation failed. Please try again.',
-        });
-      }
-    } catch (error) {
-      setSubmitting(false);
-      setStatus({ error: true, message: 'Network error. Please try again.' });
-    }
-  };
+  //     if (data?.success) {
+  //       // Update display immediately with new values
+  //       resetForm();
+  //       setStatus({ success: true, message: 'Post created successfully!' });
+  //     } else {
+  //       setStatus({
+  //         error: true,
+  //         message: data?.error ?? 'Post creation failed. Please try again.',
+  //       });
+  //     }
+  //   } catch (error) {
+  //     setSubmitting(false);
+  //     setStatus({ error: true, message: 'Network error. Please try again.' });
+  //   }
+  // };
 
   //upload file component
   const VisuallyHiddenInput = styled('input')({
@@ -196,7 +196,6 @@ const CreatePost = ({ userPost, postDescription, postImage, newPostItem }) => {
                         type="file"
                         color={RedColor}
                         onChange={(event) => postImage(event.target.files)}
-                        // label={'margin="none"'}
                         multiple
                       />
                     </Button>

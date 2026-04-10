@@ -36,7 +36,7 @@ function HomePage() {
       if (status === 'authenticated') {
         fetchPost();
       } else {
-        console.log('user not authenticated');
+        // console.log('user not authenticated');
       }
     }
   }, [session]);
@@ -62,21 +62,21 @@ function HomePage() {
         setHasErrorFetching(data.error || 'something has gone wrong.');
         return <></>;
       }
-      console.log(data.data.post);
+      // console.log(data.data.post);
       setPosts(data.data.post);
       setIsComplete(true);
 
       setIsLoading(false);
     } catch (error) {
       setIsLoading(false);
-      console.log(error);
+      // console.log(error);
       setHasErrorFetching('error has occurred');
     }
   };
 
   //update description to post stream content
   const postDescription = (value) => {
-    console.log(value);
+    // console.log(value);
     setUserPost({
       ...userPost,
       description: value,
@@ -104,7 +104,8 @@ function HomePage() {
   };
 
   const postComment = (value, id) => {
-    fetchPost();pgad
+    fetchPost();
+    pgad;
   };
 
   return (

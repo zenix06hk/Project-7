@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 const UploadFile = ({ data, setFieldValue, errors }) => {
   return (
@@ -6,10 +6,10 @@ const UploadFile = ({ data, setFieldValue, errors }) => {
       <input
         type="file"
         name="image"
-        accept="image/png, .svg"
+        accept="image/png, image/gif, image/jpeg, image/jpg, image/avif, image/webp, .svg"
         onChange={(e) => {
           if (e.currentTarget.files) {
-            setFieldValue("image", e.currentTarget.files[0]);
+            setFieldValue('image', e.currentTarget.files[0]);
           }
         }}
       />

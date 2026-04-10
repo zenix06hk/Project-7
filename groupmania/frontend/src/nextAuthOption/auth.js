@@ -40,7 +40,7 @@ export const authOptions = {
 
           if (res.ok) {
             const data = await res.json();
-            console.log(data);
+            // console.log(data);
             // Return the user object, which will be passed to the jwt callback.
             // IMPORTANT: Include your custom token here!
             return {

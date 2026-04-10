@@ -22,7 +22,7 @@ import { getUserAvatarUrl } from '@/components/utility/getUserAvatarUrl.js';
 
 // Ensure component is mounted before using theme
 
-const PostStream = ({ posts, postComment }) => {
+const PostStream = ({ posts, postComment, submitComment }) => {
   const [hasErrorFetching, setHasErrorFetching] = useState('');
   const { data: session, status, update } = useSession();
   const [isComplete, setIsComplete] = useState(false);
@@ -73,6 +73,8 @@ const PostStream = ({ posts, postComment }) => {
   };
 
   const handlePopularity = async (postId, likes, dislikes) => {
+    // console.log(likes);
+    // console.log(dislikes);
     try {
       if (!session?.accessToken) {
         throw new Error('Not authenticated');
@@ -88,8 +90,8 @@ const PostStream = ({ posts, postComment }) => {
           },
           body: JSON.stringify({
             post_id: postId,
-            likes,
-            dislikes,
+            likes: likes,
+            dislikes: dislikes,
           }),
         }
       );
@@ -100,26 +102,24 @@ const PostStream = ({ posts, postComment }) => {
       const nextLikes = data?.data?.likes;
       const nextDislikes = data?.data?.dislikes;
 
-      console.log('popularity updated:', {
-        userId: session?.user?.id ?? session?.user?.user_id,
-        postId,
-        likes: Number(nextLikes) === 1 ? 1 : 0,
-        dislikes: Number(nextDislikes) === 1 ? 1 : 0,
-      });
+      // console.log('popularity updated:', {
+      //   userId: session?.user?.id ?? session?.user?.user_id,
+      //   postId,
+      //   likes: Number(nextLikes) === 1 ? 1 : 0,
+      //   dislikes: Number(nextDislikes) === 1 ? 1 : 0,
+      // });
 
       setReactionState(postId, nextLikes, nextDislikes);
     } catch (error) {
-      console.log('Error updating popularity:', error);
+      // console.log('Error updating popularity:', error);
     }
   };
 
   // Handle thumbs up click (neutral <-> like, and dislike -> like)
-  const handleThumbsUp = (postId) =>
-    handlePopularity(postId, { likes: 1, dislikes: 0 });
+  const handleThumbsUp = (postId) => handlePopularity(postId, 1, 0);
 
   // Handle thumbs down click (neutral <-> dislike, and like -> dislike)
-  const handleThumbsDown = (postId) =>
-    handlePopularity(postId, { likes: 0, dislikes: 1 });
+  const handleThumbsDown = (postId) => handlePopularity(postId, 0, 1);
 
   const handleToggleComments = (postId) => {
     setOpenComments((prev) => ({
@@ -234,38 +234,6 @@ const PostStream = ({ posts, postComment }) => {
                 />
               </div>
               <label htmlFor="fname"></label>
-              {/* Display submitted comments */}
-              {/* <CommentStream comments={comments} postId={postId} /> */}
-              {/* {Array.isArray(comments) && comments.length > 0 && (
-                <div className="poststream__comments_container">
-                  <h4>Comments:</h4>
-                  {comments.map((commentItem, commentIndex) => (
-                    <div
-                      key={commentIndex}
-                      className="poststream__comments_list"
-                    >
-                      <Image
-                        src={getUserAvatarUrl(session?.user?.image)}
-                        alt="profile"
-                        width={80}
-                        height={80}
-                        className="poststream__comments_profileImg"
-                        data-bs-toggle="dropdown"
-                        aria-expanded="false"
-                        style={{ cursor: 'pointer' }}
-                      />
-                      <div className="poststream__comments_content">
-                        <div className="poststream__comments_name">
-                          <h4>{commentItem.comment_name}</h4>
-                        </div>
-                        <div className="poststream__comments_description">
-                          <p>{commentItem.comment_content}</p>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )} */}
               {openComments[postId] && (
                 <CreateComment
                   postComment={postComment}

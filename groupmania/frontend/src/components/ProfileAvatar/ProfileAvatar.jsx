@@ -67,7 +67,7 @@ const ProfileAvatar = ({ session, currentAvatar, onAvatarUpdate }) => {
       );
 
       const data = await result.json();
-      console.log(data);
+      // console.log(data);
       // Simple status update logic
       if (result.ok) {
         setAvatarStatus({
@@ -88,9 +88,9 @@ const ProfileAvatar = ({ session, currentAvatar, onAvatarUpdate }) => {
         });
       }
 
-      console.log(data);
+      // console.log(data);
     } catch (error) {
-      console.error(error);
+      // console.error(error);
       setAvatarStatus({
         error: true,
         message: 'An unexpected error occurred.',

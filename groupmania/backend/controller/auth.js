@@ -69,17 +69,17 @@ exports.signUp = async (req, res) => {
 
 exports.login = async (req, res) => {
   const { email, password } = req.body;
-  console.log(req.body);
+  // console.log(req.body);
   try {
     const result = await db.query(
       'SELECT email, username, avatar, first_name, last_name, user_id, password FROM users WHERE email = $1',
       [email]
     );
     // console.log(result?.rows?.length);
-    console.log(result.rows.length, 'hit here 2nd time!');
-    console.log(result?.rows?.length !== 1, 'hit here 3rd time!');
+    // console.log(result.rows.length, 'hit here 2nd time!');
+    // console.log(result?.rows?.length !== 1, 'hit here 3rd time!');
     if (result?.rows?.length !== 1) {
-      console.log('hit here 4th time');
+      // console.log('hit here 4th time');
       return res.status(401).json({
         error: 'User not found 12354567890!',
       });
@@ -96,7 +96,7 @@ exports.login = async (req, res) => {
       });
     }
 
-    console.log(result.rows[0], 'hit here!');
+    // console.log(result.rows[0], 'hit here!');
 
     //Creation of the authentication token
     const token = jwt.sign(
@@ -212,8 +212,8 @@ exports.updateProfile = async (req, res) => {
     const userId = req.user.userId; // From auth middleware
     const updates = req.body.updateContent;
 
-    console.log('Updates received:', updates); // Debug log
-    console.log('User ID:', userId); // Debug log
+    // console.log('Updates received:', updates); // Debug log
+    // console.log('User ID:', userId); // Debug log
 
     // Handle password update separately
     if (updates.password) {
@@ -311,7 +311,7 @@ exports.updateProfileAvatar = async (req, res) => {
     }
 
     const avatarUrl = `${req.file.filename}`;
-    console.log('New avatar URL:', avatarUrl);
+    // console.log('New avatar URL:', avatarUrl);
 
     // Update user avatar in database
     const query = `
@@ -376,7 +376,7 @@ exports.getUserProfile = async (req, res) => {
   try {
     const user_id = req.user.user_id; // From auth middleware
 
-    console.log(user_id);
+    // console.log(user_id);
     // console.log('Fetching profile for user ID:', user_id);
 
     const result = await db.query(
