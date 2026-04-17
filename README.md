@@ -15,7 +15,8 @@ Sql Server (v14 or later)
 1. Clone the Repository: Clone the repository from GitHub to your local machine using the following command:  
    `git clone https://github.com/zenix06hk/Project-7.git`
 2. Install Dependencies: Navigate to the project directory and install the project dependencies for both the frontend and backend:  
-   `cd groupmania`  
+   `cd Project-7`
+   `cd groupmania`
    `cd frontend`  
    `npm install`  
    `cd backend`  
