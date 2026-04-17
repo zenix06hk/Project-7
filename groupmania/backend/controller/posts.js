@@ -51,7 +51,7 @@ exports.getPosts = async (req, res) => {
   try {
     const userId = req.user.user_id;
     const result = await db.query(
-      `SELECT post.user_id, post.post_id, post.post_content, post.likes, post.dislikes,post.post_img,
+      `SELECT post.user_id, post.post_id, post.post_content, post.likes, post.dislikes,post.post_img, post.post_time,
         users.first_name, users.last_name, users.avatar,
         COALESCE(popularity.likes, 0) AS user_likes,
         COALESCE(popularity.dislikes, 0) AS user_dislikes,
@@ -71,7 +71,7 @@ exports.getPosts = async (req, res) => {
       INNER JOIN users
       ON post.user_id = users.user_id
 	  LEFT JOIN users AS commenter ON comment.user_id = commenter.user_id
-      GROUP BY post.post_id, post.user_id, post.post_content, post.likes, post.dislikes,
+      GROUP BY post.post_id, post.user_id, post.post_content, post.likes, post.dislikes, post.post_img, post.post_time,
         users.user_id, users.first_name, users.last_name, users.avatar,post.post_img,
         popularity.likes, popularity.dislikes
       ORDER BY post.post_id DESC`,

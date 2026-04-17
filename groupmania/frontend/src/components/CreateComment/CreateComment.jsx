@@ -19,11 +19,10 @@ const initialValues = {
 
 const CreateComment = ({
   postId,
+  postComment,
   submitComment,
   userComment,
   commentDescription,
-  commentImage,
-  newCommentItem,
 }) => {
   const { data: session } = useSession();
   const [comment, setComment] = useState('');
@@ -63,7 +62,7 @@ const CreateComment = ({
         resetForm();
         // newPostItem();
         setStatus({ success: true, message: 'success' });
-        submitComment();
+        postComment();
       } else {
         setStatus({ error: true, message: data?.error ?? 'Error has occur' });
       }

@@ -15,6 +15,11 @@
     max-width: 1200px;
     width: 100%;
   }
+  &__headerNameAndTime {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+  }
   &__profileImg {
     // border: 1px solid black;
     object-fit: cover;

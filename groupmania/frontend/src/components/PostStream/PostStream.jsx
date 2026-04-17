@@ -18,8 +18,6 @@ import CommentStream from '../CommentStream/CommentStream';
 import { getUserAvatarUrl } from '@/components/utility/getUserAvatarUrl.js';
 // import CommentStream from '../CommentStream/CommentStream';
 
-// function PostStream({ posts, postComment }) {
-
 // Ensure component is mounted before using theme
 
 const PostStream = ({ posts, postComment, submitComment }) => {
@@ -141,7 +139,7 @@ const PostStream = ({ posts, postComment, submitComment }) => {
           comment: itemComment,
           post_id,
           comments,
-          timestamp,
+          post_time,
         } = item;
 
         const userFullName =
@@ -149,6 +147,9 @@ const PostStream = ({ posts, postComment, submitComment }) => {
         const postId = post_id;
         const descriptionText = description ?? post_content ?? '';
         const imageSrc = uploadedImage ?? post_img;
+        const timestampText = post_time
+          ? new Date(post_time).toLocaleString()
+          : '';
         return (
           <div key={index} className="poststream__container">
             <Image
@@ -159,8 +160,13 @@ const PostStream = ({ posts, postComment, submitComment }) => {
               className="poststream__profileImg"
             />
             <div className="poststream__content">
-              <div className="poststream__name">
-                <h2>{userFullName}</h2>
+              <div className="poststream__headerNameAndTime">
+                <div className="poststream__name">
+                  <h2>{userFullName}</h2>
+                </div>
+                <div className="poststream__timestamp">
+                  <p>{timestampText}</p>
+                </div>
               </div>
               <div className="poststream__description">
                 <p>{descriptionText}</p>
@@ -176,16 +182,6 @@ const PostStream = ({ posts, postComment, submitComment }) => {
                   />
                 )}
               </span>
-              {timestamp && (
-                <div
-                  className="poststream__timestamp"
-                  style={{
-                    color: mounted && theme === 'dark' ? 'white' : 'black',
-                  }}
-                >
-                  <span>{timestamp}</span>
-                </div>
-              )}
               <span>
                 <p>{itemComment}</p>
               </span>
@@ -235,11 +231,7 @@ const PostStream = ({ posts, postComment, submitComment }) => {
               </div>
               <label htmlFor="fname"></label>
               {openComments[postId] && (
-                <CreateComment
-                  postComment={postComment}
-                  postId={postId}
-                  submitComment={submitComment}
-                />
+                <CreateComment postComment={postComment} postId={postId} />
               )}
               {Array.isArray(comments) && comments.length > 0 && (
                 <div className="poststream__comments_container">

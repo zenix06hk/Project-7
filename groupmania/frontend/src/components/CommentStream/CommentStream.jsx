@@ -18,7 +18,7 @@ import CreateComment from '../CreateComment/CreateComment';
 
 // Ensure component is mounted before using theme
 
-const CommentStream = ({ comments, postComment }) => {
+const CommentStream = ({ comments }) => {
   const [hasErrorFetching, setHasErrorFetching] = useState('');
   const { data: session, status, update } = useSession();
   const [isComplete, setIsComplete] = useState(false);
