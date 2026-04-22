@@ -8,7 +8,7 @@ Before you begin, ensure you have the following installed on your machine:
 
 Node.js (v14.x or later)  
 npm (Node Package Manager)  
-Sql Server (v14 or later)
+Postgres SQL (v17 or later)
 
 ## Getting Started
 
@@ -16,7 +16,7 @@ Sql Server (v14 or later)
    `git clone https://github.com/zenix06hk/Project-7.git`
 2. Install Dependencies: Navigate to the project directory and install the project dependencies for both the frontend and backend:  
    `cd Project-7`
-   `cd groupmania`
+   `cd groupomania`
    `cd frontend`  
    `npm install`  
    `cd backend`  
