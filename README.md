@@ -24,9 +24,9 @@ Postgres SQL (v17 or later)
 3. Database Setup:  
    .Create a Postgres database and import `groupmania/db/back_no_data_260417.sql` for your project.
 4. Configuration:  
-   .Create an images folder in the root of the backend directory.  
-   .Create a .env file in the root of the backend directory.  
-   .Provide the necessary environment variables in the .env file, including database credentials and other configurations. For example:  
+   .Create an `images` folder in the root of the backend directory.  
+   .Create a `.env` file in the root of the backend directory.  
+   .Provide the necessary environment variables in the `.env` file, including database credentials and other configurations. For example:  
    use `.env.sample` for sample use
 5. Run the backend:  
    `cd backend`  
