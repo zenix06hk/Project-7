@@ -14,19 +14,13 @@ import {
 
 import './Poststream.scss';
 import CreateComment from '../CreateComment/CreateComment';
-import CommentStream from '../CommentStream/CommentStream';
 import { getUserAvatarUrl } from '@/components/utility/getUserAvatarUrl.js';
-// import CommentStream from '../CommentStream/CommentStream';
 
 // Ensure component is mounted before using theme
 
 const PostStream = ({ posts, postComment, submitComment }) => {
-  const [hasErrorFetching, setHasErrorFetching] = useState('');
   const { data: session, status, update } = useSession();
-  const [isComplete, setIsComplete] = useState(false);
   const { theme } = useTheme();
-  const [postsStream, setPostsStream] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [mounted, setMounted] = useState(false);
 
   // text color based on theme
@@ -100,13 +94,6 @@ const PostStream = ({ posts, postComment, submitComment }) => {
       const nextLikes = data?.data?.likes;
       const nextDislikes = data?.data?.dislikes;
 
-      // console.log('popularity updated:', {
-      //   userId: session?.user?.id ?? session?.user?.user_id,
-      //   postId,
-      //   likes: Number(nextLikes) === 1 ? 1 : 0,
-      //   dislikes: Number(nextDislikes) === 1 ? 1 : 0,
-      // });
-
       setReactionState(postId, nextLikes, nextDislikes);
     } catch (error) {
       // console.log('Error updating popularity:', error);
@@ -140,6 +127,7 @@ const PostStream = ({ posts, postComment, submitComment }) => {
           post_id,
           comments,
           post_time,
+          comment_time,
         } = item;
 
         const userFullName =
@@ -147,8 +135,11 @@ const PostStream = ({ posts, postComment, submitComment }) => {
         const postId = post_id;
         const descriptionText = description ?? post_content ?? '';
         const imageSrc = uploadedImage ?? post_img;
-        const timestampText = post_time
+        const postTimestampText = post_time
           ? new Date(post_time).toLocaleString()
+          : '';
+        const commentTimestampText = comment_time
+          ? new Date(comment_time).toLocaleString()
           : '';
         return (
           <div key={index} className="poststream__container">
@@ -165,7 +156,7 @@ const PostStream = ({ posts, postComment, submitComment }) => {
                   <h2>{userFullName}</h2>
                 </div>
                 <div className="poststream__timestamp">
-                  <p>{timestampText}</p>
+                  <p>{postTimestampText}</p>
                 </div>
               </div>
               <div className="poststream__description">
@@ -260,6 +251,9 @@ const PostStream = ({ posts, postComment, submitComment }) => {
                       >
                         <div className="poststream__comments_name">
                           <h4>{commentItem.comment_name}</h4>
+                        </div>
+                        <div className="poststream__comments_timestamp">
+                          <p>{commentTimestampText}</p>
                         </div>
                         <div className="poststream__comments_description">
                           <p>{commentItem.comment_content}</p>

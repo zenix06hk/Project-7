@@ -18,7 +18,7 @@ function HomePage() {
   });
   //published posts on the page
   const [posts, setPosts] = useState([]);
-  const [id, setId] = useState(1);
+  // const [id, setId] = useState(1);
   const [isComplete, setIsComplete] = useState(false);
   const { data: session, status } = useSession();
   const [isLoading, setIsLoading] = useState(true);

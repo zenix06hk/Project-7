@@ -37,13 +37,16 @@ const CommentStream = ({ comments }) => {
           description,
           comment_id,
           comment_content,
-          timestamp,
+          comment_time,
         } = item;
 
         const userFullName =
           first_name && last_name ? `${first_name} ${last_name}` : 'Username';
         const commentId = id ?? comment_id;
         const descriptionText = description ?? comment_content ?? '';
+        const timestampText = comment_time
+          ? new Date(comment_time).toLocaleString()
+          : '';
 
         return (
           <div
@@ -61,8 +64,10 @@ const CommentStream = ({ comments }) => {
               className="commentStream__profileImg"
             />
             <div className="commentStream__content">
-              <div className="commentStream__name"></div>
-              <div className="commentStream__upperBlock"></div>
+              <div className="poststream__headerNameAndTime">
+                <div className="commentStream__name">{userFullName}</div>
+                <div className="commentStream__timestamp">{timestampText}</div>
+              </div>
               <label htmlFor="fname"></label>
               {/* Display submitted comments */}
               {Array.isArray(comments) && comments.length > 0 && (

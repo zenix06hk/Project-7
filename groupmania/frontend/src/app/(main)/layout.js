@@ -10,11 +10,9 @@ function Layout({ children }) {
       <ThemeProvider>
         <div className="mainLayout__header">
           <Header />
-          {/* <div>Header</div> */}
         </div>
         <div className="mainLayout__body">
           <div className="mainLayout__content">{children}</div>
-          {/* <div>body</div> */}
         </div>
       </ThemeProvider>
     </div>

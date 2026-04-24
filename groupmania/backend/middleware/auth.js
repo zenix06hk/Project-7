@@ -12,10 +12,14 @@ module.exports = (req, res, next) => {
       });
     }
     const decodedToken = jwt.verify(token, process.env.SECRET_KEY);
+
     // console.log('Decoded token:', decodedToken); // Debug log
     // console.log(decodedToken);
+
     req.user = decodedToken;
+
     // console.log('User from token:', req.user); // Debug log
+
     next();
   } catch (error) {
     // console.error("Auth middleware error:", error); // Debug log

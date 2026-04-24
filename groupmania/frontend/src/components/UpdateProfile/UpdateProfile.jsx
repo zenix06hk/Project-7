@@ -11,7 +11,6 @@ import { Alert } from '@mui/material';
 
 import './updateProfile.scss';
 import ChangePassword from '../ChangePassword/ChangePassword';
-import CustomizeButton from '../CustomizeButton/CustomizeButton';
 
 import { Formik, Form, useFormikContext } from 'formik';
 import * as Yup from 'yup';
@@ -318,7 +317,7 @@ const UpdateProfile = () => {
       <div className="updateprofile-content">
         {showLoadingState && (
           <div className="updateprofile-section-container">
-            <Alert severity="info">Loading...</Alert>
+            {/* <Alert severity="info">Loading...</Alert> */}
           </div>
         )}
 

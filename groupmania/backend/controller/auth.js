@@ -12,6 +12,7 @@ exports.test = async (req, res) => {
     success: true,
   });
 };
+
 //Controller for creating a user account
 exports.signUp = async (req, res) => {
   try {
@@ -34,8 +35,6 @@ exports.signUp = async (req, res) => {
       const firstName = result.rows[0].first_name;
       const lastName = result.rows[0].last_name;
       const email_data = result.rows[0].email;
-      // const password = result.rows[0].password;
-      // const avatar = result.rows[0].avatar;
 
       // console.log(result);
 
@@ -70,14 +69,17 @@ exports.signUp = async (req, res) => {
 exports.login = async (req, res) => {
   const { email, password } = req.body;
   // console.log(req.body);
+
   try {
     const result = await db.query(
       'SELECT email, username, avatar, first_name, last_name, user_id, password FROM users WHERE email = $1',
       [email]
     );
+
     // console.log(result?.rows?.length);
     // console.log(result.rows.length, 'hit here 2nd time!');
     // console.log(result?.rows?.length !== 1, 'hit here 3rd time!');
+
     if (result?.rows?.length !== 1) {
       // console.log('hit here 4th time');
       return res.status(401).json({
@@ -89,13 +91,13 @@ exports.login = async (req, res) => {
       password,
       result.rows[0].password
     );
+
     // console.log("comparePassword", comparePassword);
     if (!comparePassword) {
       return res.status(401).json({
         error: 'Password incorrect!',
       });
     }
-
     // console.log(result.rows[0], 'hit here!');
 
     //Creation of the authentication token
