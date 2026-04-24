@@ -1,4 +1,4 @@
-@import '@/styles/mixin.scss';
+@use '@/styles/mixin.scss' as m;
 
 .createComment {
   display: flex;
@@ -30,22 +30,22 @@ button.createComment__button,
 // If CreatePost isn't mounted yet, ensure "Send" still gets the light-mode border.
 body.light button.createComment__button.submit,
 body.light .MuiButton-root.createComment__button.submit {
-  border: 2px solid $pink;
+  border: 2px solid m.$pink;
   background-color: transparent;
-  color: $dark-grey;
+  color: m.$dark-grey;
 
   &:hover {
-    background-color: rgba($pink, 0.35);
+    background-color: rgba(m.$pink, 0.35);
   }
 }
 
 body.dark button.createComment__button.submit,
 body.dark .MuiButton-root.createComment__button.submit {
-  border: 2px solid $pink;
+  border: 2px solid m.$pink;
   background-color: transparent;
-  color: $white;
+  color: m.$white;
 
   &:hover {
-    background-color: rgba($pink, 0.18);
+    background-color: rgba(m.$pink, 0.18);
   }
 }
