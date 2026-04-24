@@ -16,7 +16,7 @@ Postgres SQL (v17 or later)
    `git clone https://github.com/zenix06hk/Project-7.git`
 2. Install Dependencies: Navigate to the project directory and install the project dependencies for both the frontend and backend:  
    `cd Project-7`
-   `cd groupomania`
+   `cd groupmania`
    `cd frontend`  
    `npm install`  
    `cd backend`  
