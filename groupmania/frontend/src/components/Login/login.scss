@@ -1,4 +1,4 @@
-@import '@/styles/mixin.scss';
+@use '@/styles/mixin.scss' as mxnColor;
 
 .loginPage {
   height: 100%;
@@ -120,23 +120,13 @@
 }
 
 body.light .signIn {
-  border: 2px solid $pink;
-  color: $dark-grey;
-
-  // &:hover {
-  //   background-color: rgba($pink, 0.35);
-  //   border-color: $pink;
-  // }
+  border: 2px solid mxnColor.$pink;
+  color: mxnColor.$dark-grey;
 }
 
 body.dark .signIn {
-  border: 2px solid $pink;
-  color: $white;
-
-  // &:hover {
-  //   background-color: rgba($pink, 0.18);
-  //   border-color: $pink;
-  // }
+  border: 2px solid mxnColor.$pink;
+  color: mxnColor.$white;
 }
 
 .register {
@@ -171,21 +161,13 @@ a {
 }
 
 body.light .register-link a {
-  border: 2px solid $pink;
-  color: $dark-grey;
-
-  // &:hover {
-  //   background-color: rgba($pink, 0.35);
-  // }
+  border: 2px solid mxnColor.$pink;
+  color: mxnColor.$dark-grey;
 }
 
 body.dark .register-link a {
-  border: 2px solid $pink;
-  color: $white;
-
-  // &:hover {
-  //   background-color: rgba($pink, 0.18);
-  // }
+  border: 2px solid mxnColor.$pink;
+  color: mxnColor.$white;
 }
 
 .spinner-border {

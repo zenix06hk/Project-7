@@ -1,4 +1,4 @@
-@import '@/styles/mixin.scss';
+@use '@/styles/mixin.scss' as mxnColor;
 
 .registerPage {
   height: 100%;
@@ -102,7 +102,7 @@
     text-decoration: none; // Remove underline from links
   }
   &-signUp {
-    border: 2px solid $pink;
+    border: 2px solid mxnColor.$pink;
     background-color: transparent;
     border-radius: 5px;
     // Removed margin-left: 240px to allow auto centering
@@ -111,23 +111,23 @@
 
 // Ensure this overrides the global `button { border: none; background-color: ... }`
 button.btn-signUp {
-  border: 2px solid $pink;
+  border: 2px solid mxnColor.$pink;
   background-color: transparent;
 }
 
 body.light .btn-signUp {
-  color: $dark-grey;
+  color: mxnColor.$dark-grey;
 
   &:hover {
-    background-color: rgba($pink, 0.35);
+    background-color: rgba(mxnColor.$pink, 0.35);
   }
 }
 
 body.dark .btn-signUp {
-  color: $white;
+  color: mxnColor.$white;
 
   &:hover {
-    background-color: rgba($pink, 0.18);
+    background-color: rgba(mxnColor.$pink, 0.18);
   }
 }
 

@@ -1,4 +1,4 @@
-# OC_Project7
+OC_Project7
 
 This documentation provides instructions on how to set up and run the "Groupomania" application locally. The application is built using React and Express, with a SQL Server database.
 
@@ -23,15 +23,19 @@ Postgres SQL (v17 or later)
    `npm install`
 3. Database Setup:  
    .Create a Postgres database and import `groupmania/db/back_no_data_260417.sql` for your project.
-4. Configuration:  
+4. Configuration backend:  
    .Create an `images` folder in the root of the backend directory.  
-   .Create a `.env` file in the root of the backend directory.  
+   .Create a `.env` file in the root of the `backend` directory.  
    .Provide the necessary environment variables in the `.env` file, including database credentials and other configurations. For example:  
-   use `.env.sample` for sample use
-5. Run the backend:  
+   use `.env.sample` in the root of the `backend`
+5. Configuration frontend:  
+   .Create a `.env.local` file in the root of the `frontend` directory.  
+   .Provide the necessary environment variables in the `.env` file:  
+   use `.env.sample` in the root of the `frontend`
+6. Run the backend:  
    `cd backend`  
    `npm start`
-6. Run the frontend:  
+7. Run the frontend:  
    `cd frontend`  
    `npm run dev`
 
