@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import Image from "next/image";
+import Link from 'next/link';
+import Image from 'next/image';
 
-import * as React from "react";
-import Button from "@mui/material/Button";
-import { red } from "@mui/material/colors";
+import * as React from 'react';
+import Button from '@mui/material/Button';
+// import { red } from "@mui/material/colors";
 
-import "./events.scss";
+import './events.scss';
 
 function Events() {
   return (

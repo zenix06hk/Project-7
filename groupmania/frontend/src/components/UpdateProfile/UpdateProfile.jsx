@@ -117,7 +117,6 @@ const ProfileFormFields = () => {
 
   return (
     <Form className="updateprofile-form">
-      {/* Status Messages */}
       {status?.error && (
         <div className="updateprofile-status-error">
           <Alert severity="error">{status.message}</Alert>

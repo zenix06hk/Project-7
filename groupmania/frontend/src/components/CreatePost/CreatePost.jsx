@@ -5,7 +5,7 @@ import React, { use } from 'react';
 import Image from 'next/image';
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
-
+import * as Yup from 'yup';
 import { Form, Formik, Field, ErrorMessage } from 'formik';
 import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
@@ -15,8 +15,13 @@ import { red } from '@mui/material/colors';
 import './createpost.scss';
 import { getUserAvatarUrl } from '@/components/utility/getUserAvatarUrl.js';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPhotoFilm } from '@fortawesome/free-solid-svg-icons';
+const validationSchema = Yup.object().shape({
+  postContent: Yup.string()
+    .required('Post content is required')
+    .min(6, 'Post content must be at least 6 characters long'),
+});
+// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+// import { faPhotoFilm } from '@fortawesome/free-solid-svg-icons';
 
 const initialValues = {
   postContent: '',
@@ -28,52 +33,6 @@ const CreatePost = ({ userPost, newPostItem }) => {
   const [imagePreview, setImagePreview] = useState(null);
 
   const RedColor = red[500];
-
-  // const handleProfileSubmit = async (
-  //   values,
-  //   { setSubmitting, setStatus, resetForm }
-  // ) => {
-  //   setSubmitting(true);
-  //   setStatus(null);
-
-  //   try {
-  //     const requestBody = {
-  //       postContent: values.post,
-  //     };
-
-  //     const res = await fetch(
-  //       `${process.env.NEXT_PUBLIC_BACKEND_API}/api/posts/create-post`,
-  //       {
-  //         method: 'POST',
-  //         body: JSON.stringify({
-  //           updateContent: requestBody,
-  //         }),
-  //         headers: {
-  //           'Content-type': 'application/json; charset=UTF-8',
-  //           Authorization: `Bearer ${session?.accessToken}`,
-  //         },
-  //       }
-  //     );
-
-  //     const data = await res.json();
-  //     // console.log(data);
-  //     setSubmitting(false);
-
-  //     if (data?.success) {
-  //       // Update display immediately with new values
-  //       resetForm();
-  //       setStatus({ success: true, message: 'Post created successfully!' });
-  //     } else {
-  //       setStatus({
-  //         error: true,
-  //         message: data?.error ?? 'Post creation failed. Please try again.',
-  //       });
-  //     }
-  //   } catch (error) {
-  //     setSubmitting(false);
-  //     setStatus({ error: true, message: 'Network error. Please try again.' });
-  //   }
-  // };
 
   //upload file component
   const VisuallyHiddenInput = styled('input')({
@@ -107,7 +66,7 @@ const CreatePost = ({ userPost, newPostItem }) => {
       const formData = new FormData();
       console.log(formData, 'form data');
       formData.append('file', values.file);
-      formData.append('description', values.description);
+      formData.append('description', values.postContent);
 
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_API}/api/posts/create-post`,
@@ -151,11 +110,6 @@ const CreatePost = ({ userPost, newPostItem }) => {
     }
   };
 
-  const handleDescriptionChange = (value, setFieldValue) => {
-    setDescription(value);
-    setFieldValue('description', value);
-  };
-
   return (
     <div className="createPost">
       <div className="createPost__container">
@@ -168,7 +122,11 @@ const CreatePost = ({ userPost, newPostItem }) => {
         />
         <div className="createPost__content">
           <div className="createPost__upperBlock">
-            <Formik initialValues={initialValues} onSubmit={handleSubmit}>
+            <Formik
+              initialValues={initialValues}
+              validationSchema={validationSchema}
+              onSubmit={handleSubmit}
+            >
               {({ isSubmitting, errors, status, setFieldValue }) => (
                 <Form>
                   <label htmlFor="createPostContent">
@@ -179,10 +137,6 @@ const CreatePost = ({ userPost, newPostItem }) => {
                         errors.postContent ? 'error' : ''
                       }`}
                       placeholder="How's going today?"
-                      value={description}
-                      onChange={(e) =>
-                        handleDescriptionChange(e.target.value, setFieldValue)
-                      }
                     />
                     <ErrorMessage
                       className="error"

@@ -2,29 +2,14 @@
 
 import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
-import Form from 'next/form';
-import { useSession } from 'next-auth/react';
 import { useTheme } from '../../context/theme-context';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-  faThumbsUp,
-  faThumbsDown,
-  faComment,
-} from '@fortawesome/free-solid-svg-icons';
-
 import './commentstream.scss';
-import CreateComment from '../CreateComment/CreateComment';
 
 // Ensure component is mounted before using theme
 
 const CommentStream = ({ comments }) => {
-  const [hasErrorFetching, setHasErrorFetching] = useState('');
-  const { data: session, status, update } = useSession();
-  const [isComplete, setIsComplete] = useState(false);
   const { theme } = useTheme();
-  const [postsStream, setPostsStream] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [mounted, setMounted] = useState(false);
 
   return (

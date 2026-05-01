@@ -1,20 +1,20 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import Image from "next/image";
+import Link from 'next/link';
+import Image from 'next/image';
 
-import * as React from "react";
-import { useState } from "react";
-import Button from "@mui/material/Button";
-import { red } from "@mui/material/colors";
+import * as React from 'react';
+import { useState } from 'react';
+import Button from '@mui/material/Button';
+// import { red } from '@mui/material/colors';
 
-import "./community.scss";
+import './community.scss';
 
 {
   /*use map function friends list*/
 }
 
-const color = red[500];
+// const color = red[500];
 
 function CommunityPage() {
   // State to track community membership status
@@ -53,12 +53,12 @@ function CommunityPage() {
         </Link>
         <div className="community__status">
           <Button
-            variant={isMember ? "outlined" : "contained"}
+            variant={isMember ? 'outlined' : 'contained'}
             size="small"
-            color={isMember ? "error" : "primary"}
+            color={isMember ? 'error' : 'primary'}
             onClick={handleMembershipToggle}
           >
-            {isMember ? "Leave" : "Join"}
+            {isMember ? 'Leave' : 'Join'}
           </Button>
         </div>
       </div>

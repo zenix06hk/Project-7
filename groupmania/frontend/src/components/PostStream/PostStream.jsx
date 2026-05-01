@@ -134,6 +134,7 @@ const PostStream = ({ posts, postComment, submitComment }) => {
           first_name && last_name ? `${first_name} ${last_name}` : 'Username';
         const postId = post_id;
         const descriptionText = description ?? post_content ?? '';
+        console.log(descriptionText);
         const imageSrc = uploadedImage ?? post_img;
         const postTimestampText = post_time
           ? new Date(post_time).toLocaleString()
@@ -252,9 +253,9 @@ const PostStream = ({ posts, postComment, submitComment }) => {
                         <div className="poststream__comments_name">
                           <h4>{commentItem.comment_name}</h4>
                         </div>
-                        <div className="poststream__comments_timestamp">
+                        {/* <div className="poststream__comments_timestamp">
                           <p>{commentTimestampText}</p>
-                        </div>
+                        </div> */}
                         <div className="poststream__comments_description">
                           <p>{commentItem.comment_content}</p>
                         </div>

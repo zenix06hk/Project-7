@@ -4,14 +4,14 @@ import React from 'react';
 
 import './createcomments.scss';
 
-import { useState } from 'react';
+// import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 
 import { Form, Formik, Field, ErrorMessage, useFormikContext } from 'formik';
-import { styled } from '@mui/material/styles';
+// import { styled } from '@mui/material/styles';
 import Button from '@mui/material/Button';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-import { red } from '@mui/material/colors';
+// import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+// import { red } from '@mui/material/colors';
 
 const initialValues = {
   commentContent: '',
@@ -20,12 +20,12 @@ const initialValues = {
 const CreateComment = ({
   postId,
   postComment,
-  submitComment,
-  userComment,
-  commentDescription,
+  // submitComment,
+  // userComment,
+  // commentDescription,
 }) => {
   const { data: session } = useSession();
-  const [comment, setComment] = useState('');
+  // const [comment, setComment] = useState('');
 
   const handleSubmit = async (
     values,

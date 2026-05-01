@@ -253,6 +253,8 @@ exports.updateProfile = async (req, res) => {
       });
     }
 
+    console.log(userId, 'hit here 1st time!');
+
     const values = [updates.email, updates.firstName, updates.lastName, userId];
 
     const query = `
