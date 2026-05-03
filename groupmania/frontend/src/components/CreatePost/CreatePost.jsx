@@ -20,8 +20,6 @@ const validationSchema = Yup.object().shape({
     .required('Post content is required')
     .min(6, 'Post content must be at least 6 characters long'),
 });
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { faPhotoFilm } from '@fortawesome/free-solid-svg-icons';
 
 const initialValues = {
   postContent: '',
@@ -29,7 +27,6 @@ const initialValues = {
 
 const CreatePost = ({ userPost, newPostItem }) => {
   const { data: session } = useSession();
-  const [description, setDescription] = useState('');
   const [imagePreview, setImagePreview] = useState(null);
 
   const RedColor = red[500];
@@ -58,11 +55,6 @@ const CreatePost = ({ userPost, newPostItem }) => {
     //async call
     //this is a fetch call for the backend environment for api
     try {
-      // if (!(values.file instanceof File)) {
-      //   console.log('No file selected or invalid file type.');
-      //   return;
-      // }
-
       const formData = new FormData();
       console.log(formData, 'form data');
       formData.append('file', values.file);
@@ -74,7 +66,6 @@ const CreatePost = ({ userPost, newPostItem }) => {
           method: 'POST',
           body: formData,
           headers: {
-            // 'Content-type': 'application/json; charset=UTF-8',
             Authorization: `Bearer ${session?.accessToken}`,
           },
         }

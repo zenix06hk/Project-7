@@ -1,6 +1,6 @@
 import React from 'react';
 
-const UploadFile = ({ data, setFieldValue, errors }) => {
+const UploadFile = ({ setFieldValue, errors }) => {
   return (
     <div>
       <input

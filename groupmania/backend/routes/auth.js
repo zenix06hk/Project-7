@@ -19,6 +19,4 @@ router.post(
   authCtrl.updateProfileAvatar
 );
 
-router.get('/test', authCtrl.test);
-
 module.exports = router;

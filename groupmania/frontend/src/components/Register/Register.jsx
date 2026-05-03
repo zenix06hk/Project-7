@@ -1,46 +1,45 @@
-"use client";
+'use client';
 
-import React, { useState, useEffect } from "react";
-import Image from "next/image";
-import { useTheme } from "../../context/theme-context";
+import React, { useState, useEffect } from 'react';
+import Image from 'next/image';
+import { useTheme } from '../../context/theme-context';
 
-import "./register.scss";
+import './register.scss';
 
-import Link from "next/link";
-import { useFormik } from "formik";
-import { Formik, Field, ErrorMessage, Form } from "formik";
-import { useRouter } from "next/navigation";
-import * as Yup from "yup";
+import Link from 'next/link';
+import { Formik, Field, ErrorMessage, Form } from 'formik';
+import { useRouter } from 'next/navigation';
+import * as Yup from 'yup';
 
 const validationSchema = Yup.object().shape({
   username: Yup.string()
-    .min(3, "Username must be at least 3 characters")
-    .max(20, "Username must not be more than 20 characters")
-    .required("Username is required"),
+    .min(3, 'Username must be at least 3 characters')
+    .max(20, 'Username must not be more than 20 characters')
+    .required('Username is required'),
   first_name: Yup.string()
-    .min(2, "First name must be at least 2 characters")
-    .max(30, "First name must not be more than 30 characters")
-    .required("First name is required"),
+    .min(2, 'First name must be at least 2 characters')
+    .max(30, 'First name must not be more than 30 characters')
+    .required('First name is required'),
   last_name: Yup.string()
-    .min(2, "Last name must be at least 2 characters")
-    .max(30, "Last name must not be more than 30 characters")
-    .required("Last name is required"),
-  email: Yup.string().email("Invalid email").required("Email is required"),
+    .min(2, 'Last name must be at least 2 characters')
+    .max(30, 'Last name must not be more than 30 characters')
+    .required('Last name is required'),
+  email: Yup.string().email('Invalid email').required('Email is required'),
   password: Yup.string()
-    .min(6, "Password must be at least 6 characters")
-    .required("Password is required"),
+    .min(6, 'Password must be at least 6 characters')
+    .required('Password is required'),
   confirmPassword: Yup.string()
-    .oneOf([Yup.ref("password")], "Passwords must match")
-    .required("Confirm Password is required"),
+    .oneOf([Yup.ref('password')], 'Passwords must match')
+    .required('Confirm Password is required'),
 });
 
 const initialValues = {
-  username: "",
-  first_name: "",
-  last_name: "",
-  email: "",
-  password: "",
-  confirmPassword: "",
+  username: '',
+  first_name: '',
+  last_name: '',
+  email: '',
+  password: '',
+  confirmPassword: '',
 };
 
 const Register = () => {
@@ -77,10 +76,10 @@ const Register = () => {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_BACKEND_API}/api/auth/sign-up`,
         {
-          method: "POST",
+          method: 'POST',
           body: JSON.stringify(requestBody),
           headers: {
-            "Content-type": "application/json; charset=UTF-8",
+            'Content-type': 'application/json; charset=UTF-8',
           },
         }
       );
@@ -94,17 +93,17 @@ const Register = () => {
       setSubmitting(false);
       if (data?.success) {
         resetForm();
-        setStatus({ success: true, message: "Account created successfully!" });
+        setStatus({ success: true, message: 'Account created successfully!' });
       } else {
         setStatus({
           error: true,
-          message: data?.error ?? "Registration failed. Please try again.",
+          message: data?.error ?? 'Registration failed. Please try again.',
         });
       }
     } catch (error) {
-      console.error("Registration error:", error);
+      console.error('Registration error:', error);
       setSubmitting(false);
-      setStatus({ error: true, message: "Network error. Please try again." });
+      setStatus({ error: true, message: 'Network error. Please try again.' });
     }
   };
   return (
@@ -112,9 +111,9 @@ const Register = () => {
       <div className="registerPage-content">
         <Image
           src={
-            mounted && theme === "dark"
-              ? "/assets/icon_and_name_dark.png"
-              : "/assets/icon_and_name.png"
+            mounted && theme === 'dark'
+              ? '/assets/icon_and_name_dark.png'
+              : '/assets/icon_and_name.png'
           }
           alt="icon"
           width={500}
@@ -134,7 +133,7 @@ const Register = () => {
                 <Field
                   name="username"
                   type="text"
-                  className={errors.username ? "error" : ""}
+                  className={errors.username ? 'error' : ''}
                   size="50"
                 />
                 <ErrorMessage
@@ -150,7 +149,7 @@ const Register = () => {
                 <Field
                   name="first_name"
                   type="text"
-                  className={errors.first_name ? "error" : ""}
+                  className={errors.first_name ? 'error' : ''}
                   size="50"
                 />
                 <ErrorMessage
@@ -166,7 +165,7 @@ const Register = () => {
                 <Field
                   name="last_name"
                   type="text"
-                  className={errors.last_name ? "error" : ""}
+                  className={errors.last_name ? 'error' : ''}
                   size="50"
                 />
                 <ErrorMessage
@@ -182,7 +181,7 @@ const Register = () => {
                 <Field
                   name="email"
                   type="email"
-                  className={errors.email ? "error" : ""}
+                  className={errors.email ? 'error' : ''}
                   size="50"
                 />
                 <ErrorMessage className="error" name="email" component="div" />
@@ -194,7 +193,7 @@ const Register = () => {
                 <Field
                   name="password"
                   type="password"
-                  className={errors.password ? "error" : ""}
+                  className={errors.password ? 'error' : ''}
                   size="50"
                 />
                 <ErrorMessage
@@ -210,7 +209,7 @@ const Register = () => {
                 <Field
                   name="confirmPassword"
                   type="password"
-                  className={errors.confirmPassword ? "error" : ""}
+                  className={errors.confirmPassword ? 'error' : ''}
                   size="50"
                 />
                 <ErrorMessage
@@ -224,7 +223,7 @@ const Register = () => {
               {status?.error && <div className="error">{status.message}</div>}
               {status?.success && (
                 <div className="success">
-                  {status.message} - Registration completed, please login{" "}
+                  {status.message} - Registration completed, please login{' '}
                   <Link href="/signin">here</Link>
                 </div>
               )}
@@ -237,7 +236,7 @@ const Register = () => {
                   Sign Up {isSubmitting}
                 </button>
                 <div className="login-link">
-                  Already have an account?{" "}
+                  Already have an account?{' '}
                   <Link href="/signin">Back to sign in page</Link>
                 </div>
               </div>

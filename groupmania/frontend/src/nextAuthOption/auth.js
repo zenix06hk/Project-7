@@ -1,6 +1,6 @@
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { getServerSession } from 'next-auth'; // Used for server-side session access
+// import { getServerSession } from 'next-auth'; // Used for server-side session access
 
 // Define your NextAuth options
 // This is where you configure your authentication providers, callbacks, etc.

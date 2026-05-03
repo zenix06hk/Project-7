@@ -9,12 +9,10 @@ import './header.scss';
 import LoginBtn from '../LoginBtn/LoginBtn';
 import { getUserAvatarUrl } from '@/components/utility/getUserAvatarUrl.js';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import DarkModeToggle from '@/components/DarkModeToggle/DarkModeToggle.jsx';
-// config.autoAddCss = false;
 import {
   faHome,
   faPeopleGroup,
@@ -33,12 +31,6 @@ function Header() {
     import('bootstrap/dist/js/bootstrap.bundle.min.js');
   }, []);
 
-  const navList = [
-    { name: faHome, url: '/' },
-    { name: faPeopleGroup, url: '/community' },
-    { name: faGear, url: '/settings' },
-  ];
-
   return (
     <header>
       <div className="header__container">
@@ -56,18 +48,7 @@ function Header() {
           />
         </Link>
         <div className="header__tablist">
-          {/* {navList.map((item, index) => ( */}
-          {/* <div key={index} className="header__tablist_icon"> */}
           <div className="header__tablist_link">
-            {/* <Link href={item.url}>
-                <FontAwesomeIcon
-                  icon={item.name}
-                  size="lg"
-                  style={{
-                    color: mounted && theme === "dark" ? "white" : "black",
-                  }}
-                />
-              </Link> */}
             <Link href="/">
               <div
                 style={{

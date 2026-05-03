@@ -211,7 +211,7 @@ exports.deleteAccount = async (req, res) => {
 
 exports.updateProfile = async (req, res) => {
   try {
-    const userId = req.user.userId; // From auth middleware
+    const userId = req.user.user_id; // From auth middleware
     const updates = req.body.updateContent;
 
     // console.log('Updates received:', updates); // Debug log
@@ -232,7 +232,7 @@ exports.updateProfile = async (req, res) => {
 
       if (result.rows.length === 0) {
         return res.status(404).json({
-          error: 'User not found 2',
+          error: 'Please fill the update form correctly',
           success: false,
         });
       }
@@ -268,7 +268,7 @@ exports.updateProfile = async (req, res) => {
 
     if (result.rows.length === 0) {
       return res.status(404).json({
-        error: 'User not found 3',
+        error: 'Password not matched',
         success: false,
       });
     }
@@ -329,7 +329,7 @@ exports.updateProfileAvatar = async (req, res) => {
 
     if (result.rows.length === 0) {
       return res.status(404).json({
-        error: 'User not found 4',
+        error: 'Please select an image to upload',
         success: false,
       });
     }
@@ -392,7 +392,7 @@ exports.getUserProfile = async (req, res) => {
 
     if (result.rows.length === 0) {
       return res.status(404).json({
-        error: 'User not found 5',
+        error: 'Error fetching - please contact support',
         success: false,
       });
     }

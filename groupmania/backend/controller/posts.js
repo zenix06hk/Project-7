@@ -7,12 +7,8 @@ exports.createPost = async (req, res) => {
     const userId = req.user.user_id;
     const imageUrl = req?.file?.filename ? `${req.file.filename}` : null;
     const description = req.body.description;
-    // console.log('post');
-    // console.log(req.user);
-    // const postImgUrl = `${req.file.filename}`;
-    console.log(imageUrl, 'post image');
-    console.log(description, 'post description');
-    // return;
+    // console.log(imageUrl, 'post image');
+    // console.log(description, 'post description');
 
     const result = await db.query(
       'INSERT INTO post (user_id, post_content, post_img, likes, dislikes) VALUES ($1, $2, $3, $4, $5) RETURNING *',
@@ -24,7 +20,7 @@ exports.createPost = async (req, res) => {
     const postImg = result.rows[0].post_img;
     const likes = result.rows[0].likes;
     const dislikes = result.rows[0].dislikes;
-    console.log(postImg);
+    // console.log(postImg);
     // console.log(result);
 
     res.status(201).json({

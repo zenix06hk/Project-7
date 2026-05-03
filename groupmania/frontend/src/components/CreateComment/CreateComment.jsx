@@ -7,25 +7,15 @@ import './createcomments.scss';
 // import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 
-import { Form, Formik, Field, ErrorMessage, useFormikContext } from 'formik';
-// import { styled } from '@mui/material/styles';
+import { Form, Formik, Field, ErrorMessage } from 'formik';
 import Button from '@mui/material/Button';
-// import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-// import { red } from '@mui/material/colors';
 
 const initialValues = {
   commentContent: '',
 };
 
-const CreateComment = ({
-  postId,
-  postComment,
-  // submitComment,
-  // userComment,
-  // commentDescription,
-}) => {
+const CreateComment = ({ postId, postComment }) => {
   const { data: session } = useSession();
-  // const [comment, setComment] = useState('');
 
   const handleSubmit = async (
     values,
@@ -34,7 +24,6 @@ const CreateComment = ({
     setSubmitting(true);
     // console.log(values);
     setStatus(null);
-    // router.push("/home");
     //async call
     //this is a fetch call for the backend environment for api
     try {
@@ -87,7 +76,6 @@ const CreateComment = ({
                 errors.commentContent ? 'error' : ''
               }`}
               placeholder="Comment here..."
-              // value={description}
             />
             <ErrorMessage
               className="error"

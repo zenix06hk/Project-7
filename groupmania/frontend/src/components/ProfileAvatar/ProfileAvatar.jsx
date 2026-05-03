@@ -7,7 +7,7 @@ import * as Yup from 'yup';
 // Changed import from Formik/Form/useFormikContext to useFormik
 import { useFormik } from 'formik';
 
-import { getUserAvatarUrl } from '@/components/utility/getUserAvatarUrl.js';
+// import { getUserAvatarUrl } from '@/components/utility/getUserAvatarUrl.js';
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -35,9 +35,6 @@ const ProfileAvatar = ({ session, currentAvatar, onAvatarUpdate }) => {
   // Local state is still useful for immediate UI effects like the preview
   const [avatarPreview, setAvatarPreview] = useState(null);
   const [avatarStatus, setAvatarStatus] = useState(null);
-  // const [updateAvatar, setUpdateAvatar] = useState({
-  //   avatar: "",
-  // });
 
   // 1. Define the submission handler outside of useFormik for clarity
   const handleAvatarUpdate = async (values, { setSubmitting }) => {
